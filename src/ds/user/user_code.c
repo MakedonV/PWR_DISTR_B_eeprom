@@ -34,13 +34,11 @@ uint8_t counter_rpm;
  */
 void usercode_init(void)
 {
-	/*
+	
 	user_eeprom_read(0x10, sizeof(eeprom_val), &eeprom_val[0]);
 	user_eeprom_read(0x20, sizeof(eeprom_val), &eeprom_val[1]);
 	user_eeprom_read(0x30, sizeof(eeprom_val), &eeprom_val[2]);
 	user_eeprom_read(0x40, sizeof(eeprom_val), &eeprom_val[3]);
-
-user_can_send_msg(CAN_BUS_0, 0x111, STANDARD_ID, 8, eeprom_val[0], eeprom_val[1], eeprom_val[2], eeprom_val[3], 0xAA, 0xAA, 0x18<<2, 0xAA);	
 
 	ENG_HRS_EEPROM = eeprom_val[0] | (eeprom_val[1] << 8) | (eeprom_val[2] << 16) |(eeprom_val[3] << 24);
 		
@@ -50,14 +48,14 @@ user_can_send_msg(CAN_BUS_0, 0x111, STANDARD_ID, 8, eeprom_val[0], eeprom_val[1]
 	byte_L1_hour = ENG_HRS_EEPROM & 0xFF;	
 	user_can_send_msg(CAN_BUS_0, 0x18FEE500, EXTENDED_ID, 8, byte_L1_hour, byte_L2_hour, byte_H1_hour, byte_H2_hour, 0xFF, 0xFF, 0xFF, 0xFF);
 	
-*/
 
-	user_eeprom_write(0x90, sizeof(8), 0);
-	user_eeprom_write(0x91, sizeof(8), 0);
-	user_eeprom_write(0x92, sizeof(8), 0);
-	user_eeprom_write(0x93, sizeof(8), 0);
+
+	// user_eeprom_write(0x90, sizeof(8), 0);
+	// user_eeprom_write(0x91, sizeof(8), 0);
+	// user_eeprom_write(0x92, sizeof(8), 0);
+	// user_eeprom_write(0x93, sizeof(8), 0);
 	
-	user_can_send_msg(CAN_BUS_0, 0x001, STANDARD_ID, 8, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+	// user_can_send_msg(CAN_BUS_0, 0x001, STANDARD_ID, 8, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
 }
 
 
@@ -75,7 +73,7 @@ void usercode(void)
 	
 	counter++;
 	
-	if (counter == 100)
+	if (counter == 1000)
 	{
 		user_eeprom_read(0x90, sizeof(eeprom_val), &eeprom_val[0]);
 		user_eeprom_read(0x91, sizeof(eeprom_val), &eeprom_val[1]);
@@ -201,58 +199,56 @@ void user_int_rx_sci(uint8_t instance, uint8_t data)
 */
 void user_int_timer_1ms(void)
 {
-	
-	
-	//ENGINE_RPM = user_freq_get_measured_freq(FREQ_IN1);
-	//RPM_Total += ENGINE_RPM;
+	ENGINE_RPM = user_freq_get_measured_freq(FREQ_IN1);
+	RPM_Total += ENGINE_RPM;
 
-// user_can_db_set_signal_value(_ENGINE_RPM, ENGINE_RPM);
-// user_can_db_set_signal_value(_RPM_Total, RPM_Total);
+user_can_db_set_signal_value(_ENGINE_RPM, ENGINE_RPM);
+user_can_db_set_signal_value(_RPM_Total, RPM_Total);
 
-	//display_timer_1000++;
+	display_timer_1000++;
 
-	//if (display_timer_1000 == 1000)
-	//{
-	//	RPM_Average = RPM_Total/1000;
-		//ENGINE_RPM_DSP = RPM_Average * 8; //* 41.6;
-		// byte_H_rpm = ENGINE_RPM_DSP >> 8;
-		// byte_L_rpm = ENGINE_RPM_DSP & 0xFF;	
-		// RPM_Total = 0;
+	if (display_timer_1000 == 1000)
+	{
+		RPM_Average = RPM_Total/1000;
+		ENGINE_RPM_DSP = RPM_Average * 8; //* 41.6;
+		byte_H_rpm = ENGINE_RPM_DSP >> 8;
+		byte_L_rpm = ENGINE_RPM_DSP & 0xFF;	
+		RPM_Total = 0;
 
-		// ENG_HRS_1sec += RPM_Average/16;
+		ENG_HRS_1sec += RPM_Average/16;
 	
 
-// user_can_db_set_signal_value(_RPM_Average, RPM_Average);
-// user_can_db_set_signal_value(_ENG_HRS_1sec, ENG_HRS_1sec);
+user_can_db_set_signal_value(_RPM_Average, RPM_Average);
+user_can_db_set_signal_value(_ENG_HRS_1sec, ENG_HRS_1sec);
 
 
 
-		// if(ENG_HRS_1sec >= 18000) //1800-18 sec, 18000-180sec-3min_1bite_in_PGN:65253 
-		// {
-			// ENG_HRS_1sec = 0;
+		if(ENG_HRS_1sec >= 18000) //1800-18 sec, 18000-180sec-3min_1bite_in_PGN:65253 
+		{
+			ENG_HRS_1sec = 0;
 
-			// ENG_HRS_EEPROM ++;
+			ENG_HRS_EEPROM ++;
 
-            // byte_H2_hour = ENG_HRS_EEPROM >> 24;
-	        // byte_H1_hour = ENG_HRS_EEPROM >> 16;
-	        // byte_L2_hour = ENG_HRS_EEPROM >> 8;
-	        // byte_L1_hour = ENG_HRS_EEPROM & 0xFF;	
+            byte_H2_hour = ENG_HRS_EEPROM >> 24;
+	        byte_H1_hour = ENG_HRS_EEPROM >> 16;
+	        byte_L2_hour = ENG_HRS_EEPROM >> 8;
+	        byte_L1_hour = ENG_HRS_EEPROM & 0xFF;	
 
-            // user_eeprom_write(0x10, sizeof(byte_L1_hour), &byte_L1_hour);
-			// user_eeprom_write(0x20, sizeof(byte_L2_hour), &byte_L2_hour);
-			// user_eeprom_write(0x30, sizeof(byte_H1_hour), &byte_H1_hour);
-			// user_eeprom_write(0x40, sizeof(byte_H2_hour), &byte_H2_hour);
-		// }
+            user_eeprom_write(0x10, sizeof(byte_L1_hour), &byte_L1_hour);
+			user_eeprom_write(0x20, sizeof(byte_L2_hour), &byte_L2_hour);
+			user_eeprom_write(0x30, sizeof(byte_H1_hour), &byte_H1_hour);
+			user_eeprom_write(0x40, sizeof(byte_H2_hour), &byte_H2_hour);
+		}
 
-// user_can_db_set_signal_value(_ENG_HRS_EEPROM, ENG_HRS_EEPROM);
+user_can_db_set_signal_value(_ENG_HRS_EEPROM, ENG_HRS_EEPROM);
 
-		//RPM  PGN:61444 
-		// user_can_send_msg(CAN_BUS_0, 0x18F00400, EXTENDED_ID, 8, 0xFF, 0xFF, 0xFF, byte_L_rpm, byte_H_rpm, 0xFF, 0xFF, 0xFF);	
-		//engine hours PGN:65253 
-		// user_can_send_msg(CAN_BUS_0, 0x18FEE500, EXTENDED_ID, 8, byte_L1_hour, byte_L2_hour, byte_H1_hour, byte_H2_hour, 0xFF, 0xFF, 0xFF, 0xFF);
+		// RPM  PGN:61444 
+		user_can_send_msg(CAN_BUS_0, 0x18F00400, EXTENDED_ID, 8, 0xFF, 0xFF, 0xFF, byte_L_rpm, byte_H_rpm, 0xFF, 0xFF, 0xFF);	
+		// engine hours PGN:65253 
+		user_can_send_msg(CAN_BUS_0, 0x18FEE500, EXTENDED_ID, 8, byte_L1_hour, byte_L2_hour, byte_H1_hour, byte_H2_hour, 0xFF, 0xFF, 0xFF, 0xFF);
 		
-		// display_timer_1000 = 0;
-	// }
+		display_timer_1000 = 0;
+	}
 	
 	
 	// dont put too much code in here. this is called in an interrupt!
