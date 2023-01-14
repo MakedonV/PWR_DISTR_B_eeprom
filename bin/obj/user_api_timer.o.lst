@@ -1,0 +1,69 @@
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"user_api_timer.c"
+  14              		.text
+  15              		.section	.text.user_set_timestamp,"ax",%progbits
+  16              		.align	1
+  17              		.global	user_set_timestamp
+  18              		.arch armv7e-m
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu fpv4-sp-d16
+  24              	user_set_timestamp:
+  25              		@ args = 0, pretend = 0, frame = 0
+  26              		@ frame_needed = 0, uses_anonymous_args = 0
+  27 0000 08B5     		push	{r3, lr}
+  28 0002 FFF7FEFF 		bl	sfl_timer_set_timestamp
+  29 0006 08BD     		pop	{r3, pc}
+  31              		.section	.text.user_time_past,"ax",%progbits
+  32              		.align	1
+  33              		.global	user_time_past
+  34              		.syntax unified
+  35              		.thumb
+  36              		.thumb_func
+  37              		.fpu fpv4-sp-d16
+  39              	user_time_past:
+  40              		@ args = 0, pretend = 0, frame = 0
+  41              		@ frame_needed = 0, uses_anonymous_args = 0
+  42 0000 10B5     		push	{r4, lr}
+  43 0002 044C     		ldr	r4, .L5
+  44 0004 1346     		mov	r3, r2
+  45 0006 0A46     		mov	r2, r1
+  46 0008 0146     		mov	r1, r0
+  47 000a 2046     		mov	r0, r4
+  48 000c FFF7FEFF 		bl	sfl_timer_time_elapsed
+  49 0010 2078     		ldrb	r0, [r4]	@ zero_extendqisi2
+  50 0012 10BD     		pop	{r4, pc}
+  51              	.L6:
+  52              		.align	2
+  53              	.L5:
+  54 0014 00000000 		.word	.LANCHOR0
+  56              		.section	.text.user_get_roundtrip_time,"ax",%progbits
+  57              		.align	1
+  58              		.global	user_get_roundtrip_time
+  59              		.syntax unified
+  60              		.thumb
+  61              		.thumb_func
+  62              		.fpu fpv4-sp-d16
+  64              	user_get_roundtrip_time:
+  65              		@ args = 0, pretend = 0, frame = 0
+  66              		@ frame_needed = 0, uses_anonymous_args = 0
+  67 0000 08B5     		push	{r3, lr}
+  68 0002 FFF7FEFF 		bl	sfl_timer_get_roundtrip_time
+  69 0006 08BD     		pop	{r3, pc}
+  71              		.section	.bss.elapsed.5486,"aw",%nobits
+  72              		.set	.LANCHOR0,. + 0
+  75              	elapsed.5486:
+  76 0000 00       		.space	1
+  77              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2019-q3-update) 8.3.1 20190703 (release) [gc

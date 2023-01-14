@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ApplicationDataChanged>false</ApplicationDataChanged>
+  <BuildActions />
+  <CanGateways />
+  <CanSettings>
+    <CanSetting>
+      <CanBus>CAN_BUS_0</CanBus>
+      <CanBusId>0</CanBusId>
+      <FIFOSizeRX>40</FIFOSizeRX>
+      <FIFOSizeTX>40</FIFOSizeTX>
+      <ListenOnly>false</ListenOnly>
+      <SelectedSetting>250 kBit</SelectedSetting>
+      <Setting>
+        <Baudrate>250 kBit</Baudrate>
+        <BaudrateDefine>BIOS_CAN_250KBIT</BaudrateDefine>
+        <BusClock>0</BusClock>
+        <ClockSource>0</ClockSource>
+        <Comment />
+        <JumpWidth>3</JumpWidth>
+        <Name>250 kBit</Name>
+        <OscillatorClock>2</OscillatorClock>
+        <Prescaler>15</Prescaler>
+        <PropagationSegment>0</PropagationSegment>
+        <TimeSegment1>3</TimeSegment1>
+        <TimeSegment2>3</TimeSegment2>
+      </Setting>
+    </CanSetting>
+    <CanSetting>
+      <CanBus>CAN_BUS_1</CanBus>
+      <CanBusId>1</CanBusId>
+      <FIFOSizeRX>40</FIFOSizeRX>
+      <FIFOSizeTX>40</FIFOSizeTX>
+      <ListenOnly>false</ListenOnly>
+      <SelectedSetting>250 kBit</SelectedSetting>
+      <Setting>
+        <Baudrate>250 kBit</Baudrate>
+        <BaudrateDefine>BIOS_CAN_250KBIT</BaudrateDefine>
+        <BusClock>0</BusClock>
+        <ClockSource>0</ClockSource>
+        <Comment />
+        <JumpWidth>3</JumpWidth>
+        <Name>250 kBit</Name>
+        <OscillatorClock>2</OscillatorClock>
+        <Prescaler>15</Prescaler>
+        <PropagationSegment>0</PropagationSegment>
+        <TimeSegment1>3</TimeSegment1>
+        <TimeSegment2>3</TimeSegment2>
+      </Setting>
+    </CanSetting>
+  </CanSettings>
+  <CompilerPath>C:\Users\Viacheslav.Makedon\AppData\Local\ApplicsStudio\app-3.10.109\Tools\GNUArmEmbedded\bin\</CompilerPath>
+  <FileGenerationPreferences>
+    <FileGenerationPreference>
+      <Option>AutoGenerate</Option>
+      <Type>CanCode</Type>
+    </FileGenerationPreference>
+    <FileGenerationPreference>
+      <Option>AutoGenerate</Option>
+      <Type>DSLConfig</Type>
+    </FileGenerationPreference>
+    <FileGenerationPreference>
+      <Option>AutoGenerate</Option>
+      <Type>IoTables</Type>
+    </FileGenerationPreference>
+    <FileGenerationPreference>
+      <Option>AutoGenerate</Option>
+      <Type>LDFCode</Type>
+    </FileGenerationPreference>
+    <FileGenerationPreference>
+      <Option>AutoGenerate</Option>
+      <Type>MHardwareCode</Type>
+    </FileGenerationPreference>
+    <FileGenerationPreference>
+      <Option>AutoGenerate</Option>
+      <Type>IoVariables</Type>
+    </FileGenerationPreference>
+  </FileGenerationPreferences>
+  <FlashPageSettings>
+    <InterfaceExtra>0ß´´</InterfaceExtra>
+    <SelectedBaudrate>250 kBit</SelectedBaudrate>
+    <SelectedCanBus>Manual</SelectedCanBus>
+    <SelectedHardwareInterface>0 = PCAN Light USB</SelectedHardwareInterface>
+  </FlashPageSettings>
+  <HardwareDrawingNumber>1.169.300.1200</HardwareDrawingNumber>
+  <HardwareRevision>B</HardwareRevision>
+  <IgnoreProjectUpdate>NEVER</IgnoreProjectUpdate>
+  <LastBuild>2023-01-10T16:39:12.2074775+02:00</LastBuild>
+  <LibraryVersion />
+  <ModuleName>Modulname</ModuleName>
+  <PartNumber>401292</PartNumber>
+  <ProjectName>PWR_DISTR_B_eeprom</ProjectName>
+  <StructureVersion>1</StructureVersion>
+  <Version>----Vx.x.x</Version>
+</Project>

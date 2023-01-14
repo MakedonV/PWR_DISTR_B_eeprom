@@ -1,0 +1,360 @@
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"user_api_pwm.c"
+  14              		.text
+  15              		.section	.text.user_pwm_set_pwm,"ax",%progbits
+  16              		.align	1
+  17              		.global	user_pwm_set_pwm
+  18              		.arch armv7e-m
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu fpv4-sp-d16
+  24              	user_pwm_set_pwm:
+  25              		@ args = 0, pretend = 0, frame = 0
+  26              		@ frame_needed = 0, uses_anonymous_args = 0
+  27 0000 38B5     		push	{r3, r4, r5, lr}
+  28 0002 0446     		mov	r4, r0
+  29 0004 1546     		mov	r5, r2
+  30 0006 FFF7FEFF 		bl	hal_pwm_set_freq
+  31 000a 0346     		mov	r3, r0
+  32 000c 08B1     		cbz	r0, .L4
+  33              	.L2:
+  34 000e 1846     		mov	r0, r3
+  35 0010 38BD     		pop	{r3, r4, r5, pc}
+  36              	.L4:
+  37 0012 2946     		mov	r1, r5
+  38 0014 2046     		mov	r0, r4
+  39 0016 FFF7FEFF 		bl	hal_pwm_set_duty
+  40 001a 0346     		mov	r3, r0
+  41 001c F7E7     		b	.L2
+  43              		.section	.text.user_pwm_set_pwm_immediate,"ax",%progbits
+  44              		.align	1
+  45              		.global	user_pwm_set_pwm_immediate
+  46              		.syntax unified
+  47              		.thumb
+  48              		.thumb_func
+  49              		.fpu fpv4-sp-d16
+  51              	user_pwm_set_pwm_immediate:
+  52              		@ args = 0, pretend = 0, frame = 0
+  53              		@ frame_needed = 0, uses_anonymous_args = 0
+  54 0000 70B5     		push	{r4, r5, r6, lr}
+  55 0002 0546     		mov	r5, r0
+  56 0004 0C46     		mov	r4, r1
+  57 0006 1646     		mov	r6, r2
+  58 0008 0121     		movs	r1, #1
+  59 000a FFF7FEFF 		bl	hal_pwm_update_now
+  60 000e 2146     		mov	r1, r4
+  61 0010 2846     		mov	r0, r5
+  62 0012 FFF7FEFF 		bl	hal_pwm_set_freq
+  63 0016 0446     		mov	r4, r0
+  64 0018 0021     		movs	r1, #0
+  65 001a 2846     		mov	r0, r5
+  66 001c FFF7FEFF 		bl	hal_pwm_update_now
+  67 0020 0CB1     		cbz	r4, .L8
+  68              	.L6:
+  69 0022 2046     		mov	r0, r4
+  70 0024 70BD     		pop	{r4, r5, r6, pc}
+  71              	.L8:
+  72 0026 3146     		mov	r1, r6
+  73 0028 2846     		mov	r0, r5
+  74 002a FFF7FEFF 		bl	hal_pwm_set_duty
+  75 002e 0446     		mov	r4, r0
+  76 0030 F7E7     		b	.L6
+  78              		.section	.text.user_pwm_set_duty,"ax",%progbits
+  79              		.align	1
+  80              		.global	user_pwm_set_duty
+  81              		.syntax unified
+  82              		.thumb
+  83              		.thumb_func
+  84              		.fpu fpv4-sp-d16
+  86              	user_pwm_set_duty:
+  87              		@ args = 0, pretend = 0, frame = 0
+  88              		@ frame_needed = 0, uses_anonymous_args = 0
+  89 0000 08B5     		push	{r3, lr}
+  90 0002 FFF7FEFF 		bl	hal_pwm_set_duty
+  91 0006 08BD     		pop	{r3, pc}
+  93              		.section	.text.user_pwm_output_force,"ax",%progbits
+  94              		.align	1
+  95              		.global	user_pwm_output_force
+  96              		.syntax unified
+  97              		.thumb
+  98              		.thumb_func
+  99              		.fpu fpv4-sp-d16
+ 101              	user_pwm_output_force:
+ 102              		@ args = 0, pretend = 0, frame = 0
+ 103              		@ frame_needed = 0, uses_anonymous_args = 0
+ 104 0000 08B5     		push	{r3, lr}
+ 105 0002 FFF7FEFF 		bl	hal_pwm_force_output
+ 106 0006 08BD     		pop	{r3, pc}
+ 108              		.section	.text.user_pwm_set_global_freq,"ax",%progbits
+ 109              		.align	1
+ 110              		.global	user_pwm_set_global_freq
+ 111              		.syntax unified
+ 112              		.thumb
+ 113              		.thumb_func
+ 114              		.fpu fpv4-sp-d16
+ 116              	user_pwm_set_global_freq:
+ 117              		@ args = 0, pretend = 0, frame = 0
+ 118              		@ frame_needed = 0, uses_anonymous_args = 0
+ 119 0000 08B5     		push	{r3, lr}
+ 120 0002 FFF7FEFF 		bl	hal_pwm_set_freq_global
+ 121 0006 08BD     		pop	{r3, pc}
+ 123              		.section	.text.user_pwm_set_freq,"ax",%progbits
+ 124              		.align	1
+ 125              		.global	user_pwm_set_freq
+ 126              		.syntax unified
+ 127              		.thumb
+ 128              		.thumb_func
+ 129              		.fpu fpv4-sp-d16
+ 131              	user_pwm_set_freq:
+ 132              		@ args = 0, pretend = 0, frame = 0
+ 133              		@ frame_needed = 0, uses_anonymous_args = 0
+ 134 0000 08B5     		push	{r3, lr}
+ 135 0002 11B9     		cbnz	r1, .L16
+ 136 0004 FFF7FEFF 		bl	hal_pwm_set_duty
+ 137              	.L17:
+ 138 0008 08BD     		pop	{r3, pc}
+ 139              	.L16:
+ 140 000a FFF7FEFF 		bl	hal_pwm_set_freq
+ 141 000e FBE7     		b	.L17
+ 143              		.section	.text.user_pwm_set_dither,"ax",%progbits
+ 144              		.align	1
+ 145              		.global	user_pwm_set_dither
+ 146              		.syntax unified
+ 147              		.thumb
+ 148              		.thumb_func
+ 149              		.fpu fpv4-sp-d16
+ 151              	user_pwm_set_dither:
+ 152              		@ args = 4, pretend = 0, frame = 0
+ 153              		@ frame_needed = 0, uses_anonymous_args = 0
+ 154 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 155 0002 1746     		mov	r7, r2
+ 156 0004 BDF81820 		ldrh	r2, [sp, #24]
+ 157 0008 1528     		cmp	r0, #21
+ 158 000a 37D8     		bhi	.L25
+ 159 000c 0446     		mov	r4, r0
+ 160 000e 0D46     		mov	r5, r1
+ 161 0010 1E46     		mov	r6, r3
+ 162 0012 8B42     		cmp	r3, r1
+ 163 0014 05D8     		bhi	.L26
+ 164 0016 C1F57A73 		rsb	r3, r1, #1000
+ 165 001a 9E42     		cmp	r6, r3
+ 166 001c 02DD     		ble	.L21
+ 167 001e 9EB2     		uxth	r6, r3
+ 168 0020 00E0     		b	.L21
+ 169              	.L26:
+ 170 0022 0E46     		mov	r6, r1
+ 171              	.L21:
+ 172 0024 092A     		cmp	r2, #9
+ 173 0026 19D9     		bls	.L27
+ 174 0028 7B08     		lsrs	r3, r7, #1
+ 175 002a 9342     		cmp	r3, r2
+ 176 002c 28BF     		it	cs
+ 177 002e 1346     		movcs	r3, r2
+ 178              	.L22:
+ 179 0030 1348     		ldr	r0, .L30
+ 180 0032 2101     		lsls	r1, r4, #4
+ 181 0034 4218     		adds	r2, r0, r1
+ 182 0036 4652     		strh	r6, [r0, r1]	@ movhi
+ 183 0038 B7FBF3F3 		udiv	r3, r7, r3
+ 184 003c 5380     		strh	r3, [r2, #2]	@ movhi
+ 185 003e D580     		strh	r5, [r2, #6]	@ movhi
+ 186 0040 1389     		ldrh	r3, [r2, #8]
+ 187 0042 BB42     		cmp	r3, r7
+ 188 0044 00D0     		beq	.L23
+ 189 0046 5FB9     		cbnz	r7, .L29
+ 190              	.L23:
+ 191 0048 1EB9     		cbnz	r6, .L24
+ 192 004a 0D4B     		ldr	r3, .L30
+ 193 004c 03EB0413 		add	r3, r3, r4, lsl #4
+ 194 0050 9D81     		strh	r5, [r3, #12]	@ movhi
+ 195              	.L24:
+ 196 0052 2946     		mov	r1, r5
+ 197 0054 2046     		mov	r0, r4
+ 198 0056 FFF7FEFF 		bl	hal_pwm_set_duty
+ 199 005a 10E0     		b	.L19
+ 200              	.L27:
+ 201 005c 0A23     		movs	r3, #10
+ 202 005e E7E7     		b	.L22
+ 203              	.L29:
+ 204 0060 3946     		mov	r1, r7
+ 205 0062 2046     		mov	r0, r4
+ 206 0064 FFF7FEFF 		bl	user_pwm_set_freq
+ 207 0068 054A     		ldr	r2, .L30
+ 208 006a 02EB0412 		add	r2, r2, r4, lsl #4
+ 209 006e 7B08     		lsrs	r3, r7, #1
+ 210 0070 03F57A73 		add	r3, r3, #1000
+ 211 0074 93FBF7F7 		sdiv	r7, r3, r7
+ 212 0078 D781     		strh	r7, [r2, #14]	@ movhi
+ 213 007a E5E7     		b	.L23
+ 214              	.L25:
+ 215 007c 0020     		movs	r0, #0
+ 216              	.L19:
+ 217 007e F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 218              	.L31:
+ 219              		.align	2
+ 220              	.L30:
+ 221 0080 00000000 		.word	pwm_vals_t
+ 223              		.section	.text.user_freq_get_measured_freq,"ax",%progbits
+ 224              		.align	1
+ 225              		.global	user_freq_get_measured_freq
+ 226              		.syntax unified
+ 227              		.thumb
+ 228              		.thumb_func
+ 229              		.fpu fpv4-sp-d16
+ 231              	user_freq_get_measured_freq:
+ 232              		@ args = 0, pretend = 0, frame = 8
+ 233              		@ frame_needed = 0, uses_anonymous_args = 0
+ 234 0000 00B5     		push	{lr}
+ 235 0002 83B0     		sub	sp, sp, #12
+ 236 0004 01A9     		add	r1, sp, #4
+ 237 0006 FFF7FEFF 		bl	hal_freq_get_freq
+ 238 000a 0198     		ldr	r0, [sp, #4]
+ 239 000c 03B0     		add	sp, sp, #12
+ 240              		@ sp needed
+ 241 000e 5DF804FB 		ldr	pc, [sp], #4
+ 243              		.section	.text.user_freq_get_measured_duty,"ax",%progbits
+ 244              		.align	1
+ 245              		.global	user_freq_get_measured_duty
+ 246              		.syntax unified
+ 247              		.thumb
+ 248              		.thumb_func
+ 249              		.fpu fpv4-sp-d16
+ 251              	user_freq_get_measured_duty:
+ 252              		@ args = 0, pretend = 0, frame = 8
+ 253              		@ frame_needed = 0, uses_anonymous_args = 0
+ 254 0000 00B5     		push	{lr}
+ 255 0002 83B0     		sub	sp, sp, #12
+ 256 0004 0DF10601 		add	r1, sp, #6
+ 257 0008 FFF7FEFF 		bl	hal_freq_get_duty
+ 258 000c BDF80600 		ldrh	r0, [sp, #6]
+ 259 0010 03B0     		add	sp, sp, #12
+ 260              		@ sp needed
+ 261 0012 5DF804FB 		ldr	pc, [sp], #4
+ 263              		.section	.text.PI_Controller_Discrete,"ax",%progbits
+ 264              		.align	1
+ 265              		.global	PI_Controller_Discrete
+ 266              		.syntax unified
+ 267              		.thumb
+ 268              		.thumb_func
+ 269              		.fpu fpv4-sp-d16
+ 271              	PI_Controller_Discrete:
+ 272              		@ args = 24, pretend = 0, frame = 0
+ 273              		@ frame_needed = 0, uses_anonymous_args = 0
+ 274              		@ link register save eliminated.
+ 275 0000 F0B4     		push	{r4, r5, r6, r7}
+ 276 0002 049C     		ldr	r4, [sp, #16]
+ 277 0004 0798     		ldr	r0, [sp, #28]
+ 278 0006 089E     		ldr	r6, [sp, #32]
+ 279 0008 099F     		ldr	r7, [sp, #36]
+ 280 000a 29B9     		cbnz	r1, .L37
+ 281 000c 0023     		movs	r3, #0
+ 282 000e 3360     		str	r3, [r6]
+ 283 0010 3B60     		str	r3, [r7]
+ 284 0012 0360     		str	r3, [r0]
+ 285              	.L36:
+ 286 0014 F0BC     		pop	{r4, r5, r6, r7}
+ 287 0016 7047     		bx	lr
+ 288              	.L37:
+ 289 0018 8A1A     		subs	r2, r1, r2
+ 290 001a 2344     		add	r3, r3, r4
+ 291 001c 02FB03F3 		mul	r3, r2, r3
+ 292 0020 0D49     		ldr	r1, .L41
+ 293 0022 81FB03C5 		smull	ip, r5, r1, r3
+ 294 0026 DB17     		asrs	r3, r3, #31
+ 295 0028 C3EBA513 		rsb	r3, r3, r5, asr #6
+ 296 002c 3D68     		ldr	r5, [r7]
+ 297 002e 2B44     		add	r3, r3, r5
+ 298 0030 3568     		ldr	r5, [r6]
+ 299 0032 05FB04F4 		mul	r4, r5, r4
+ 300 0036 81FB0451 		smull	r5, r1, r1, r4
+ 301 003a E417     		asrs	r4, r4, #31
+ 302 003c A4EBA114 		sub	r4, r4, r1, asr #6
+ 303 0040 2344     		add	r3, r3, r4
+ 304 0042 0699     		ldr	r1, [sp, #24]
+ 305 0044 9942     		cmp	r1, r3
+ 306 0046 03DB     		blt	.L39
+ 307 0048 0599     		ldr	r1, [sp, #20]
+ 308 004a 9942     		cmp	r1, r3
+ 309 004c B8BF     		it	lt
+ 310 004e 1946     		movlt	r1, r3
+ 311              	.L39:
+ 312 0050 3960     		str	r1, [r7]
+ 313 0052 3260     		str	r2, [r6]
+ 314 0054 0160     		str	r1, [r0]
+ 315 0056 DDE7     		b	.L36
+ 316              	.L42:
+ 317              		.align	2
+ 318              	.L41:
+ 319 0058 D34D6210 		.word	274877907
+ 321              		.section	.text.user_pwm_current_control,"ax",%progbits
+ 322              		.align	1
+ 323              		.global	user_pwm_current_control
+ 324              		.syntax unified
+ 325              		.thumb
+ 326              		.thumb_func
+ 327              		.fpu fpv4-sp-d16
+ 329              	user_pwm_current_control:
+ 330              		@ args = 0, pretend = 0, frame = 8
+ 331              		@ frame_needed = 0, uses_anonymous_args = 0
+ 332 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 333 0002 89B0     		sub	sp, sp, #36
+ 334 0004 0546     		mov	r5, r0
+ 335 0006 C41D     		adds	r4, r0, #7
+ 336 0008 04EB8404 		add	r4, r4, r4, lsl #2
+ 337 000c 124E     		ldr	r6, .L45
+ 338 000e 06EB4404 		add	r4, r6, r4, lsl #1
+ 339 0012 B4F808C0 		ldrh	ip, [r4, #8]
+ 340 0016 114E     		ldr	r6, .L45+4
+ 341 0018 4400     		lsls	r4, r0, #1
+ 342 001a 2718     		adds	r7, r4, r0
+ 343 001c 46F827C0 		str	ip, [r6, r7, lsl #2]
+ 344 0020 BC00     		lsls	r4, r7, #2
+ 345 0022 04F10807 		add	r7, r4, #8
+ 346 0026 3744     		add	r7, r7, r6
+ 347 0028 0597     		str	r7, [sp, #20]
+ 348 002a 0434     		adds	r4, r4, #4
+ 349 002c 3444     		add	r4, r4, r6
+ 350 002e 0494     		str	r4, [sp, #16]
+ 351 0030 07AC     		add	r4, sp, #28
+ 352 0032 0394     		str	r4, [sp, #12]
+ 353 0034 4FF47A74 		mov	r4, #1000
+ 354 0038 0294     		str	r4, [sp, #8]
+ 355 003a 0024     		movs	r4, #0
+ 356 003c 0194     		str	r4, [sp, #4]
+ 357 003e 0093     		str	r3, [sp]
+ 358 0040 1346     		mov	r3, r2
+ 359 0042 6246     		mov	r2, ip
+ 360 0044 FFF7FEFF 		bl	PI_Controller_Discrete
+ 361 0048 BDF81C10 		ldrh	r1, [sp, #28]
+ 362 004c 2846     		mov	r0, r5
+ 363 004e FFF7FEFF 		bl	hal_pwm_set_duty
+ 364 0052 0798     		ldr	r0, [sp, #28]
+ 365 0054 09B0     		add	sp, sp, #36
+ 366              		@ sp needed
+ 367 0056 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 368              	.L46:
+ 369              		.align	2
+ 370              	.L45:
+ 371 0058 00000000 		.word	adc_results
+ 372 005c 00000000 		.word	mgl_pi_controller_data
+ 374              		.comm	mgl_pi_controller_data,264,4
+ 375              		.global	regulator_data
+ 376              		.section	.bss.regulator_data,"aw",%nobits
+ 377              		.align	2
+ 380              	regulator_data:
+ 381 0000 00000000 		.space	12
+ 381      00000000 
+ 381      00000000 
+ 382              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2019-q3-update) 8.3.1 20190703 (release) [gc

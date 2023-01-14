@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DSInterface xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <AvailableSCIBuses>
+    <int>0</int>
+  </AvailableSCIBuses>
+  <Buses />
+  <OutputDirectory>C:\Users\Viacheslav.Makedon\Desktop\MRS_Examples\PWR_DISTR_B_eeprom\src\ds\lin</OutputDirectory>
+  <ProjectDirectory>C:\Users\Viacheslav.Makedon\Desktop\MRS_Examples\PWR_DISTR_B_eeprom</ProjectDirectory>
+  <SCIBusToEnums>
+    <DSSCIToEnumPair>
+      <Enum>LIN_BUS_0</Enum>
+      <SCI>0</SCI>
+    </DSSCIToEnumPair>
+  </SCIBusToEnums>
+  <TakenSCIBuses />
+  <Target>S32K</Target>
+</DSInterface>

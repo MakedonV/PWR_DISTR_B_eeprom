@@ -1,0 +1,169 @@
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"lin_db_tables.c"
+  14              		.text
+  15              		.comm	lin_schedule_table_db_const,8,4
+  16              		.global	ext_ptr_ary_lin_diag_product_id
+  17              		.global	lin_diag_product_id_aag
+  18              		.global	ext_lin_sniffed_rx_frame_db
+  19              		.global	ext_lin_frame_db
+  20              		.comm	ext_lin_route_gateway_db,2,4
+  21              		.comm	ext_lin_bus_db,10,4
+  22              		.comm	lin_datapoint_db_const,8,4
+  23              		.comm	ext_dyn_lin_auto_sleep_timer,4,4
+  24              		.comm	ext_dyn_lin_schedule_timer,4,4
+  25              		.global	ext_dyn_lin_schedule_line_index
+  26              		.global	ext_dyn_lin_bus_sleep_flag
+  27              		.comm	ext_dyn_lin_tx_message,2,4
+  28              		.global	ext_dyn_lin_rx_header_queue_write
+  29              		.global	ext_dyn_lin_rx_header_queue_read
+  30              		.comm	ext_dyn_lin_rx_header_queue,1,4
+  31              		.global	ext_dyn_lin_rx_msg_queue_write
+  32              		.global	ext_dyn_lin_rx_msg_queue_read
+  33              		.comm	ext_dyn_lin_rx_msg_queue,17,4
+  34              		.comm	ext_dyn_lin_timer_rx_timeout,4,4
+  35              		.comm	ext_dyn_crc_sum,2,4
+  36              		.comm	ext_dyn_mgl_lin_tx_data_ptr,4,4
+  37              		.global	ext_dyn_ary_lin_frame_req_rx_flag
+  38              		.comm	ext_dyn_lin_rx_message,17,4
+  39              		.global	ext_dyn_tx_data_counter
+  40              		.global	ext_dyn_rx_lin_diag_response
+  41              		.comm	ext_dyn_rx_lin_frame_index,1,4
+  42              		.global	ext_dyn_lin_tx_frame_data_counter
+  43              		.global	ext_dyn_lin_rx_timeout
+  44              		.global	ext_dyn_lin_rx_state
+  45              		.global	ext_dyn_lin_tx_state
+  46              		.comm	ext_dyn_rx_lin_cnt,1,4
+  47              		.comm	ext_dyn_lin_rx_len,1,4
+  48              		.global	ext_dyn_lin_route_gw_max
+  49              		.global	ext_pending_slave_response
+  50              		.global	ext_current_slave_state
+  51              		.global	ext_ary_lin_timeout_flags
+  52              		.comm	ext_ary_lin_test_frame_flag,2,4
+  53              		.comm	ext_lin_tx_frame_index,1,4
+  54              		.global	ext_lin_response_error_flag
+  55              		.global	ext_dyn_lin_header_queue_size
+  56              		.global	ext_dyn_lin_msg_queue_size
+  57              		.global	ext_dyn_dp_counter_max
+  58              		.global	ext_dyn_frame_counter_max
+  59              		.global	ext_dyn_lin_bux_max
+  60              		.section	.bss.ext_ary_lin_timeout_flags,"aw",%nobits
+  61              		.align	2
+  64              	ext_ary_lin_timeout_flags:
+  65 0000 00       		.space	1
+  66              		.section	.bss.ext_current_slave_state,"aw",%nobits
+  67              		.align	2
+  70              	ext_current_slave_state:
+  71 0000 00       		.space	1
+  72              		.section	.bss.ext_dyn_ary_lin_frame_req_rx_flag,"aw",%nobits
+  73              		.align	2
+  76              	ext_dyn_ary_lin_frame_req_rx_flag:
+  77 0000 0000     		.space	2
+  78              		.section	.bss.ext_dyn_lin_route_gw_max,"aw",%nobits
+  81              	ext_dyn_lin_route_gw_max:
+  82 0000 00       		.space	1
+  83              		.section	.bss.ext_dyn_lin_rx_header_queue_read,"aw",%nobits
+  84              		.align	2
+  87              	ext_dyn_lin_rx_header_queue_read:
+  88 0000 00       		.space	1
+  89              		.section	.bss.ext_dyn_lin_rx_header_queue_write,"aw",%nobits
+  90              		.align	2
+  93              	ext_dyn_lin_rx_header_queue_write:
+  94 0000 00       		.space	1
+  95              		.section	.bss.ext_dyn_lin_rx_msg_queue_read,"aw",%nobits
+  96              		.align	2
+  99              	ext_dyn_lin_rx_msg_queue_read:
+ 100 0000 00       		.space	1
+ 101              		.section	.bss.ext_dyn_lin_rx_msg_queue_write,"aw",%nobits
+ 102              		.align	2
+ 105              	ext_dyn_lin_rx_msg_queue_write:
+ 106 0000 00       		.space	1
+ 107              		.section	.bss.ext_dyn_lin_rx_state,"aw",%nobits
+ 108              		.align	2
+ 111              	ext_dyn_lin_rx_state:
+ 112 0000 00       		.space	1
+ 113              		.section	.bss.ext_dyn_lin_schedule_line_index,"aw",%nobits
+ 114              		.align	2
+ 117              	ext_dyn_lin_schedule_line_index:
+ 118 0000 00       		.space	1
+ 119              		.section	.bss.ext_dyn_lin_tx_frame_data_counter,"aw",%nobits
+ 120              		.align	2
+ 123              	ext_dyn_lin_tx_frame_data_counter:
+ 124 0000 00       		.space	1
+ 125              		.section	.bss.ext_dyn_lin_tx_state,"aw",%nobits
+ 126              		.align	2
+ 129              	ext_dyn_lin_tx_state:
+ 130 0000 00       		.space	1
+ 131              		.section	.bss.ext_dyn_rx_lin_diag_response,"aw",%nobits
+ 132              		.align	2
+ 135              	ext_dyn_rx_lin_diag_response:
+ 136 0000 00       		.space	1
+ 137              		.section	.bss.ext_dyn_tx_data_counter,"aw",%nobits
+ 138              		.align	2
+ 141              	ext_dyn_tx_data_counter:
+ 142 0000 00       		.space	1
+ 143              		.section	.bss.ext_lin_frame_db,"aw",%nobits
+ 144              		.align	2
+ 147              	ext_lin_frame_db:
+ 148 0000 00000000 		.space	12
+ 148      00000000 
+ 148      00000000 
+ 149              		.section	.bss.ext_lin_response_error_flag,"aw",%nobits
+ 150              		.align	2
+ 153              	ext_lin_response_error_flag:
+ 154 0000 00       		.space	1
+ 155              		.section	.bss.ext_lin_sniffed_rx_frame_db,"aw",%nobits
+ 156              		.align	2
+ 159              	ext_lin_sniffed_rx_frame_db:
+ 160 0000 00000000 		.space	12
+ 160      00000000 
+ 160      00000000 
+ 161              		.section	.bss.ext_pending_slave_response,"aw",%nobits
+ 162              		.align	2
+ 165              	ext_pending_slave_response:
+ 166 0000 00       		.space	1
+ 167              		.section	.data.ext_dyn_dp_counter_max,"aw"
+ 168              		.align	1
+ 171              	ext_dyn_dp_counter_max:
+ 172 0000 0100     		.short	1
+ 173              		.section	.data.ext_dyn_frame_counter_max,"aw"
+ 174              		.align	1
+ 177              	ext_dyn_frame_counter_max:
+ 178 0000 0200     		.short	2
+ 179              		.section	.data.ext_dyn_lin_bus_sleep_flag,"aw"
+ 180              		.align	2
+ 183              	ext_dyn_lin_bus_sleep_flag:
+ 184 0000 01       		.byte	1
+ 185              		.section	.data.ext_dyn_lin_bux_max,"aw"
+ 188              	ext_dyn_lin_bux_max:
+ 189 0000 01       		.byte	1
+ 190              		.section	.data.ext_dyn_lin_header_queue_size,"aw"
+ 193              	ext_dyn_lin_header_queue_size:
+ 194 0000 01       		.byte	1
+ 195              		.section	.data.ext_dyn_lin_msg_queue_size,"aw"
+ 198              	ext_dyn_lin_msg_queue_size:
+ 199 0000 01       		.byte	1
+ 200              		.section	.data.ext_dyn_lin_rx_timeout,"aw"
+ 201              		.align	2
+ 204              	ext_dyn_lin_rx_timeout:
+ 205 0000 01       		.byte	1
+ 206              		.section	.data.ext_ptr_ary_lin_diag_product_id,"aw"
+ 207              		.align	2
+ 210              	ext_ptr_ary_lin_diag_product_id:
+ 211 0000 00000000 		.word	lin_diag_product_id_aag
+ 212              		.section	.rodata.lin_diag_product_id_aag,"a"
+ 213              		.align	2
+ 216              	lin_diag_product_id_aag:
+ 217 0000 00000000 		.space	5
+ 217      00
+ 218              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2019-q3-update) 8.3.1 20190703 (release) [gc

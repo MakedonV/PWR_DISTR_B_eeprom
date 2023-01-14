@@ -1,0 +1,693 @@
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"sfl_bl_protocol_s32k.c"
+  14              		.text
+  15              		.section	.text.sfl_bl_protocol_s32k_transfer_msg_to_protocol,"ax",%progbits
+  16              		.align	1
+  17              		.arch armv7e-m
+  18              		.syntax unified
+  19              		.thumb
+  20              		.thumb_func
+  21              		.fpu fpv4-sp-d16
+  23              	sfl_bl_protocol_s32k_transfer_msg_to_protocol:
+  24              		@ args = 0, pretend = 0, frame = 0
+  25              		@ frame_needed = 0, uses_anonymous_args = 0
+  26 0000 08B5     		push	{r3, lr}
+  27 0002 0F4B     		ldr	r3, .L6
+  28 0004 20F00040 		bic	r0, r0, #-2147483648
+  29 0008 5860     		str	r0, [r3, #4]
+  30 000a 83F84810 		strb	r1, [r3, #72]
+  31 000e 51B1     		cbz	r1, .L2
+  32 0010 531E     		subs	r3, r2, #1
+  33 0012 0C48     		ldr	r0, .L6+4
+  34 0014 0139     		subs	r1, r1, #1
+  35 0016 52FA81F2 		uxtab	r2, r2, r1
+  36              	.L3:
+  37 001a 13F8011F 		ldrb	r1, [r3, #1]!	@ zero_extendqisi2
+  38 001e 00F8011F 		strb	r1, [r0, #1]!
+  39 0022 9342     		cmp	r3, r2
+  40 0024 F9D1     		bne	.L3
+  41              	.L2:
+  42 0026 084B     		ldr	r3, .L6+8
+  43 0028 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+  44 002a 0023     		movs	r3, #0
+  45 002c 1A46     		mov	r2, r3
+  46 002e 0749     		ldr	r1, .L6+12
+  47 0030 00F20450 		addw	r0, r0, #1284
+  48 0034 FFF7FEFF 		bl	role_dothis
+  49 0038 0030     		adds	r0, r0, #0
+  50 003a 18BF     		it	ne
+  51 003c 0120     		movne	r0, #1
+  52 003e 08BD     		pop	{r3, pc}
+  53              	.L7:
+  54              		.align	2
+  55              	.L6:
+  56 0040 00000000 		.word	.LANCHOR0
+  57 0044 07000000 		.word	.LANCHOR0+7
+  58 0048 00000000 		.word	.LANCHOR1
+  59 004c 00000B05 		.word	84606976
+  61              		.section	.text.convert_universal_params_to_flexcan_params,"ax",%progbits
+  62              		.align	1
+  63              		.syntax unified
+  64              		.thumb
+  65              		.thumb_func
+  66              		.fpu fpv4-sp-d16
+  68              	convert_universal_params_to_flexcan_params:
+  69              		@ args = 0, pretend = 0, frame = 32
+  70              		@ frame_needed = 0, uses_anonymous_args = 0
+  71 0000 10B5     		push	{r4, lr}
+  72 0002 88B0     		sub	sp, sp, #32
+  73 0004 0C46     		mov	r4, r1
+  74 0006 0090     		str	r0, [sp]
+  75 0008 03AB     		add	r3, sp, #12
+  76 000a 0193     		str	r3, [sp, #4]
+  77 000c 8DF80820 		strb	r2, [sp, #8]
+  78 0010 6B46     		mov	r3, sp
+  79 0012 40F20452 		movw	r2, #1284
+  80 0016 0949     		ldr	r1, .L11
+  81 0018 1046     		mov	r0, r2
+  82 001a FFF7FEFF 		bl	role_dothis
+  83 001e 0346     		mov	r3, r0
+  84 0020 48B9     		cbnz	r0, .L9
+  85 0022 039A     		ldr	r2, [sp, #12]
+  86 0024 2260     		str	r2, [r4]
+  87 0026 049A     		ldr	r2, [sp, #16]
+  88 0028 6260     		str	r2, [r4, #4]
+  89 002a 059A     		ldr	r2, [sp, #20]
+  90 002c A260     		str	r2, [r4, #8]
+  91 002e 069A     		ldr	r2, [sp, #24]
+  92 0030 E260     		str	r2, [r4, #12]
+  93 0032 079A     		ldr	r2, [sp, #28]
+  94 0034 2261     		str	r2, [r4, #16]
+  95              	.L9:
+  96 0036 1846     		mov	r0, r3
+  97 0038 08B0     		add	sp, sp, #32
+  98              		@ sp needed
+  99 003a 10BD     		pop	{r4, pc}
+ 100              	.L12:
+ 101              		.align	2
+ 102              	.L11:
+ 103 003c 04050A05 		.word	84542724
+ 105              		.section	.text._dummy22,"ax",%progbits
+ 106              		.align	1
+ 107              		.global	_dummy22
+ 108              		.syntax unified
+ 109              		.thumb
+ 110              		.thumb_func
+ 111              		.fpu fpv4-sp-d16
+ 113              	_dummy22:
+ 114              		@ args = 0, pretend = 0, frame = 0
+ 115              		@ frame_needed = 0, uses_anonymous_args = 0
+ 116              		@ link register save eliminated.
+ 117 0000 7047     		bx	lr
+ 119              		.section	.text.sfl_bl_protocol_s32k_init,"ax",%progbits
+ 120              		.align	1
+ 121              		.global	sfl_bl_protocol_s32k_init
+ 122              		.syntax unified
+ 123              		.thumb
+ 124              		.thumb_func
+ 125              		.fpu fpv4-sp-d16
+ 127              	sfl_bl_protocol_s32k_init:
+ 128              		@ args = 0, pretend = 0, frame = 0
+ 129              		@ frame_needed = 0, uses_anonymous_args = 0
+ 130 0000 08B5     		push	{r3, lr}
+ 131 0002 0023     		movs	r3, #0
+ 132 0004 1A46     		mov	r2, r3
+ 133 0006 1946     		mov	r1, r3
+ 134 0008 4FF4E160 		mov	r0, #1800
+ 135 000c FFF7FEFF 		bl	role_dothis
+ 136 0010 0030     		adds	r0, r0, #0
+ 137 0012 18BF     		it	ne
+ 138 0014 0120     		movne	r0, #1
+ 139 0016 08BD     		pop	{r3, pc}
+ 141              		.section	.text.sfl_bl_protocol_s32k_is_msg_for_bl,"ax",%progbits
+ 142              		.align	1
+ 143              		.global	sfl_bl_protocol_s32k_is_msg_for_bl
+ 144              		.syntax unified
+ 145              		.thumb
+ 146              		.thumb_func
+ 147              		.fpu fpv4-sp-d16
+ 149              	sfl_bl_protocol_s32k_is_msg_for_bl:
+ 150              		@ args = 0, pretend = 0, frame = 0
+ 151              		@ frame_needed = 0, uses_anonymous_args = 0
+ 152 0000 0228     		cmp	r0, #2
+ 153 0002 01D0     		beq	.L23
+ 154 0004 0320     		movs	r0, #3
+ 155 0006 7047     		bx	lr
+ 156              	.L23:
+ 157 0008 08B5     		push	{r3, lr}
+ 158 000a 0B69     		ldr	r3, [r1, #16]
+ 159 000c 03F10802 		add	r2, r3, #8
+ 160 0010 93F84810 		ldrb	r1, [r3, #72]	@ zero_extendqisi2
+ 161 0014 5868     		ldr	r0, [r3, #4]
+ 162 0016 FFF7FEFF 		bl	sfl_bl_protocol_s32k_transfer_msg_to_protocol
+ 163 001a 0020     		movs	r0, #0
+ 164 001c 08BD     		pop	{r3, pc}
+ 166              		.section	.text.sfl_bl_protocol_s32k_cyclic,"ax",%progbits
+ 167              		.align	1
+ 168              		.global	sfl_bl_protocol_s32k_cyclic
+ 169              		.syntax unified
+ 170              		.thumb
+ 171              		.thumb_func
+ 172              		.fpu fpv4-sp-d16
+ 174              	sfl_bl_protocol_s32k_cyclic:
+ 175              		@ args = 0, pretend = 0, frame = 0
+ 176              		@ frame_needed = 0, uses_anonymous_args = 0
+ 177 0000 08B5     		push	{r3, lr}
+ 178 0002 FFF7FEFF 		bl	role_play
+ 179 0006 0020     		movs	r0, #0
+ 180 0008 08BD     		pop	{r3, pc}
+ 182              		.section	.text.sfl_bl_protocol_s32k_process_rx_msg,"ax",%progbits
+ 183              		.align	1
+ 184              		.global	sfl_bl_protocol_s32k_process_rx_msg
+ 185              		.syntax unified
+ 186              		.thumb
+ 187              		.thumb_func
+ 188              		.fpu fpv4-sp-d16
+ 190              	sfl_bl_protocol_s32k_process_rx_msg:
+ 191              		@ args = 0, pretend = 0, frame = 0
+ 192              		@ frame_needed = 0, uses_anonymous_args = 0
+ 193 0000 08B5     		push	{r3, lr}
+ 194 0002 8268     		ldr	r2, [r0, #8]
+ 195 0004 0179     		ldrb	r1, [r0, #4]	@ zero_extendqisi2
+ 196 0006 0068     		ldr	r0, [r0]
+ 197 0008 FFF7FEFF 		bl	sfl_bl_protocol_s32k_transfer_msg_to_protocol
+ 198 000c 08BD     		pop	{r3, pc}
+ 200              		.section	.text.sfl_bl_protocol_s32k_rx_tx_init,"ax",%progbits
+ 201              		.align	1
+ 202              		.global	sfl_bl_protocol_s32k_rx_tx_init
+ 203              		.syntax unified
+ 204              		.thumb
+ 205              		.thumb_func
+ 206              		.fpu fpv4-sp-d16
+ 208              	sfl_bl_protocol_s32k_rx_tx_init:
+ 209              		@ args = 0, pretend = 0, frame = 8
+ 210              		@ frame_needed = 0, uses_anonymous_args = 0
+ 211 0000 70B5     		push	{r4, r5, r6, lr}
+ 212 0002 82B0     		sub	sp, sp, #8
+ 213 0004 0546     		mov	r5, r0
+ 214 0006 0E46     		mov	r6, r1
+ 215 0008 FFF7FEFF 		bl	ee_version_get
+ 216 000c 78B9     		cbnz	r0, .L29
+ 217 000e 2C48     		ldr	r0, .L46
+ 218 0010 FFF7FEFF 		bl	ee_read
+ 219              	.L30:
+ 220 0014 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 221 0016 2B4A     		ldr	r2, .L46+4
+ 222 0018 1370     		strb	r3, [r2]
+ 223 001a 022B     		cmp	r3, #2
+ 224 001c 24D8     		bhi	.L40
+ 225              	.L34:
+ 226 001e 294B     		ldr	r3, .L46+4
+ 227 0020 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 228 0022 0128     		cmp	r0, #1
+ 229 0024 25D9     		bls	.L41
+ 230 0026 0124     		movs	r4, #1
+ 231              	.L35:
+ 232 0028 2046     		mov	r0, r4
+ 233 002a 02B0     		add	sp, sp, #8
+ 234              		@ sp needed
+ 235 002c 70BD     		pop	{r4, r5, r6, pc}
+ 236              	.L29:
+ 237 002e FFF7FEFF 		bl	ee_version_get
+ 238 0032 0D28     		cmp	r0, #13
+ 239 0034 0CD0     		beq	.L42
+ 240 0036 FFF7FEFF 		bl	ee_version_get
+ 241 003a 0128     		cmp	r0, #1
+ 242 003c 0CD0     		beq	.L43
+ 243 003e FFF7FEFF 		bl	ee_version_get
+ 244 0042 0E28     		cmp	r0, #14
+ 245 0044 0CD0     		beq	.L44
+ 246 0046 A821     		movs	r1, #168
+ 247 0048 1620     		movs	r0, #22
+ 248 004a FFF7FEFF 		bl	failure3
+ 249 004e E1E7     		b	.L30
+ 250              	.L42:
+ 251 0050 1D48     		ldr	r0, .L46+8
+ 252 0052 FFF7FEFF 		bl	ee_read
+ 253 0056 DDE7     		b	.L30
+ 254              	.L43:
+ 255 0058 CB20     		movs	r0, #203
+ 256 005a FFF7FEFF 		bl	ee_read
+ 257 005e D9E7     		b	.L30
+ 258              	.L44:
+ 259 0060 CB20     		movs	r0, #203
+ 260 0062 FFF7FEFF 		bl	ee_read
+ 261 0066 D5E7     		b	.L30
+ 262              	.L40:
+ 263 0068 A921     		movs	r1, #169
+ 264 006a 1620     		movs	r0, #22
+ 265 006c FFF7FEFF 		bl	failure1
+ 266 0070 D5E7     		b	.L34
+ 267              	.L41:
+ 268 0072 00EB8003 		add	r3, r0, r0, lsl #2
+ 269 0076 C0EBC302 		rsb	r2, r0, r3, lsl #3
+ 270 007a 144B     		ldr	r3, .L46+12
+ 271 007c 1344     		add	r3, r3, r2
+ 272 007e 5C78     		ldrb	r4, [r3, #1]	@ zero_extendqisi2
+ 273 0080 E4B2     		uxtb	r4, r4
+ 274 0082 012C     		cmp	r4, #1
+ 275 0084 01D0     		beq	.L45
+ 276 0086 0124     		movs	r4, #1
+ 277 0088 CEE7     		b	.L35
+ 278              	.L45:
+ 279 008a 8DF80050 		strb	r5, [sp]
+ 280 008e 104B     		ldr	r3, .L46+16
+ 281 0090 0193     		str	r3, [sp, #4]
+ 282 0092 6B46     		mov	r3, sp
+ 283 0094 40F20552 		movw	r2, #1285
+ 284 0098 0E49     		ldr	r1, .L46+20
+ 285 009a 00F20450 		addw	r0, r0, #1284
+ 286 009e FFF7FEFF 		bl	role_dothis
+ 287 00a2 0028     		cmp	r0, #0
+ 288 00a4 C0D1     		bne	.L35
+ 289 00a6 074B     		ldr	r3, .L46+4
+ 290 00a8 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 291 00aa 3346     		mov	r3, r6
+ 292 00ac 0022     		movs	r2, #0
+ 293 00ae 0A49     		ldr	r1, .L46+24
+ 294 00b0 00F20450 		addw	r0, r0, #1284
+ 295 00b4 FFF7FEFF 		bl	role_dothis
+ 296 00b8 041C     		adds	r4, r0, #0
+ 297 00ba 18BF     		it	ne
+ 298 00bc 0124     		movne	r4, #1
+ 299 00be B3E7     		b	.L35
+ 300              	.L47:
+ 301              		.align	2
+ 302              	.L46:
+ 303 00c0 EE009D00 		.word	10289390
+ 304 00c4 00000000 		.word	.LANCHOR1
+ 305 00c8 F0009D00 		.word	10289392
+ 306 00cc 00000000 		.word	can_bus_db_const
+ 307 00d0 00000000 		.word	.LANCHOR0
+ 308 00d4 05050C05 		.word	84673797
+ 309 00d8 00000D05 		.word	84738048
+ 311              		.section	.text.sfl_bl_protocol_s32k_set_baudrate,"ax",%progbits
+ 312              		.align	1
+ 313              		.global	sfl_bl_protocol_s32k_set_baudrate
+ 314              		.syntax unified
+ 315              		.thumb
+ 316              		.thumb_func
+ 317              		.fpu fpv4-sp-d16
+ 319              	sfl_bl_protocol_s32k_set_baudrate:
+ 320              		@ args = 0, pretend = 0, frame = 0
+ 321              		@ frame_needed = 0, uses_anonymous_args = 0
+ 322 0000 634B     		ldr	r3, .L74
+ 323 0002 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 324 0004 4368     		ldr	r3, [r0, #4]
+ 325 0006 9A42     		cmp	r2, r3
+ 326 0008 01D0     		beq	.L66
+ 327 000a 0220     		movs	r0, #2
+ 328 000c 7047     		bx	lr
+ 329              	.L66:
+ 330 000e 10B5     		push	{r4, lr}
+ 331 0010 0C46     		mov	r4, r1
+ 332 0012 FFF7FEFF 		bl	ee_version_get
+ 333 0016 A0B9     		cbnz	r0, .L50
+ 334 0018 A3B2     		uxth	r3, r4
+ 335 001a DA43     		mvns	r2, r3
+ 336 001c 03EB0223 		add	r3, r3, r2, lsl #8
+ 337 0020 9BB2     		uxth	r3, r3
+ 338 0022 1A02     		lsls	r2, r3, #8
+ 339 0024 92B2     		uxth	r2, r2
+ 340 0026 42EA1322 		orr	r2, r2, r3, lsr #8
+ 341 002a 4FF00211 		mov	r1, #131074
+ 342 002e 5948     		ldr	r0, .L74+4
+ 343 0030 FFF7FEFF 		bl	ee_write_max32
+ 344 0034 B0FA80F0 		clz	r0, r0
+ 345 0038 4009     		lsrs	r0, r0, #5
+ 346              	.L51:
+ 347 003a 0028     		cmp	r0, #0
+ 348 003c 49D1     		bne	.L67
+ 349 003e 0120     		movs	r0, #1
+ 350              	.L49:
+ 351 0040 10BD     		pop	{r4, pc}
+ 352              	.L50:
+ 353 0042 FFF7FEFF 		bl	ee_version_get
+ 354 0046 0D28     		cmp	r0, #13
+ 355 0048 0FD0     		beq	.L68
+ 356 004a FFF7FEFF 		bl	ee_version_get
+ 357 004e 0128     		cmp	r0, #1
+ 358 0050 1DD0     		beq	.L69
+ 359 0052 FFF7FEFF 		bl	ee_version_get
+ 360 0056 0E28     		cmp	r0, #14
+ 361 0058 2AD0     		beq	.L70
+ 362 005a DE21     		movs	r1, #222
+ 363 005c 1620     		movs	r0, #22
+ 364 005e FFF7FEFF 		bl	failure3
+ 365 0062 B0FA80F0 		clz	r0, r0
+ 366 0066 4009     		lsrs	r0, r0, #5
+ 367 0068 E7E7     		b	.L51
+ 368              	.L68:
+ 369 006a A3B2     		uxth	r3, r4
+ 370 006c DA43     		mvns	r2, r3
+ 371 006e 03EB0223 		add	r3, r3, r2, lsl #8
+ 372 0072 9BB2     		uxth	r3, r3
+ 373 0074 1A02     		lsls	r2, r3, #8
+ 374 0076 92B2     		uxth	r2, r2
+ 375 0078 42EA1322 		orr	r2, r2, r3, lsr #8
+ 376 007c 4FF00211 		mov	r1, #131074
+ 377 0080 4548     		ldr	r0, .L74+8
+ 378 0082 FFF7FEFF 		bl	ee_write_max32
+ 379 0086 B0FA80F0 		clz	r0, r0
+ 380 008a 4009     		lsrs	r0, r0, #5
+ 381 008c D5E7     		b	.L51
+ 382              	.L69:
+ 383 008e A3B2     		uxth	r3, r4
+ 384 0090 DA43     		mvns	r2, r3
+ 385 0092 03EB0223 		add	r3, r3, r2, lsl #8
+ 386 0096 9BB2     		uxth	r3, r3
+ 387 0098 1A02     		lsls	r2, r3, #8
+ 388 009a 92B2     		uxth	r2, r2
+ 389 009c 42EA1322 		orr	r2, r2, r3, lsr #8
+ 390 00a0 0221     		movs	r1, #2
+ 391 00a2 D020     		movs	r0, #208
+ 392 00a4 FFF7FEFF 		bl	ee_write_max32
+ 393 00a8 B0FA80F0 		clz	r0, r0
+ 394 00ac 4009     		lsrs	r0, r0, #5
+ 395 00ae C4E7     		b	.L51
+ 396              	.L70:
+ 397 00b0 A3B2     		uxth	r3, r4
+ 398 00b2 DA43     		mvns	r2, r3
+ 399 00b4 03EB0223 		add	r3, r3, r2, lsl #8
+ 400 00b8 9BB2     		uxth	r3, r3
+ 401 00ba 1A02     		lsls	r2, r3, #8
+ 402 00bc 92B2     		uxth	r2, r2
+ 403 00be 42EA1322 		orr	r2, r2, r3, lsr #8
+ 404 00c2 0221     		movs	r1, #2
+ 405 00c4 D020     		movs	r0, #208
+ 406 00c6 FFF7FEFF 		bl	ee_write_max32
+ 407 00ca B0FA80F0 		clz	r0, r0
+ 408 00ce 4009     		lsrs	r0, r0, #5
+ 409 00d0 B3E7     		b	.L51
+ 410              	.L67:
+ 411 00d2 FFF7FEFF 		bl	ee_version_get
+ 412 00d6 98B9     		cbnz	r0, .L55
+ 413 00d8 A1B2     		uxth	r1, r4
+ 414 00da CB43     		mvns	r3, r1
+ 415 00dc 01EB0321 		add	r1, r1, r3, lsl #8
+ 416 00e0 89B2     		uxth	r1, r1
+ 417 00e2 0A02     		lsls	r2, r1, #8
+ 418 00e4 92B2     		uxth	r2, r2
+ 419 00e6 42EA1122 		orr	r2, r2, r1, lsr #8
+ 420 00ea 4FF00211 		mov	r1, #131074
+ 421 00ee 2B48     		ldr	r0, .L74+12
+ 422 00f0 FFF7FEFF 		bl	ee_write_max32
+ 423 00f4 B0FA80F0 		clz	r0, r0
+ 424 00f8 4009     		lsrs	r0, r0, #5
+ 425              	.L56:
+ 426 00fa 80F00100 		eor	r0, r0, #1
+ 427 00fe 9FE7     		b	.L49
+ 428              	.L55:
+ 429 0100 FFF7FEFF 		bl	ee_version_get
+ 430 0104 0D28     		cmp	r0, #13
+ 431 0106 0FD0     		beq	.L71
+ 432 0108 FFF7FEFF 		bl	ee_version_get
+ 433 010c 0128     		cmp	r0, #1
+ 434 010e 1DD0     		beq	.L72
+ 435 0110 FFF7FEFF 		bl	ee_version_get
+ 436 0114 0E28     		cmp	r0, #14
+ 437 0116 2AD0     		beq	.L73
+ 438 0118 E021     		movs	r1, #224
+ 439 011a 1620     		movs	r0, #22
+ 440 011c FFF7FEFF 		bl	failure3
+ 441 0120 B0FA80F0 		clz	r0, r0
+ 442 0124 4009     		lsrs	r0, r0, #5
+ 443 0126 E8E7     		b	.L56
+ 444              	.L71:
+ 445 0128 A1B2     		uxth	r1, r4
+ 446 012a CB43     		mvns	r3, r1
+ 447 012c 01EB0321 		add	r1, r1, r3, lsl #8
+ 448 0130 89B2     		uxth	r1, r1
+ 449 0132 0A02     		lsls	r2, r1, #8
+ 450 0134 92B2     		uxth	r2, r2
+ 451 0136 42EA1122 		orr	r2, r2, r1, lsr #8
+ 452 013a 4FF00211 		mov	r1, #131074
+ 453 013e 1848     		ldr	r0, .L74+16
+ 454 0140 FFF7FEFF 		bl	ee_write_max32
+ 455 0144 B0FA80F0 		clz	r0, r0
+ 456 0148 4009     		lsrs	r0, r0, #5
+ 457 014a D6E7     		b	.L56
+ 458              	.L72:
+ 459 014c A1B2     		uxth	r1, r4
+ 460 014e CB43     		mvns	r3, r1
+ 461 0150 01EB0323 		add	r3, r1, r3, lsl #8
+ 462 0154 9BB2     		uxth	r3, r3
+ 463 0156 1A02     		lsls	r2, r3, #8
+ 464 0158 92B2     		uxth	r2, r2
+ 465 015a 42EA1322 		orr	r2, r2, r3, lsr #8
+ 466 015e 0221     		movs	r1, #2
+ 467 0160 D220     		movs	r0, #210
+ 468 0162 FFF7FEFF 		bl	ee_write_max32
+ 469 0166 B0FA80F0 		clz	r0, r0
+ 470 016a 4009     		lsrs	r0, r0, #5
+ 471 016c C5E7     		b	.L56
+ 472              	.L73:
+ 473 016e A1B2     		uxth	r1, r4
+ 474 0170 CB43     		mvns	r3, r1
+ 475 0172 01EB0323 		add	r3, r1, r3, lsl #8
+ 476 0176 9BB2     		uxth	r3, r3
+ 477 0178 1A02     		lsls	r2, r3, #8
+ 478 017a 92B2     		uxth	r2, r2
+ 479 017c 42EA1322 		orr	r2, r2, r3, lsr #8
+ 480 0180 0221     		movs	r1, #2
+ 481 0182 D220     		movs	r0, #210
+ 482 0184 FFF7FEFF 		bl	ee_write_max32
+ 483 0188 B0FA80F0 		clz	r0, r0
+ 484 018c 4009     		lsrs	r0, r0, #5
+ 485 018e B4E7     		b	.L56
+ 486              	.L75:
+ 487              		.align	2
+ 488              	.L74:
+ 489 0190 00000000 		.word	.LANCHOR1
+ 490 0194 AC005B00 		.word	5963948
+ 491 0198 AE005B00 		.word	5963950
+ 492 019c AE005D00 		.word	6095022
+ 493 01a0 B0005D00 		.word	6095024
+ 495              		.section	.text.sfl_bl_protocol_s32k_get_baudrate,"ax",%progbits
+ 496              		.align	1
+ 497              		.global	sfl_bl_protocol_s32k_get_baudrate
+ 498              		.syntax unified
+ 499              		.thumb
+ 500              		.thumb_func
+ 501              		.fpu fpv4-sp-d16
+ 503              	sfl_bl_protocol_s32k_get_baudrate:
+ 504              		@ args = 0, pretend = 0, frame = 0
+ 505              		@ frame_needed = 0, uses_anonymous_args = 0
+ 506 0000 10B5     		push	{r4, lr}
+ 507 0002 FFF7FEFF 		bl	ee_version_get
+ 508 0006 F8B9     		cbnz	r0, .L77
+ 509 0008 4B48     		ldr	r0, .L111
+ 510 000a FFF7FEFF 		bl	ee_read
+ 511              	.L78:
+ 512 000e FFF7FEFF 		bl	ee_version_get
+ 513 0012 0028     		cmp	r0, #0
+ 514 0014 36D1     		bne	.L82
+ 515 0016 4848     		ldr	r0, .L111
+ 516 0018 FFF7FEFF 		bl	ee_read
+ 517              	.L83:
+ 518 001c 0488     		ldrh	r4, [r0]
+ 519 001e 240A     		lsrs	r4, r4, #8
+ 520 0020 FFF7FEFF 		bl	ee_version_get
+ 521 0024 0028     		cmp	r0, #0
+ 522 0026 4BD1     		bne	.L87
+ 523 0028 4448     		ldr	r0, .L111+4
+ 524 002a FFF7FEFF 		bl	ee_read
+ 525              	.L88:
+ 526 002e FFF7FEFF 		bl	ee_version_get
+ 527 0032 0028     		cmp	r0, #0
+ 528 0034 62D1     		bne	.L92
+ 529 0036 4148     		ldr	r0, .L111+4
+ 530 0038 FFF7FEFF 		bl	ee_read
+ 531              	.L93:
+ 532 003c 0088     		ldrh	r0, [r0]
+ 533 003e 000A     		lsrs	r0, r0, #8
+ 534 0040 8442     		cmp	r4, r0
+ 535 0042 18BF     		it	ne
+ 536 0044 0520     		movne	r0, #5
+ 537 0046 10BD     		pop	{r4, pc}
+ 538              	.L77:
+ 539 0048 FFF7FEFF 		bl	ee_version_get
+ 540 004c 0D28     		cmp	r0, #13
+ 541 004e 0DD0     		beq	.L99
+ 542 0050 FFF7FEFF 		bl	ee_version_get
+ 543 0054 0128     		cmp	r0, #1
+ 544 0056 0DD0     		beq	.L100
+ 545 0058 FFF7FEFF 		bl	ee_version_get
+ 546 005c 0E28     		cmp	r0, #14
+ 547 005e 0DD0     		beq	.L101
+ 548 0060 40F20911 		movw	r1, #265
+ 549 0064 1620     		movs	r0, #22
+ 550 0066 FFF7FEFF 		bl	failure3
+ 551 006a D0E7     		b	.L78
+ 552              	.L99:
+ 553 006c 3448     		ldr	r0, .L111+8
+ 554 006e FFF7FEFF 		bl	ee_read
+ 555 0072 CCE7     		b	.L78
+ 556              	.L100:
+ 557 0074 D020     		movs	r0, #208
+ 558 0076 FFF7FEFF 		bl	ee_read
+ 559 007a C8E7     		b	.L78
+ 560              	.L101:
+ 561 007c D020     		movs	r0, #208
+ 562 007e FFF7FEFF 		bl	ee_read
+ 563 0082 C4E7     		b	.L78
+ 564              	.L82:
+ 565 0084 FFF7FEFF 		bl	ee_version_get
+ 566 0088 0D28     		cmp	r0, #13
+ 567 008a 0DD0     		beq	.L102
+ 568 008c FFF7FEFF 		bl	ee_version_get
+ 569 0090 0128     		cmp	r0, #1
+ 570 0092 0DD0     		beq	.L103
+ 571 0094 FFF7FEFF 		bl	ee_version_get
+ 572 0098 0E28     		cmp	r0, #14
+ 573 009a 0DD0     		beq	.L104
+ 574 009c 40F20911 		movw	r1, #265
+ 575 00a0 1620     		movs	r0, #22
+ 576 00a2 FFF7FEFF 		bl	failure3
+ 577 00a6 B9E7     		b	.L83
+ 578              	.L102:
+ 579 00a8 2548     		ldr	r0, .L111+8
+ 580 00aa FFF7FEFF 		bl	ee_read
+ 581 00ae B5E7     		b	.L83
+ 582              	.L103:
+ 583 00b0 D020     		movs	r0, #208
+ 584 00b2 FFF7FEFF 		bl	ee_read
+ 585 00b6 B1E7     		b	.L83
+ 586              	.L104:
+ 587 00b8 D020     		movs	r0, #208
+ 588 00ba FFF7FEFF 		bl	ee_read
+ 589 00be ADE7     		b	.L83
+ 590              	.L87:
+ 591 00c0 FFF7FEFF 		bl	ee_version_get
+ 592 00c4 0D28     		cmp	r0, #13
+ 593 00c6 0DD0     		beq	.L105
+ 594 00c8 FFF7FEFF 		bl	ee_version_get
+ 595 00cc 0128     		cmp	r0, #1
+ 596 00ce 0DD0     		beq	.L106
+ 597 00d0 FFF7FEFF 		bl	ee_version_get
+ 598 00d4 0E28     		cmp	r0, #14
+ 599 00d6 0DD0     		beq	.L107
+ 600 00d8 4FF48571 		mov	r1, #266
+ 601 00dc 1620     		movs	r0, #22
+ 602 00de FFF7FEFF 		bl	failure3
+ 603 00e2 A4E7     		b	.L88
+ 604              	.L105:
+ 605 00e4 1748     		ldr	r0, .L111+12
+ 606 00e6 FFF7FEFF 		bl	ee_read
+ 607 00ea A0E7     		b	.L88
+ 608              	.L106:
+ 609 00ec D220     		movs	r0, #210
+ 610 00ee FFF7FEFF 		bl	ee_read
+ 611 00f2 9CE7     		b	.L88
+ 612              	.L107:
+ 613 00f4 D220     		movs	r0, #210
+ 614 00f6 FFF7FEFF 		bl	ee_read
+ 615 00fa 98E7     		b	.L88
+ 616              	.L92:
+ 617 00fc FFF7FEFF 		bl	ee_version_get
+ 618 0100 0D28     		cmp	r0, #13
+ 619 0102 0DD0     		beq	.L108
+ 620 0104 FFF7FEFF 		bl	ee_version_get
+ 621 0108 0128     		cmp	r0, #1
+ 622 010a 0DD0     		beq	.L109
+ 623 010c FFF7FEFF 		bl	ee_version_get
+ 624 0110 0E28     		cmp	r0, #14
+ 625 0112 0DD0     		beq	.L110
+ 626 0114 4FF48571 		mov	r1, #266
+ 627 0118 1620     		movs	r0, #22
+ 628 011a FFF7FEFF 		bl	failure3
+ 629 011e 8DE7     		b	.L93
+ 630              	.L108:
+ 631 0120 0848     		ldr	r0, .L111+12
+ 632 0122 FFF7FEFF 		bl	ee_read
+ 633 0126 89E7     		b	.L93
+ 634              	.L109:
+ 635 0128 D220     		movs	r0, #210
+ 636 012a FFF7FEFF 		bl	ee_read
+ 637 012e 85E7     		b	.L93
+ 638              	.L110:
+ 639 0130 D220     		movs	r0, #210
+ 640 0132 FFF7FEFF 		bl	ee_read
+ 641 0136 81E7     		b	.L93
+ 642              	.L112:
+ 643              		.align	2
+ 644              	.L111:
+ 645 0138 AC005B00 		.word	5963948
+ 646 013c AE005D00 		.word	6095022
+ 647 0140 AE005B00 		.word	5963950
+ 648 0144 B0005D00 		.word	6095024
+ 650              		.section	.text.sfl_bl_protocol_s32k_calc_baudrate_params,"ax",%progbits
+ 651              		.align	1
+ 652              		.global	sfl_bl_protocol_s32k_calc_baudrate_params
+ 653              		.syntax unified
+ 654              		.thumb
+ 655              		.thumb_func
+ 656              		.fpu fpv4-sp-d16
+ 658              	sfl_bl_protocol_s32k_calc_baudrate_params:
+ 659              		@ args = 12, pretend = 0, frame = 32
+ 660              		@ frame_needed = 0, uses_anonymous_args = 0
+ 661 0000 00B5     		push	{lr}
+ 662 0002 89B0     		sub	sp, sp, #36
+ 663 0004 0090     		str	r0, [sp]
+ 664 0006 0191     		str	r1, [sp, #4]
+ 665 0008 0292     		str	r2, [sp, #8]
+ 666 000a 8DF80C30 		strb	r3, [sp, #12]
+ 667 000e 9DF82830 		ldrb	r3, [sp, #40]	@ zero_extendqisi2
+ 668 0012 8DF80D30 		strb	r3, [sp, #13]
+ 669 0016 6B46     		mov	r3, sp
+ 670 0018 40F20352 		movw	r2, #1283
+ 671 001c 0E49     		ldr	r1, .L117
+ 672 001e 40F20450 		movw	r0, #1284
+ 673 0022 FFF7FEFF 		bl	role_dothis
+ 674 0026 0346     		mov	r3, r0
+ 675 0028 28B1     		cbz	r0, .L116
+ 676              	.L114:
+ 677 002a 181C     		adds	r0, r3, #0
+ 678 002c 18BF     		it	ne
+ 679 002e 0120     		movne	r0, #1
+ 680 0030 09B0     		add	sp, sp, #36
+ 681              		@ sp needed
+ 682 0032 5DF804FB 		ldr	pc, [sp], #4
+ 683              	.L116:
+ 684 0036 0022     		movs	r2, #0
+ 685 0038 0B99     		ldr	r1, [sp, #44]
+ 686 003a 0DF10E00 		add	r0, sp, #14
+ 687 003e FFF7FEFF 		bl	convert_universal_params_to_flexcan_params
+ 688 0042 0346     		mov	r3, r0
+ 689 0044 0028     		cmp	r0, #0
+ 690 0046 F0D1     		bne	.L114
+ 691 0048 0122     		movs	r2, #1
+ 692 004a 0C99     		ldr	r1, [sp, #48]
+ 693 004c 0DF11700 		add	r0, sp, #23
+ 694 0050 FFF7FEFF 		bl	convert_universal_params_to_flexcan_params
+ 695 0054 0346     		mov	r3, r0
+ 696 0056 E8E7     		b	.L114
+ 697              	.L118:
+ 698              		.align	2
+ 699              	.L117:
+ 700 0058 03050805 		.word	84411651
+ 702              		.section	.bss.mgl_bl_can_ind,"aw",%nobits
+ 703              		.set	.LANCHOR1,. + 0
+ 706              	mgl_bl_can_ind:
+ 707 0000 00       		.space	1
+ 708              		.section	.bss.mgl_can_msg_rx,"aw",%nobits
+ 709              		.align	2
+ 710              		.set	.LANCHOR0,. + 0
+ 713              	mgl_can_msg_rx:
+ 714 0000 00000000 		.space	76
+ 714      00000000 
+ 714      00000000 
+ 714      00000000 
+ 714      00000000 
+ 715              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2019-q3-update) 8.3.1 20190703 (release) [gc

@@ -1,0 +1,5 @@
+Put your own sources in this folder and they will automatically be added to the build.
+
+- Please use the user_sources/ subdirectory exclusively for your own sourcefiles.
+- There is an additional makefile called app_user.mk.
+- Advanced users can find further instructions in the head of the file.

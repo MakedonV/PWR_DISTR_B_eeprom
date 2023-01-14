@@ -1,0 +1,2105 @@
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"user_api_eeprom.c"
+  14              		.text
+  15              		.section	.text._dummy23,"ax",%progbits
+  16              		.align	1
+  17              		.global	_dummy23
+  18              		.arch armv7e-m
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu fpv4-sp-d16
+  24              	_dummy23:
+  25              		@ args = 0, pretend = 0, frame = 0
+  26              		@ frame_needed = 0, uses_anonymous_args = 0
+  27              		@ link register save eliminated.
+  28 0000 7047     		bx	lr
+  30              		.section	.text.user_eeprom_read_raw,"ax",%progbits
+  31              		.align	1
+  32              		.global	user_eeprom_read_raw
+  33              		.syntax unified
+  34              		.thumb
+  35              		.thumb_func
+  36              		.fpu fpv4-sp-d16
+  38              	user_eeprom_read_raw:
+  39              		@ args = 0, pretend = 0, frame = 0
+  40              		@ frame_needed = 0, uses_anonymous_args = 0
+  41 0000 6AB1     		cbz	r2, .L4
+  42 0002 10B5     		push	{r4, lr}
+  43 0004 B0F5805F 		cmp	r0, #4096
+  44 0008 0BD2     		bcs	.L5
+  45 000a 4B1E     		subs	r3, r1, #1
+  46 000c 0344     		add	r3, r3, r0
+  47 000e B3F5805F 		cmp	r3, #4096
+  48 0012 01D3     		bcc	.L11
+  49 0014 0820     		movs	r0, #8
+  50              	.L3:
+  51 0016 10BD     		pop	{r4, pc}
+  52              	.L11:
+  53 0018 FFF7FEFF 		bl	hal_nvm_eeprom_read_by_address
+  54 001c FBE7     		b	.L3
+  55              	.L4:
+  56 001e 0920     		movs	r0, #9
+  57 0020 7047     		bx	lr
+  58              	.L5:
+  59 0022 0920     		movs	r0, #9
+  60 0024 F7E7     		b	.L3
+  62              		.section	.text.user_eeprom_write_raw,"ax",%progbits
+  63              		.align	1
+  64              		.global	user_eeprom_write_raw
+  65              		.syntax unified
+  66              		.thumb
+  67              		.thumb_func
+  68              		.fpu fpv4-sp-d16
+  70              	user_eeprom_write_raw:
+  71              		@ args = 0, pretend = 0, frame = 0
+  72              		@ frame_needed = 0, uses_anonymous_args = 0
+  73 0000 08B5     		push	{r3, lr}
+  74 0002 A0F50063 		sub	r3, r0, #2048
+  75 0006 B3F5006F 		cmp	r3, #2048
+  76 000a 09D2     		bcs	.L14
+  77 000c 4B1E     		subs	r3, r1, #1
+  78 000e 0344     		add	r3, r3, r0
+  79 0010 B3F5805F 		cmp	r3, #4096
+  80 0014 01D3     		bcc	.L17
+  81 0016 0820     		movs	r0, #8
+  82              	.L13:
+  83 0018 08BD     		pop	{r3, pc}
+  84              	.L17:
+  85 001a FFF7FEFF 		bl	hal_nvm_eeprom_write_by_address
+  86 001e FBE7     		b	.L13
+  87              	.L14:
+  88 0020 0920     		movs	r0, #9
+  89 0022 F9E7     		b	.L13
+  91              		.section	.text.user_eeprom_read,"ax",%progbits
+  92              		.align	1
+  93              		.global	user_eeprom_read
+  94              		.syntax unified
+  95              		.thumb
+  96              		.thumb_func
+  97              		.fpu fpv4-sp-d16
+  99              	user_eeprom_read:
+ 100              		@ args = 0, pretend = 0, frame = 0
+ 101              		@ frame_needed = 0, uses_anonymous_args = 0
+ 102 0000 B0F5006F 		cmp	r0, #2048
+ 103 0004 01D3     		bcc	.L25
+ 104 0006 0920     		movs	r0, #9
+ 105 0008 7047     		bx	lr
+ 106              	.L25:
+ 107 000a 08B5     		push	{r3, lr}
+ 108 000c 00F50060 		add	r0, r0, #2048
+ 109 0010 FFF7FEFF 		bl	user_eeprom_read_raw
+ 110 0014 08BD     		pop	{r3, pc}
+ 112              		.section	.text.user_eeprom_write,"ax",%progbits
+ 113              		.align	1
+ 114              		.global	user_eeprom_write
+ 115              		.syntax unified
+ 116              		.thumb
+ 117              		.thumb_func
+ 118              		.fpu fpv4-sp-d16
+ 120              	user_eeprom_write:
+ 121              		@ args = 0, pretend = 0, frame = 0
+ 122              		@ frame_needed = 0, uses_anonymous_args = 0
+ 123 0000 B0F5006F 		cmp	r0, #2048
+ 124 0004 01D3     		bcc	.L33
+ 125 0006 0920     		movs	r0, #9
+ 126 0008 7047     		bx	lr
+ 127              	.L33:
+ 128 000a 08B5     		push	{r3, lr}
+ 129 000c 00F50060 		add	r0, r0, #2048
+ 130 0010 FFF7FEFF 		bl	user_eeprom_write_raw
+ 131 0014 08BD     		pop	{r3, pc}
+ 133              		.section	.text.user_eeprom_read_32bit,"ax",%progbits
+ 134              		.align	1
+ 135              		.global	user_eeprom_read_32bit
+ 136              		.syntax unified
+ 137              		.thumb
+ 138              		.thumb_func
+ 139              		.fpu fpv4-sp-d16
+ 141              	user_eeprom_read_32bit:
+ 142              		@ args = 0, pretend = 0, frame = 0
+ 143              		@ frame_needed = 0, uses_anonymous_args = 0
+ 144 0000 08B5     		push	{r3, lr}
+ 145 0002 FFF7FEFF 		bl	user_eeprom_read
+ 146 0006 08BD     		pop	{r3, pc}
+ 148              		.section	.text.user_eeprom_write_32bit,"ax",%progbits
+ 149              		.align	1
+ 150              		.global	user_eeprom_write_32bit
+ 151              		.syntax unified
+ 152              		.thumb
+ 153              		.thumb_func
+ 154              		.fpu fpv4-sp-d16
+ 156              	user_eeprom_write_32bit:
+ 157              		@ args = 0, pretend = 0, frame = 0
+ 158              		@ frame_needed = 0, uses_anonymous_args = 0
+ 159 0000 08B5     		push	{r3, lr}
+ 160 0002 FFF7FEFF 		bl	user_eeprom_write
+ 161 0006 08BD     		pop	{r3, pc}
+ 163              		.section	.text.user_eeprom_read_value_32bit,"ax",%progbits
+ 164              		.align	1
+ 165              		.global	user_eeprom_read_value_32bit
+ 166              		.syntax unified
+ 167              		.thumb
+ 168              		.thumb_func
+ 169              		.fpu fpv4-sp-d16
+ 171              	user_eeprom_read_value_32bit:
+ 172              		@ args = 0, pretend = 0, frame = 8
+ 173              		@ frame_needed = 0, uses_anonymous_args = 0
+ 174 0000 00B5     		push	{lr}
+ 175 0002 83B0     		sub	sp, sp, #12
+ 176 0004 01AA     		add	r2, sp, #4
+ 177 0006 0421     		movs	r1, #4
+ 178 0008 FFF7FEFF 		bl	user_eeprom_read
+ 179 000c 0198     		ldr	r0, [sp, #4]
+ 180 000e 03B0     		add	sp, sp, #12
+ 181              		@ sp needed
+ 182 0010 5DF804FB 		ldr	pc, [sp], #4
+ 184              		.section	.text.user_eeprom_write_value_32bit,"ax",%progbits
+ 185              		.align	1
+ 186              		.global	user_eeprom_write_value_32bit
+ 187              		.syntax unified
+ 188              		.thumb
+ 189              		.thumb_func
+ 190              		.fpu fpv4-sp-d16
+ 192              	user_eeprom_write_value_32bit:
+ 193              		@ args = 0, pretend = 0, frame = 8
+ 194              		@ frame_needed = 0, uses_anonymous_args = 0
+ 195 0000 00B5     		push	{lr}
+ 196 0002 83B0     		sub	sp, sp, #12
+ 197 0004 0191     		str	r1, [sp, #4]
+ 198 0006 01AA     		add	r2, sp, #4
+ 199 0008 0421     		movs	r1, #4
+ 200 000a FFF7FEFF 		bl	user_eeprom_write
+ 201 000e 03B0     		add	sp, sp, #12
+ 202              		@ sp needed
+ 203 0010 5DF804FB 		ldr	pc, [sp], #4
+ 205              		.section	.text.user_eeprom_read_module_serial_nr,"ax",%progbits
+ 206              		.align	1
+ 207              		.global	user_eeprom_read_module_serial_nr
+ 208              		.syntax unified
+ 209              		.thumb
+ 210              		.thumb_func
+ 211              		.fpu fpv4-sp-d16
+ 213              	user_eeprom_read_module_serial_nr:
+ 214              		@ args = 0, pretend = 0, frame = 0
+ 215              		@ frame_needed = 0, uses_anonymous_args = 0
+ 216 0000 38B5     		push	{r3, r4, r5, lr}
+ 217 0002 FFF7FEFF 		bl	ee_version_get
+ 218 0006 40BB     		cbnz	r0, .L43
+ 219 0008 4FF00410 		mov	r0, #262148
+ 220 000c FFF7FEFF 		bl	ee_read
+ 221              	.L44:
+ 222 0010 C578     		ldrb	r5, [r0, #3]	@ zero_extendqisi2
+ 223 0012 FFF7FEFF 		bl	ee_version_get
+ 224 0016 0028     		cmp	r0, #0
+ 225 0018 3DD1     		bne	.L48
+ 226 001a 4FF00410 		mov	r0, #262148
+ 227 001e FFF7FEFF 		bl	ee_read
+ 228              	.L49:
+ 229 0022 0468     		ldr	r4, [r0]
+ 230 0024 2402     		lsls	r4, r4, #8
+ 231 0026 04F47F04 		and	r4, r4, #16711680
+ 232 002a 2543     		orrs	r5, r5, r4
+ 233 002c FFF7FEFF 		bl	ee_version_get
+ 234 0030 0028     		cmp	r0, #0
+ 235 0032 4ED1     		bne	.L53
+ 236 0034 4FF00410 		mov	r0, #262148
+ 237 0038 FFF7FEFF 		bl	ee_read
+ 238              	.L54:
+ 239 003c 0468     		ldr	r4, [r0]
+ 240 003e 240A     		lsrs	r4, r4, #8
+ 241 0040 04F47F44 		and	r4, r4, #65280
+ 242 0044 2C43     		orrs	r4, r4, r5
+ 243 0046 FFF7FEFF 		bl	ee_version_get
+ 244 004a 0028     		cmp	r0, #0
+ 245 004c 5FD1     		bne	.L58
+ 246 004e 4FF00410 		mov	r0, #262148
+ 247 0052 FFF7FEFF 		bl	ee_read
+ 248              	.L59:
+ 249 0056 2046     		mov	r0, r4
+ 250 0058 38BD     		pop	{r3, r4, r5, pc}
+ 251              	.L43:
+ 252 005a FFF7FEFF 		bl	ee_version_get
+ 253 005e 0D28     		cmp	r0, #13
+ 254 0060 0CD0     		beq	.L64
+ 255 0062 FFF7FEFF 		bl	ee_version_get
+ 256 0066 0128     		cmp	r0, #1
+ 257 0068 0DD0     		beq	.L65
+ 258 006a FFF7FEFF 		bl	ee_version_get
+ 259 006e 0E28     		cmp	r0, #14
+ 260 0070 0DD0     		beq	.L66
+ 261 0072 DA21     		movs	r1, #218
+ 262 0074 1720     		movs	r0, #23
+ 263 0076 FFF7FEFF 		bl	failure3
+ 264 007a C9E7     		b	.L44
+ 265              	.L64:
+ 266 007c 4FF00410 		mov	r0, #262148
+ 267 0080 FFF7FEFF 		bl	ee_read
+ 268 0084 C4E7     		b	.L44
+ 269              	.L65:
+ 270 0086 1B20     		movs	r0, #27
+ 271 0088 FFF7FEFF 		bl	ee_read
+ 272 008c C0E7     		b	.L44
+ 273              	.L66:
+ 274 008e 1B20     		movs	r0, #27
+ 275 0090 FFF7FEFF 		bl	ee_read
+ 276 0094 BCE7     		b	.L44
+ 277              	.L48:
+ 278 0096 FFF7FEFF 		bl	ee_version_get
+ 279 009a 0D28     		cmp	r0, #13
+ 280 009c 0CD0     		beq	.L67
+ 281 009e FFF7FEFF 		bl	ee_version_get
+ 282 00a2 0128     		cmp	r0, #1
+ 283 00a4 0DD0     		beq	.L68
+ 284 00a6 FFF7FEFF 		bl	ee_version_get
+ 285 00aa 0E28     		cmp	r0, #14
+ 286 00ac 0DD0     		beq	.L69
+ 287 00ae DA21     		movs	r1, #218
+ 288 00b0 1720     		movs	r0, #23
+ 289 00b2 FFF7FEFF 		bl	failure3
+ 290 00b6 B4E7     		b	.L49
+ 291              	.L67:
+ 292 00b8 4FF00410 		mov	r0, #262148
+ 293 00bc FFF7FEFF 		bl	ee_read
+ 294 00c0 AFE7     		b	.L49
+ 295              	.L68:
+ 296 00c2 1B20     		movs	r0, #27
+ 297 00c4 FFF7FEFF 		bl	ee_read
+ 298 00c8 ABE7     		b	.L49
+ 299              	.L69:
+ 300 00ca 1B20     		movs	r0, #27
+ 301 00cc FFF7FEFF 		bl	ee_read
+ 302 00d0 A7E7     		b	.L49
+ 303              	.L53:
+ 304 00d2 FFF7FEFF 		bl	ee_version_get
+ 305 00d6 0D28     		cmp	r0, #13
+ 306 00d8 0CD0     		beq	.L70
+ 307 00da FFF7FEFF 		bl	ee_version_get
+ 308 00de 0128     		cmp	r0, #1
+ 309 00e0 0DD0     		beq	.L71
+ 310 00e2 FFF7FEFF 		bl	ee_version_get
+ 311 00e6 0E28     		cmp	r0, #14
+ 312 00e8 0DD0     		beq	.L72
+ 313 00ea DA21     		movs	r1, #218
+ 314 00ec 1720     		movs	r0, #23
+ 315 00ee FFF7FEFF 		bl	failure3
+ 316 00f2 A3E7     		b	.L54
+ 317              	.L70:
+ 318 00f4 4FF00410 		mov	r0, #262148
+ 319 00f8 FFF7FEFF 		bl	ee_read
+ 320 00fc 9EE7     		b	.L54
+ 321              	.L71:
+ 322 00fe 1B20     		movs	r0, #27
+ 323 0100 FFF7FEFF 		bl	ee_read
+ 324 0104 9AE7     		b	.L54
+ 325              	.L72:
+ 326 0106 1B20     		movs	r0, #27
+ 327 0108 FFF7FEFF 		bl	ee_read
+ 328 010c 96E7     		b	.L54
+ 329              	.L58:
+ 330 010e FFF7FEFF 		bl	ee_version_get
+ 331 0112 0D28     		cmp	r0, #13
+ 332 0114 0CD0     		beq	.L73
+ 333 0116 FFF7FEFF 		bl	ee_version_get
+ 334 011a 0128     		cmp	r0, #1
+ 335 011c 0DD0     		beq	.L74
+ 336 011e FFF7FEFF 		bl	ee_version_get
+ 337 0122 0E28     		cmp	r0, #14
+ 338 0124 0DD0     		beq	.L75
+ 339 0126 DA21     		movs	r1, #218
+ 340 0128 1720     		movs	r0, #23
+ 341 012a FFF7FEFF 		bl	failure3
+ 342 012e 92E7     		b	.L59
+ 343              	.L73:
+ 344 0130 4FF00410 		mov	r0, #262148
+ 345 0134 FFF7FEFF 		bl	ee_read
+ 346 0138 8DE7     		b	.L59
+ 347              	.L74:
+ 348 013a 1B20     		movs	r0, #27
+ 349 013c FFF7FEFF 		bl	ee_read
+ 350 0140 89E7     		b	.L59
+ 351              	.L75:
+ 352 0142 1B20     		movs	r0, #27
+ 353 0144 FFF7FEFF 		bl	ee_read
+ 354 0148 85E7     		b	.L59
+ 356              		.section	.text.user_eeprom_read_module_device_type,"ax",%progbits
+ 357              		.align	1
+ 358              		.global	user_eeprom_read_module_device_type
+ 359              		.syntax unified
+ 360              		.thumb
+ 361              		.thumb_func
+ 362              		.fpu fpv4-sp-d16
+ 364              	user_eeprom_read_module_device_type:
+ 365              		@ args = 0, pretend = 0, frame = 0
+ 366              		@ frame_needed = 0, uses_anonymous_args = 0
+ 367 0000 08B5     		push	{r3, lr}
+ 368 0002 FFF7FEFF 		bl	ee_version_get
+ 369 0006 E8B9     		cbnz	r0, .L77
+ 370 0008 4FF00410 		mov	r0, #262148
+ 371 000c FFF7FEFF 		bl	ee_read
+ 372              	.L78:
+ 373 0010 FFF7FEFF 		bl	ee_version_get
+ 374 0014 A0BB     		cbnz	r0, .L82
+ 375 0016 4FF00410 		mov	r0, #262148
+ 376 001a FFF7FEFF 		bl	ee_read
+ 377              	.L83:
+ 378 001e FFF7FEFF 		bl	ee_version_get
+ 379 0022 0028     		cmp	r0, #0
+ 380 0024 4AD1     		bne	.L87
+ 381 0026 4FF00410 		mov	r0, #262148
+ 382 002a FFF7FEFF 		bl	ee_read
+ 383              	.L88:
+ 384 002e FFF7FEFF 		bl	ee_version_get
+ 385 0032 0028     		cmp	r0, #0
+ 386 0034 60D1     		bne	.L92
+ 387 0036 4FF00410 		mov	r0, #262148
+ 388 003a FFF7FEFF 		bl	ee_read
+ 389              	.L93:
+ 390 003e 0068     		ldr	r0, [r0]
+ 391 0040 0006     		lsls	r0, r0, #24
+ 392 0042 08BD     		pop	{r3, pc}
+ 393              	.L77:
+ 394 0044 FFF7FEFF 		bl	ee_version_get
+ 395 0048 0D28     		cmp	r0, #13
+ 396 004a 0CD0     		beq	.L98
+ 397 004c FFF7FEFF 		bl	ee_version_get
+ 398 0050 0128     		cmp	r0, #1
+ 399 0052 0DD0     		beq	.L99
+ 400 0054 FFF7FEFF 		bl	ee_version_get
+ 401 0058 0E28     		cmp	r0, #14
+ 402 005a 0DD0     		beq	.L100
+ 403 005c EB21     		movs	r1, #235
+ 404 005e 1720     		movs	r0, #23
+ 405 0060 FFF7FEFF 		bl	failure3
+ 406 0064 D4E7     		b	.L78
+ 407              	.L98:
+ 408 0066 4FF00410 		mov	r0, #262148
+ 409 006a FFF7FEFF 		bl	ee_read
+ 410 006e CFE7     		b	.L78
+ 411              	.L99:
+ 412 0070 1B20     		movs	r0, #27
+ 413 0072 FFF7FEFF 		bl	ee_read
+ 414 0076 CBE7     		b	.L78
+ 415              	.L100:
+ 416 0078 1B20     		movs	r0, #27
+ 417 007a FFF7FEFF 		bl	ee_read
+ 418 007e C7E7     		b	.L78
+ 419              	.L82:
+ 420 0080 FFF7FEFF 		bl	ee_version_get
+ 421 0084 0D28     		cmp	r0, #13
+ 422 0086 0CD0     		beq	.L101
+ 423 0088 FFF7FEFF 		bl	ee_version_get
+ 424 008c 0128     		cmp	r0, #1
+ 425 008e 0DD0     		beq	.L102
+ 426 0090 FFF7FEFF 		bl	ee_version_get
+ 427 0094 0E28     		cmp	r0, #14
+ 428 0096 0DD0     		beq	.L103
+ 429 0098 EB21     		movs	r1, #235
+ 430 009a 1720     		movs	r0, #23
+ 431 009c FFF7FEFF 		bl	failure3
+ 432 00a0 BDE7     		b	.L83
+ 433              	.L101:
+ 434 00a2 4FF00410 		mov	r0, #262148
+ 435 00a6 FFF7FEFF 		bl	ee_read
+ 436 00aa B8E7     		b	.L83
+ 437              	.L102:
+ 438 00ac 1B20     		movs	r0, #27
+ 439 00ae FFF7FEFF 		bl	ee_read
+ 440 00b2 B4E7     		b	.L83
+ 441              	.L103:
+ 442 00b4 1B20     		movs	r0, #27
+ 443 00b6 FFF7FEFF 		bl	ee_read
+ 444 00ba B0E7     		b	.L83
+ 445              	.L87:
+ 446 00bc FFF7FEFF 		bl	ee_version_get
+ 447 00c0 0D28     		cmp	r0, #13
+ 448 00c2 0CD0     		beq	.L104
+ 449 00c4 FFF7FEFF 		bl	ee_version_get
+ 450 00c8 0128     		cmp	r0, #1
+ 451 00ca 0DD0     		beq	.L105
+ 452 00cc FFF7FEFF 		bl	ee_version_get
+ 453 00d0 0E28     		cmp	r0, #14
+ 454 00d2 0DD0     		beq	.L106
+ 455 00d4 EB21     		movs	r1, #235
+ 456 00d6 1720     		movs	r0, #23
+ 457 00d8 FFF7FEFF 		bl	failure3
+ 458 00dc A7E7     		b	.L88
+ 459              	.L104:
+ 460 00de 4FF00410 		mov	r0, #262148
+ 461 00e2 FFF7FEFF 		bl	ee_read
+ 462 00e6 A2E7     		b	.L88
+ 463              	.L105:
+ 464 00e8 1B20     		movs	r0, #27
+ 465 00ea FFF7FEFF 		bl	ee_read
+ 466 00ee 9EE7     		b	.L88
+ 467              	.L106:
+ 468 00f0 1B20     		movs	r0, #27
+ 469 00f2 FFF7FEFF 		bl	ee_read
+ 470 00f6 9AE7     		b	.L88
+ 471              	.L92:
+ 472 00f8 FFF7FEFF 		bl	ee_version_get
+ 473 00fc 0D28     		cmp	r0, #13
+ 474 00fe 0CD0     		beq	.L107
+ 475 0100 FFF7FEFF 		bl	ee_version_get
+ 476 0104 0128     		cmp	r0, #1
+ 477 0106 0DD0     		beq	.L108
+ 478 0108 FFF7FEFF 		bl	ee_version_get
+ 479 010c 0E28     		cmp	r0, #14
+ 480 010e 0DD0     		beq	.L109
+ 481 0110 EB21     		movs	r1, #235
+ 482 0112 1720     		movs	r0, #23
+ 483 0114 FFF7FEFF 		bl	failure3
+ 484 0118 91E7     		b	.L93
+ 485              	.L107:
+ 486 011a 4FF00410 		mov	r0, #262148
+ 487 011e FFF7FEFF 		bl	ee_read
+ 488 0122 8CE7     		b	.L93
+ 489              	.L108:
+ 490 0124 1B20     		movs	r0, #27
+ 491 0126 FFF7FEFF 		bl	ee_read
+ 492 012a 88E7     		b	.L93
+ 493              	.L109:
+ 494 012c 1B20     		movs	r0, #27
+ 495 012e FFF7FEFF 		bl	ee_read
+ 496 0132 84E7     		b	.L93
+ 498              		.section	.text.user_eeprom_read_module_reset_reason,"ax",%progbits
+ 499              		.align	1
+ 500              		.global	user_eeprom_read_module_reset_reason
+ 501              		.syntax unified
+ 502              		.thumb
+ 503              		.thumb_func
+ 504              		.fpu fpv4-sp-d16
+ 506              	user_eeprom_read_module_reset_reason:
+ 507              		@ args = 0, pretend = 0, frame = 0
+ 508              		@ frame_needed = 0, uses_anonymous_args = 0
+ 509 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 510 0002 FFF7FEFF 		bl	ee_version_get
+ 511 0006 0028     		cmp	r0, #0
+ 512 0008 2ED1     		bne	.L111
+ 513 000a 6248     		ldr	r0, .L152
+ 514 000c FFF7FEFF 		bl	ee_read
+ 515              	.L112:
+ 516 0010 0478     		ldrb	r4, [r0]	@ zero_extendqisi2
+ 517 0012 FFF7FEFF 		bl	ee_version_get
+ 518 0016 0028     		cmp	r0, #0
+ 519 0018 44D1     		bne	.L116
+ 520 001a 5F48     		ldr	r0, .L152+4
+ 521 001c FFF7FEFF 		bl	ee_read
+ 522              	.L117:
+ 523 0020 0778     		ldrb	r7, [r0]	@ zero_extendqisi2
+ 524 0022 FFF7FEFF 		bl	ee_version_get
+ 525 0026 0028     		cmp	r0, #0
+ 526 0028 5AD1     		bne	.L121
+ 527 002a 5C48     		ldr	r0, .L152+8
+ 528 002c FFF7FEFF 		bl	ee_read
+ 529              	.L122:
+ 530 0030 0678     		ldrb	r6, [r0]	@ zero_extendqisi2
+ 531 0032 FFF7FEFF 		bl	ee_version_get
+ 532 0036 0028     		cmp	r0, #0
+ 533 0038 70D1     		bne	.L126
+ 534 003a 5948     		ldr	r0, .L152+12
+ 535 003c FFF7FEFF 		bl	ee_read
+ 536              	.L127:
+ 537 0040 0578     		ldrb	r5, [r0]	@ zero_extendqisi2
+ 538 0042 FFF7FEFF 		bl	ee_version_get
+ 539 0046 0028     		cmp	r0, #0
+ 540 0048 40F08680 		bne	.L131
+ 541 004c 5548     		ldr	r0, .L152+16
+ 542 004e FFF7FEFF 		bl	ee_read
+ 543              	.L132:
+ 544 0052 44EA4704 		orr	r4, r4, r7, lsl #1
+ 545 0056 44EA8604 		orr	r4, r4, r6, lsl #2
+ 546 005a 44EAC504 		orr	r4, r4, r5, lsl #3
+ 547 005e 0078     		ldrb	r0, [r0]	@ zero_extendqisi2
+ 548 0060 44EA0010 		orr	r0, r4, r0, lsl #4
+ 549 0064 C0B2     		uxtb	r0, r0
+ 550 0066 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 551              	.L111:
+ 552 0068 FFF7FEFF 		bl	ee_version_get
+ 553 006c 0D28     		cmp	r0, #13
+ 554 006e 0DD0     		beq	.L137
+ 555 0070 FFF7FEFF 		bl	ee_version_get
+ 556 0074 0128     		cmp	r0, #1
+ 557 0076 0DD0     		beq	.L138
+ 558 0078 FFF7FEFF 		bl	ee_version_get
+ 559 007c 0E28     		cmp	r0, #14
+ 560 007e 0DD0     		beq	.L139
+ 561 0080 40F27711 		movw	r1, #375
+ 562 0084 1720     		movs	r0, #23
+ 563 0086 FFF7FEFF 		bl	failure3
+ 564 008a C1E7     		b	.L112
+ 565              	.L137:
+ 566 008c 4648     		ldr	r0, .L152+20
+ 567 008e FFF7FEFF 		bl	ee_read
+ 568 0092 BDE7     		b	.L112
+ 569              	.L138:
+ 570 0094 AC20     		movs	r0, #172
+ 571 0096 FFF7FEFF 		bl	ee_read
+ 572 009a B9E7     		b	.L112
+ 573              	.L139:
+ 574 009c AC20     		movs	r0, #172
+ 575 009e FFF7FEFF 		bl	ee_read
+ 576 00a2 B5E7     		b	.L112
+ 577              	.L116:
+ 578 00a4 FFF7FEFF 		bl	ee_version_get
+ 579 00a8 0D28     		cmp	r0, #13
+ 580 00aa 0DD0     		beq	.L140
+ 581 00ac FFF7FEFF 		bl	ee_version_get
+ 582 00b0 0128     		cmp	r0, #1
+ 583 00b2 0DD0     		beq	.L141
+ 584 00b4 FFF7FEFF 		bl	ee_version_get
+ 585 00b8 0E28     		cmp	r0, #14
+ 586 00ba 0DD0     		beq	.L142
+ 587 00bc 4FF4BC71 		mov	r1, #376
+ 588 00c0 1720     		movs	r0, #23
+ 589 00c2 FFF7FEFF 		bl	failure3
+ 590 00c6 ABE7     		b	.L117
+ 591              	.L140:
+ 592 00c8 3848     		ldr	r0, .L152+24
+ 593 00ca FFF7FEFF 		bl	ee_read
+ 594 00ce A7E7     		b	.L117
+ 595              	.L141:
+ 596 00d0 AD20     		movs	r0, #173
+ 597 00d2 FFF7FEFF 		bl	ee_read
+ 598 00d6 A3E7     		b	.L117
+ 599              	.L142:
+ 600 00d8 AD20     		movs	r0, #173
+ 601 00da FFF7FEFF 		bl	ee_read
+ 602 00de 9FE7     		b	.L117
+ 603              	.L121:
+ 604 00e0 FFF7FEFF 		bl	ee_version_get
+ 605 00e4 0D28     		cmp	r0, #13
+ 606 00e6 0DD0     		beq	.L143
+ 607 00e8 FFF7FEFF 		bl	ee_version_get
+ 608 00ec 0128     		cmp	r0, #1
+ 609 00ee 0DD0     		beq	.L144
+ 610 00f0 FFF7FEFF 		bl	ee_version_get
+ 611 00f4 0E28     		cmp	r0, #14
+ 612 00f6 0DD0     		beq	.L145
+ 613 00f8 40F27911 		movw	r1, #377
+ 614 00fc 1720     		movs	r0, #23
+ 615 00fe FFF7FEFF 		bl	failure3
+ 616 0102 95E7     		b	.L122
+ 617              	.L143:
+ 618 0104 2A48     		ldr	r0, .L152+28
+ 619 0106 FFF7FEFF 		bl	ee_read
+ 620 010a 91E7     		b	.L122
+ 621              	.L144:
+ 622 010c AE20     		movs	r0, #174
+ 623 010e FFF7FEFF 		bl	ee_read
+ 624 0112 8DE7     		b	.L122
+ 625              	.L145:
+ 626 0114 AE20     		movs	r0, #174
+ 627 0116 FFF7FEFF 		bl	ee_read
+ 628 011a 89E7     		b	.L122
+ 629              	.L126:
+ 630 011c FFF7FEFF 		bl	ee_version_get
+ 631 0120 0D28     		cmp	r0, #13
+ 632 0122 0DD0     		beq	.L146
+ 633 0124 FFF7FEFF 		bl	ee_version_get
+ 634 0128 0128     		cmp	r0, #1
+ 635 012a 0DD0     		beq	.L147
+ 636 012c FFF7FEFF 		bl	ee_version_get
+ 637 0130 0E28     		cmp	r0, #14
+ 638 0132 0DD0     		beq	.L148
+ 639 0134 4FF4BD71 		mov	r1, #378
+ 640 0138 1720     		movs	r0, #23
+ 641 013a FFF7FEFF 		bl	failure3
+ 642 013e 7FE7     		b	.L127
+ 643              	.L146:
+ 644 0140 1C48     		ldr	r0, .L152+32
+ 645 0142 FFF7FEFF 		bl	ee_read
+ 646 0146 7BE7     		b	.L127
+ 647              	.L147:
+ 648 0148 AF20     		movs	r0, #175
+ 649 014a FFF7FEFF 		bl	ee_read
+ 650 014e 77E7     		b	.L127
+ 651              	.L148:
+ 652 0150 AF20     		movs	r0, #175
+ 653 0152 FFF7FEFF 		bl	ee_read
+ 654 0156 73E7     		b	.L127
+ 655              	.L131:
+ 656 0158 FFF7FEFF 		bl	ee_version_get
+ 657 015c 0D28     		cmp	r0, #13
+ 658 015e 0DD0     		beq	.L149
+ 659 0160 FFF7FEFF 		bl	ee_version_get
+ 660 0164 0128     		cmp	r0, #1
+ 661 0166 0DD0     		beq	.L150
+ 662 0168 FFF7FEFF 		bl	ee_version_get
+ 663 016c 0E28     		cmp	r0, #14
+ 664 016e 0DD0     		beq	.L151
+ 665 0170 40F27B11 		movw	r1, #379
+ 666 0174 1720     		movs	r0, #23
+ 667 0176 FFF7FEFF 		bl	failure3
+ 668 017a 6AE7     		b	.L132
+ 669              	.L149:
+ 670 017c 0E48     		ldr	r0, .L152+36
+ 671 017e FFF7FEFF 		bl	ee_read
+ 672 0182 66E7     		b	.L132
+ 673              	.L150:
+ 674 0184 B020     		movs	r0, #176
+ 675 0186 FFF7FEFF 		bl	ee_read
+ 676 018a 62E7     		b	.L132
+ 677              	.L151:
+ 678 018c B020     		movs	r0, #176
+ 679 018e FFF7FEFF 		bl	ee_read
+ 680 0192 5EE7     		b	.L132
+ 681              	.L153:
+ 682              		.align	2
+ 683              	.L152:
+ 684 0194 8A004900 		.word	4784266
+ 685 0198 8B004A00 		.word	4849803
+ 686 019c 8C004B00 		.word	4915340
+ 687 01a0 8D004C00 		.word	4980877
+ 688 01a4 8E004D00 		.word	5046414
+ 689 01a8 8C004900 		.word	4784268
+ 690 01ac 8D004A00 		.word	4849805
+ 691 01b0 8E004B00 		.word	4915342
+ 692 01b4 8F004C00 		.word	4980879
+ 693 01b8 90004D00 		.word	5046416
+ 695              		.section	.text.user_eeprom_write_app_info,"ax",%progbits
+ 696              		.align	1
+ 697              		.global	user_eeprom_write_app_info
+ 698              		.syntax unified
+ 699              		.thumb
+ 700              		.thumb_func
+ 701              		.fpu fpv4-sp-d16
+ 703              	user_eeprom_write_app_info:
+ 704              		@ args = 0, pretend = 0, frame = 0
+ 705              		@ frame_needed = 0, uses_anonymous_args = 0
+ 706 0000 38B5     		push	{r3, r4, r5, lr}
+ 707 0002 0546     		mov	r5, r0
+ 708 0004 0C46     		mov	r4, r1
+ 709 0006 FFF7FEFF 		bl	ee_version_get
+ 710 000a 80B9     		cbnz	r0, .L155
+ 711 000c 2A46     		mov	r2, r5
+ 712 000e 4FF01E11 		mov	r1, #1966110
+ 713 0012 2C48     		ldr	r0, .L172
+ 714 0014 FFF7FEFF 		bl	ee_write
+ 715              	.L156:
+ 716 0018 FFF7FEFF 		bl	ee_version_get
+ 717 001c 60BB     		cbnz	r0, .L160
+ 718 001e 2246     		mov	r2, r4
+ 719 0020 4FF01411 		mov	r1, #1310740
+ 720 0024 2848     		ldr	r0, .L172+4
+ 721 0026 FFF7FEFF 		bl	ee_write
+ 722              	.L161:
+ 723 002a 0020     		movs	r0, #0
+ 724 002c 38BD     		pop	{r3, r4, r5, pc}
+ 725              	.L155:
+ 726 002e FFF7FEFF 		bl	ee_version_get
+ 727 0032 0D28     		cmp	r0, #13
+ 728 0034 0DD0     		beq	.L166
+ 729 0036 FFF7FEFF 		bl	ee_version_get
+ 730 003a 0128     		cmp	r0, #1
+ 731 003c 10D0     		beq	.L167
+ 732 003e FFF7FEFF 		bl	ee_version_get
+ 733 0042 0E28     		cmp	r0, #14
+ 734 0044 12D0     		beq	.L168
+ 735 0046 4FF4D871 		mov	r1, #432
+ 736 004a 1720     		movs	r0, #23
+ 737 004c FFF7FEFF 		bl	failure3
+ 738 0050 E2E7     		b	.L156
+ 739              	.L166:
+ 740 0052 2A46     		mov	r2, r5
+ 741 0054 4FF01E11 		mov	r1, #1966110
+ 742 0058 1C48     		ldr	r0, .L172+8
+ 743 005a FFF7FEFF 		bl	ee_write
+ 744 005e DBE7     		b	.L156
+ 745              	.L167:
+ 746 0060 2A46     		mov	r2, r5
+ 747 0062 1E21     		movs	r1, #30
+ 748 0064 F420     		movs	r0, #244
+ 749 0066 FFF7FEFF 		bl	ee_write
+ 750 006a D5E7     		b	.L156
+ 751              	.L168:
+ 752 006c 2A46     		mov	r2, r5
+ 753 006e 1E21     		movs	r1, #30
+ 754 0070 F420     		movs	r0, #244
+ 755 0072 FFF7FEFF 		bl	ee_write
+ 756 0076 CFE7     		b	.L156
+ 757              	.L160:
+ 758 0078 FFF7FEFF 		bl	ee_version_get
+ 759 007c 0D28     		cmp	r0, #13
+ 760 007e 0DD0     		beq	.L169
+ 761 0080 FFF7FEFF 		bl	ee_version_get
+ 762 0084 0128     		cmp	r0, #1
+ 763 0086 10D0     		beq	.L170
+ 764 0088 FFF7FEFF 		bl	ee_version_get
+ 765 008c 0E28     		cmp	r0, #14
+ 766 008e 12D0     		beq	.L171
+ 767 0090 40F2B111 		movw	r1, #433
+ 768 0094 1720     		movs	r0, #23
+ 769 0096 FFF7FEFF 		bl	failure3
+ 770 009a C6E7     		b	.L161
+ 771              	.L169:
+ 772 009c 2246     		mov	r2, r4
+ 773 009e 4FF01411 		mov	r1, #1310740
+ 774 00a2 0B48     		ldr	r0, .L172+12
+ 775 00a4 FFF7FEFF 		bl	ee_write
+ 776 00a8 BFE7     		b	.L161
+ 777              	.L170:
+ 778 00aa 2246     		mov	r2, r4
+ 779 00ac 1421     		movs	r1, #20
+ 780 00ae E020     		movs	r0, #224
+ 781 00b0 FFF7FEFF 		bl	ee_write
+ 782 00b4 B9E7     		b	.L161
+ 783              	.L171:
+ 784 00b6 2246     		mov	r2, r4
+ 785 00b8 1421     		movs	r1, #20
+ 786 00ba E020     		movs	r0, #224
+ 787 00bc FFF7FEFF 		bl	ee_write
+ 788 00c0 B3E7     		b	.L161
+ 789              	.L173:
+ 790 00c2 00BF     		.align	2
+ 791              	.L172:
+ 792 00c4 D0007F00 		.word	8323280
+ 793 00c8 BC006B00 		.word	7012540
+ 794 00cc D2007F00 		.word	8323282
+ 795 00d0 BE006B00 		.word	7012542
+ 797              		.section	.text.user_eeprom_reset_reset_counter,"ax",%progbits
+ 798              		.align	1
+ 799              		.global	user_eeprom_reset_reset_counter
+ 800              		.syntax unified
+ 801              		.thumb
+ 802              		.thumb_func
+ 803              		.fpu fpv4-sp-d16
+ 805              	user_eeprom_reset_reset_counter:
+ 806              		@ args = 0, pretend = 0, frame = 0
+ 807              		@ frame_needed = 0, uses_anonymous_args = 0
+ 808 0000 08B5     		push	{r3, lr}
+ 809 0002 FFF7FEFF 		bl	ee_version_get
+ 810 0006 30B9     		cbnz	r0, .L175
+ 811 0008 0022     		movs	r2, #0
+ 812 000a 1549     		ldr	r1, .L184
+ 813 000c 1548     		ldr	r0, .L184+4
+ 814 000e FFF7FEFF 		bl	ee_write_max32
+ 815              	.L176:
+ 816 0012 0020     		movs	r0, #0
+ 817 0014 08BD     		pop	{r3, pc}
+ 818              	.L175:
+ 819 0016 FFF7FEFF 		bl	ee_version_get
+ 820 001a 0D28     		cmp	r0, #13
+ 821 001c 0DD0     		beq	.L181
+ 822 001e FFF7FEFF 		bl	ee_version_get
+ 823 0022 0128     		cmp	r0, #1
+ 824 0024 0FD0     		beq	.L182
+ 825 0026 FFF7FEFF 		bl	ee_version_get
+ 826 002a 0E28     		cmp	r0, #14
+ 827 002c 11D0     		beq	.L183
+ 828 002e 4FF4E071 		mov	r1, #448
+ 829 0032 1720     		movs	r0, #23
+ 830 0034 FFF7FEFF 		bl	failure3
+ 831 0038 EBE7     		b	.L176
+ 832              	.L181:
+ 833 003a 0022     		movs	r2, #0
+ 834 003c 0849     		ldr	r1, .L184
+ 835 003e 0A48     		ldr	r0, .L184+8
+ 836 0040 FFF7FEFF 		bl	ee_write_max32
+ 837 0044 E5E7     		b	.L176
+ 838              	.L182:
+ 839 0046 0022     		movs	r2, #0
+ 840 0048 0221     		movs	r1, #2
+ 841 004a AA20     		movs	r0, #170
+ 842 004c FFF7FEFF 		bl	ee_write_max32
+ 843 0050 DFE7     		b	.L176
+ 844              	.L183:
+ 845 0052 0022     		movs	r2, #0
+ 846 0054 0221     		movs	r1, #2
+ 847 0056 AA20     		movs	r0, #170
+ 848 0058 FFF7FEFF 		bl	ee_write_max32
+ 849 005c D9E7     		b	.L176
+ 850              	.L185:
+ 851 005e 00BF     		.align	2
+ 852              	.L184:
+ 853 0060 02000100 		.word	65538
+ 854 0064 88004600 		.word	4587656
+ 855 0068 8A004600 		.word	4587658
+ 857              		.section	.text.user_eeprom_ptr_to_uint16_field_member,"ax",%progbits
+ 858              		.align	1
+ 859              		.global	user_eeprom_ptr_to_uint16_field_member
+ 860              		.syntax unified
+ 861              		.thumb
+ 862              		.thumb_func
+ 863              		.fpu fpv4-sp-d16
+ 865              	user_eeprom_ptr_to_uint16_field_member:
+ 866              		@ args = 0, pretend = 0, frame = 0
+ 867              		@ frame_needed = 0, uses_anonymous_args = 0
+ 868 0000 08B5     		push	{r3, lr}
+ 869 0002 0828     		cmp	r0, #8
+ 870 0004 00F25981 		bhi	.L234
+ 871 0008 DFE810F0 		tbh	[pc, r0, lsl #1]
+ 872              	.L189:
+ 873 000c 0900     		.2byte	(.L197-.L189)/2
+ 874 000e 2D00     		.2byte	(.L196-.L189)/2
+ 875 0010 5400     		.2byte	(.L195-.L189)/2
+ 876 0012 7900     		.2byte	(.L194-.L189)/2
+ 877 0014 9E00     		.2byte	(.L193-.L189)/2
+ 878 0016 C300     		.2byte	(.L192-.L189)/2
+ 879 0018 E800     		.2byte	(.L191-.L189)/2
+ 880 001a 0D01     		.2byte	(.L190-.L189)/2
+ 881 001c 3201     		.2byte	(.L188-.L189)/2
+ 882              		.p2align 1
+ 883              	.L197:
+ 884 001e FFF7FEFF 		bl	ee_version_get
+ 885 0022 10B9     		cbnz	r0, .L198
+ 886 0024 FFF7FEFF 		bl	ee_read
+ 887              	.L186:
+ 888 0028 08BD     		pop	{r3, pc}
+ 889              	.L198:
+ 890 002a FFF7FEFF 		bl	ee_version_get
+ 891 002e 0D28     		cmp	r0, #13
+ 892 0030 0DD0     		beq	.L236
+ 893 0032 FFF7FEFF 		bl	ee_version_get
+ 894 0036 0128     		cmp	r0, #1
+ 895 0038 0DD0     		beq	.L237
+ 896 003a FFF7FEFF 		bl	ee_version_get
+ 897 003e 0E28     		cmp	r0, #14
+ 898 0040 0DD0     		beq	.L238
+ 899 0042 4FF4F671 		mov	r1, #492
+ 900 0046 1720     		movs	r0, #23
+ 901 0048 FFF7FEFF 		bl	failure3
+ 902 004c ECE7     		b	.L186
+ 903              	.L236:
+ 904 004e 0020     		movs	r0, #0
+ 905 0050 FFF7FEFF 		bl	ee_read
+ 906 0054 E8E7     		b	.L186
+ 907              	.L237:
+ 908 0056 0020     		movs	r0, #0
+ 909 0058 FFF7FEFF 		bl	ee_read
+ 910 005c E4E7     		b	.L186
+ 911              	.L238:
+ 912 005e 0020     		movs	r0, #0
+ 913 0060 FFF7FEFF 		bl	ee_read
+ 914 0064 E0E7     		b	.L186
+ 915              	.L196:
+ 916 0066 FFF7FEFF 		bl	ee_version_get
+ 917 006a 20B9     		cbnz	r0, .L202
+ 918 006c 4FF00210 		mov	r0, #131074
+ 919 0070 FFF7FEFF 		bl	ee_read
+ 920 0074 D8E7     		b	.L186
+ 921              	.L202:
+ 922 0076 FFF7FEFF 		bl	ee_version_get
+ 923 007a 0D28     		cmp	r0, #13
+ 924 007c 0DD0     		beq	.L239
+ 925 007e FFF7FEFF 		bl	ee_version_get
+ 926 0082 0128     		cmp	r0, #1
+ 927 0084 0ED0     		beq	.L240
+ 928 0086 FFF7FEFF 		bl	ee_version_get
+ 929 008a 0E28     		cmp	r0, #14
+ 930 008c 0ED0     		beq	.L241
+ 931 008e 40F2EF11 		movw	r1, #495
+ 932 0092 1720     		movs	r0, #23
+ 933 0094 FFF7FEFF 		bl	failure3
+ 934 0098 C6E7     		b	.L186
+ 935              	.L239:
+ 936 009a 4FF00210 		mov	r0, #131074
+ 937 009e FFF7FEFF 		bl	ee_read
+ 938 00a2 C1E7     		b	.L186
+ 939              	.L240:
+ 940 00a4 0220     		movs	r0, #2
+ 941 00a6 FFF7FEFF 		bl	ee_read
+ 942 00aa BDE7     		b	.L186
+ 943              	.L241:
+ 944 00ac 0220     		movs	r0, #2
+ 945 00ae FFF7FEFF 		bl	ee_read
+ 946 00b2 B9E7     		b	.L186
+ 947              	.L195:
+ 948 00b4 FFF7FEFF 		bl	ee_version_get
+ 949 00b8 18B9     		cbnz	r0, .L206
+ 950 00ba 8148     		ldr	r0, .L263
+ 951 00bc FFF7FEFF 		bl	ee_read
+ 952 00c0 B2E7     		b	.L186
+ 953              	.L206:
+ 954 00c2 FFF7FEFF 		bl	ee_version_get
+ 955 00c6 0D28     		cmp	r0, #13
+ 956 00c8 0DD0     		beq	.L242
+ 957 00ca FFF7FEFF 		bl	ee_version_get
+ 958 00ce 0128     		cmp	r0, #1
+ 959 00d0 0DD0     		beq	.L243
+ 960 00d2 FFF7FEFF 		bl	ee_version_get
+ 961 00d6 0E28     		cmp	r0, #14
+ 962 00d8 0DD0     		beq	.L244
+ 963 00da 4FF4F971 		mov	r1, #498
+ 964 00de 1720     		movs	r0, #23
+ 965 00e0 FFF7FEFF 		bl	failure3
+ 966 00e4 A0E7     		b	.L186
+ 967              	.L242:
+ 968 00e6 7648     		ldr	r0, .L263
+ 969 00e8 FFF7FEFF 		bl	ee_read
+ 970 00ec 9CE7     		b	.L186
+ 971              	.L243:
+ 972 00ee 7D20     		movs	r0, #125
+ 973 00f0 FFF7FEFF 		bl	ee_read
+ 974 00f4 98E7     		b	.L186
+ 975              	.L244:
+ 976 00f6 7D20     		movs	r0, #125
+ 977 00f8 FFF7FEFF 		bl	ee_read
+ 978 00fc 94E7     		b	.L186
+ 979              	.L194:
+ 980 00fe FFF7FEFF 		bl	ee_version_get
+ 981 0102 18B9     		cbnz	r0, .L210
+ 982 0104 6F48     		ldr	r0, .L263+4
+ 983 0106 FFF7FEFF 		bl	ee_read
+ 984 010a 8DE7     		b	.L186
+ 985              	.L210:
+ 986 010c FFF7FEFF 		bl	ee_version_get
+ 987 0110 0D28     		cmp	r0, #13
+ 988 0112 0DD0     		beq	.L245
+ 989 0114 FFF7FEFF 		bl	ee_version_get
+ 990 0118 0128     		cmp	r0, #1
+ 991 011a 0DD0     		beq	.L246
+ 992 011c FFF7FEFF 		bl	ee_version_get
+ 993 0120 0E28     		cmp	r0, #14
+ 994 0122 0DD0     		beq	.L247
+ 995 0124 40F2F511 		movw	r1, #501
+ 996 0128 1720     		movs	r0, #23
+ 997 012a FFF7FEFF 		bl	failure3
+ 998 012e 7BE7     		b	.L186
+ 999              	.L245:
+ 1000 0130 6448     		ldr	r0, .L263+4
+ 1001 0132 FFF7FEFF 		bl	ee_read
+ 1002 0136 77E7     		b	.L186
+ 1003              	.L246:
+ 1004 0138 9520     		movs	r0, #149
+ 1005 013a FFF7FEFF 		bl	ee_read
+ 1006 013e 73E7     		b	.L186
+ 1007              	.L247:
+ 1008 0140 9520     		movs	r0, #149
+ 1009 0142 FFF7FEFF 		bl	ee_read
+ 1010 0146 6FE7     		b	.L186
+ 1011              	.L193:
+ 1012 0148 FFF7FEFF 		bl	ee_version_get
+ 1013 014c 18B9     		cbnz	r0, .L214
+ 1014 014e 5E48     		ldr	r0, .L263+8
+ 1015 0150 FFF7FEFF 		bl	ee_read
+ 1016 0154 68E7     		b	.L186
+ 1017              	.L214:
+ 1018 0156 FFF7FEFF 		bl	ee_version_get
+ 1019 015a 0D28     		cmp	r0, #13
+ 1020 015c 0DD0     		beq	.L248
+ 1021 015e FFF7FEFF 		bl	ee_version_get
+ 1022 0162 0128     		cmp	r0, #1
+ 1023 0164 0DD0     		beq	.L249
+ 1024 0166 FFF7FEFF 		bl	ee_version_get
+ 1025 016a 0E28     		cmp	r0, #14
+ 1026 016c 0DD0     		beq	.L250
+ 1027 016e 4FF4FC71 		mov	r1, #504
+ 1028 0172 1720     		movs	r0, #23
+ 1029 0174 FFF7FEFF 		bl	failure3
+ 1030 0178 56E7     		b	.L186
+ 1031              	.L248:
+ 1032 017a 5348     		ldr	r0, .L263+8
+ 1033 017c FFF7FEFF 		bl	ee_read
+ 1034 0180 52E7     		b	.L186
+ 1035              	.L249:
+ 1036 0182 0520     		movs	r0, #5
+ 1037 0184 FFF7FEFF 		bl	ee_read
+ 1038 0188 4EE7     		b	.L186
+ 1039              	.L250:
+ 1040 018a 0520     		movs	r0, #5
+ 1041 018c FFF7FEFF 		bl	ee_read
+ 1042 0190 4AE7     		b	.L186
+ 1043              	.L192:
+ 1044 0192 FFF7FEFF 		bl	ee_version_get
+ 1045 0196 18B9     		cbnz	r0, .L218
+ 1046 0198 4C48     		ldr	r0, .L263+12
+ 1047 019a FFF7FEFF 		bl	ee_read
+ 1048 019e 43E7     		b	.L186
+ 1049              	.L218:
+ 1050 01a0 FFF7FEFF 		bl	ee_version_get
+ 1051 01a4 0D28     		cmp	r0, #13
+ 1052 01a6 0DD0     		beq	.L251
+ 1053 01a8 FFF7FEFF 		bl	ee_version_get
+ 1054 01ac 0128     		cmp	r0, #1
+ 1055 01ae 0DD0     		beq	.L252
+ 1056 01b0 FFF7FEFF 		bl	ee_version_get
+ 1057 01b4 0E28     		cmp	r0, #14
+ 1058 01b6 0DD0     		beq	.L253
+ 1059 01b8 40F2FB11 		movw	r1, #507
+ 1060 01bc 1720     		movs	r0, #23
+ 1061 01be FFF7FEFF 		bl	failure3
+ 1062 01c2 31E7     		b	.L186
+ 1063              	.L251:
+ 1064 01c4 4248     		ldr	r0, .L263+16
+ 1065 01c6 FFF7FEFF 		bl	ee_read
+ 1066 01ca 2DE7     		b	.L186
+ 1067              	.L252:
+ 1068 01cc AA20     		movs	r0, #170
+ 1069 01ce FFF7FEFF 		bl	ee_read
+ 1070 01d2 29E7     		b	.L186
+ 1071              	.L253:
+ 1072 01d4 AA20     		movs	r0, #170
+ 1073 01d6 FFF7FEFF 		bl	ee_read
+ 1074 01da 25E7     		b	.L186
+ 1075              	.L191:
+ 1076 01dc FFF7FEFF 		bl	ee_version_get
+ 1077 01e0 18B9     		cbnz	r0, .L222
+ 1078 01e2 3C48     		ldr	r0, .L263+20
+ 1079 01e4 FFF7FEFF 		bl	ee_read
+ 1080 01e8 1EE7     		b	.L186
+ 1081              	.L222:
+ 1082 01ea FFF7FEFF 		bl	ee_version_get
+ 1083 01ee 0D28     		cmp	r0, #13
+ 1084 01f0 0DD0     		beq	.L254
+ 1085 01f2 FFF7FEFF 		bl	ee_version_get
+ 1086 01f6 0128     		cmp	r0, #1
+ 1087 01f8 0DD0     		beq	.L255
+ 1088 01fa FFF7FEFF 		bl	ee_version_get
+ 1089 01fe 0E28     		cmp	r0, #14
+ 1090 0200 0DD0     		beq	.L256
+ 1091 0202 4FF4FF71 		mov	r1, #510
+ 1092 0206 1720     		movs	r0, #23
+ 1093 0208 FFF7FEFF 		bl	failure3
+ 1094 020c 0CE7     		b	.L186
+ 1095              	.L254:
+ 1096 020e 3248     		ldr	r0, .L263+24
+ 1097 0210 FFF7FEFF 		bl	ee_read
+ 1098 0214 08E7     		b	.L186
+ 1099              	.L255:
+ 1100 0216 B220     		movs	r0, #178
+ 1101 0218 FFF7FEFF 		bl	ee_read
+ 1102 021c 04E7     		b	.L186
+ 1103              	.L256:
+ 1104 021e B220     		movs	r0, #178
+ 1105 0220 FFF7FEFF 		bl	ee_read
+ 1106 0224 00E7     		b	.L186
+ 1107              	.L190:
+ 1108 0226 FFF7FEFF 		bl	ee_version_get
+ 1109 022a 18B9     		cbnz	r0, .L226
+ 1110 022c 2B48     		ldr	r0, .L263+28
+ 1111 022e FFF7FEFF 		bl	ee_read
+ 1112 0232 F9E6     		b	.L186
+ 1113              	.L226:
+ 1114 0234 FFF7FEFF 		bl	ee_version_get
+ 1115 0238 0D28     		cmp	r0, #13
+ 1116 023a 0DD0     		beq	.L257
+ 1117 023c FFF7FEFF 		bl	ee_version_get
+ 1118 0240 0128     		cmp	r0, #1
+ 1119 0242 0DD0     		beq	.L258
+ 1120 0244 FFF7FEFF 		bl	ee_version_get
+ 1121 0248 0E28     		cmp	r0, #14
+ 1122 024a 0DD0     		beq	.L259
+ 1123 024c 40F20121 		movw	r1, #513
+ 1124 0250 1720     		movs	r0, #23
+ 1125 0252 FFF7FEFF 		bl	failure3
+ 1126 0256 E7E6     		b	.L186
+ 1127              	.L257:
+ 1128 0258 2148     		ldr	r0, .L263+32
+ 1129 025a FFF7FEFF 		bl	ee_read
+ 1130 025e E3E6     		b	.L186
+ 1131              	.L258:
+ 1132 0260 C920     		movs	r0, #201
+ 1133 0262 FFF7FEFF 		bl	ee_read
+ 1134 0266 DFE6     		b	.L186
+ 1135              	.L259:
+ 1136 0268 C920     		movs	r0, #201
+ 1137 026a FFF7FEFF 		bl	ee_read
+ 1138 026e DBE6     		b	.L186
+ 1139              	.L188:
+ 1140 0270 FFF7FEFF 		bl	ee_version_get
+ 1141 0274 18B9     		cbnz	r0, .L230
+ 1142 0276 1B48     		ldr	r0, .L263+36
+ 1143 0278 FFF7FEFF 		bl	ee_read
+ 1144 027c D4E6     		b	.L186
+ 1145              	.L230:
+ 1146 027e FFF7FEFF 		bl	ee_version_get
+ 1147 0282 0D28     		cmp	r0, #13
+ 1148 0284 0DD0     		beq	.L260
+ 1149 0286 FFF7FEFF 		bl	ee_version_get
+ 1150 028a 0128     		cmp	r0, #1
+ 1151 028c 0DD0     		beq	.L261
+ 1152 028e FFF7FEFF 		bl	ee_version_get
+ 1153 0292 0E28     		cmp	r0, #14
+ 1154 0294 0DD0     		beq	.L262
+ 1155 0296 4FF40171 		mov	r1, #516
+ 1156 029a 1720     		movs	r0, #23
+ 1157 029c FFF7FEFF 		bl	failure3
+ 1158 02a0 C2E6     		b	.L186
+ 1159              	.L260:
+ 1160 02a2 1148     		ldr	r0, .L263+40
+ 1161 02a4 FFF7FEFF 		bl	ee_read
+ 1162 02a8 BEE6     		b	.L186
+ 1163              	.L261:
+ 1164 02aa CB20     		movs	r0, #203
+ 1165 02ac FFF7FEFF 		bl	ee_read
+ 1166 02b0 BAE6     		b	.L186
+ 1167              	.L262:
+ 1168 02b2 CB20     		movs	r0, #203
+ 1169 02b4 FFF7FEFF 		bl	ee_read
+ 1170 02b8 B6E6     		b	.L186
+ 1171              	.L234:
+ 1172 02ba 0020     		movs	r0, #0
+ 1173 02bc B4E6     		b	.L186
+ 1174              	.L264:
+ 1175 02be 00BF     		.align	2
+ 1176              	.L263:
+ 1177 02c0 68004E00 		.word	5111912
+ 1178 02c4 6C004F00 		.word	5177452
+ 1179 02c8 6E005300 		.word	5439598
+ 1180 02cc 88004600 		.word	4587656
+ 1181 02d0 8A004600 		.word	4587658
+ 1182 02d4 92005500 		.word	5570706
+ 1183 02d8 94005500 		.word	5570708
+ 1184 02dc EF009E00 		.word	10354927
+ 1185 02e0 F1009E00 		.word	10354929
+ 1186 02e4 EE009D00 		.word	10289390
+ 1187 02e8 F0009D00 		.word	10289392
+ 1189              		.section	.text.user_eeprom_read_module_eeprom_version,"ax",%progbits
+ 1190              		.align	1
+ 1191              		.global	user_eeprom_read_module_eeprom_version
+ 1192              		.syntax unified
+ 1193              		.thumb
+ 1194              		.thumb_func
+ 1195              		.fpu fpv4-sp-d16
+ 1197              	user_eeprom_read_module_eeprom_version:
+ 1198              		@ args = 0, pretend = 0, frame = 0
+ 1199              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1200 0000 08B5     		push	{r3, lr}
+ 1201 0002 0020     		movs	r0, #0
+ 1202 0004 FFF7FEFF 		bl	user_eeprom_ptr_to_uint16_field_member
+ 1203 0008 0088     		ldrh	r0, [r0]
+ 1204 000a 08BD     		pop	{r3, pc}
+ 1206              		.section	.text.user_eeprom_read_module_id,"ax",%progbits
+ 1207              		.align	1
+ 1208              		.global	user_eeprom_read_module_id
+ 1209              		.syntax unified
+ 1210              		.thumb
+ 1211              		.thumb_func
+ 1212              		.fpu fpv4-sp-d16
+ 1214              	user_eeprom_read_module_id:
+ 1215              		@ args = 0, pretend = 0, frame = 0
+ 1216              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1217 0000 10B5     		push	{r4, lr}
+ 1218 0002 0120     		movs	r0, #1
+ 1219 0004 FFF7FEFF 		bl	user_eeprom_ptr_to_uint16_field_member
+ 1220 0008 0488     		ldrh	r4, [r0]
+ 1221 000a 240A     		lsrs	r4, r4, #8
+ 1222 000c 0120     		movs	r0, #1
+ 1223 000e FFF7FEFF 		bl	user_eeprom_ptr_to_uint16_field_member
+ 1224 0012 0088     		ldrh	r0, [r0]
+ 1225 0014 44EA0020 		orr	r0, r4, r0, lsl #8
+ 1226 0018 80B2     		uxth	r0, r0
+ 1227 001a 10BD     		pop	{r4, pc}
+ 1229              		.section	.text.user_eeprom_read_module_mcu_type,"ax",%progbits
+ 1230              		.align	1
+ 1231              		.global	user_eeprom_read_module_mcu_type
+ 1232              		.syntax unified
+ 1233              		.thumb
+ 1234              		.thumb_func
+ 1235              		.fpu fpv4-sp-d16
+ 1237              	user_eeprom_read_module_mcu_type:
+ 1238              		@ args = 0, pretend = 0, frame = 0
+ 1239              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1240 0000 08B5     		push	{r3, lr}
+ 1241 0002 0220     		movs	r0, #2
+ 1242 0004 FFF7FEFF 		bl	user_eeprom_ptr_to_uint16_field_member
+ 1243 0008 0088     		ldrh	r0, [r0]
+ 1244 000a 08BD     		pop	{r3, pc}
+ 1246              		.section	.text.user_eeprom_read_module_hw_can_active,"ax",%progbits
+ 1247              		.align	1
+ 1248              		.global	user_eeprom_read_module_hw_can_active
+ 1249              		.syntax unified
+ 1250              		.thumb
+ 1251              		.thumb_func
+ 1252              		.fpu fpv4-sp-d16
+ 1254              	user_eeprom_read_module_hw_can_active:
+ 1255              		@ args = 0, pretend = 0, frame = 0
+ 1256              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1257 0000 08B5     		push	{r3, lr}
+ 1258 0002 0320     		movs	r0, #3
+ 1259 0004 FFF7FEFF 		bl	user_eeprom_ptr_to_uint16_field_member
+ 1260 0008 0088     		ldrh	r0, [r0]
+ 1261 000a 08BD     		pop	{r3, pc}
+ 1263              		.section	.text.user_eeprom_read_module_bootloader_version,"ax",%progbits
+ 1264              		.align	1
+ 1265              		.global	user_eeprom_read_module_bootloader_version
+ 1266              		.syntax unified
+ 1267              		.thumb
+ 1268              		.thumb_func
+ 1269              		.fpu fpv4-sp-d16
+ 1271              	user_eeprom_read_module_bootloader_version:
+ 1272              		@ args = 0, pretend = 0, frame = 0
+ 1273              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1274 0000 10B5     		push	{r4, lr}
+ 1275 0002 0420     		movs	r0, #4
+ 1276 0004 FFF7FEFF 		bl	user_eeprom_ptr_to_uint16_field_member
+ 1277 0008 0488     		ldrh	r4, [r0]
+ 1278 000a 240A     		lsrs	r4, r4, #8
+ 1279 000c 0420     		movs	r0, #4
+ 1280 000e FFF7FEFF 		bl	user_eeprom_ptr_to_uint16_field_member
+ 1281 0012 0088     		ldrh	r0, [r0]
+ 1282 0014 44EA0020 		orr	r0, r4, r0, lsl #8
+ 1283 0018 80B2     		uxth	r0, r0
+ 1284 001a 10BD     		pop	{r4, pc}
+ 1286              		.section	.text.user_eeprom_read_module_reset_counter,"ax",%progbits
+ 1287              		.align	1
+ 1288              		.global	user_eeprom_read_module_reset_counter
+ 1289              		.syntax unified
+ 1290              		.thumb
+ 1291              		.thumb_func
+ 1292              		.fpu fpv4-sp-d16
+ 1294              	user_eeprom_read_module_reset_counter:
+ 1295              		@ args = 0, pretend = 0, frame = 0
+ 1296              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1297 0000 08B5     		push	{r3, lr}
+ 1298 0002 0520     		movs	r0, #5
+ 1299 0004 FFF7FEFF 		bl	user_eeprom_ptr_to_uint16_field_member
+ 1300 0008 0088     		ldrh	r0, [r0]
+ 1301 000a 08BD     		pop	{r3, pc}
+ 1303              		.section	.text.user_eeprom_read_module_prog_status,"ax",%progbits
+ 1304              		.align	1
+ 1305              		.global	user_eeprom_read_module_prog_status
+ 1306              		.syntax unified
+ 1307              		.thumb
+ 1308              		.thumb_func
+ 1309              		.fpu fpv4-sp-d16
+ 1311              	user_eeprom_read_module_prog_status:
+ 1312              		@ args = 0, pretend = 0, frame = 0
+ 1313              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1314 0000 10B5     		push	{r4, lr}
+ 1315 0002 0620     		movs	r0, #6
+ 1316 0004 FFF7FEFF 		bl	user_eeprom_ptr_to_uint16_field_member
+ 1317 0008 0488     		ldrh	r4, [r0]
+ 1318 000a 240A     		lsrs	r4, r4, #8
+ 1319 000c 0620     		movs	r0, #6
+ 1320 000e FFF7FEFF 		bl	user_eeprom_ptr_to_uint16_field_member
+ 1321 0012 04F00F00 		and	r0, r4, #15
+ 1322 0016 10BD     		pop	{r4, pc}
+ 1324              		.section	.text.user_eeprom_read_module_cop_wd_timeout,"ax",%progbits
+ 1325              		.align	1
+ 1326              		.global	user_eeprom_read_module_cop_wd_timeout
+ 1327              		.syntax unified
+ 1328              		.thumb
+ 1329              		.thumb_func
+ 1330              		.fpu fpv4-sp-d16
+ 1332              	user_eeprom_read_module_cop_wd_timeout:
+ 1333              		@ args = 0, pretend = 0, frame = 0
+ 1334              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1335 0000 10B5     		push	{r4, lr}
+ 1336 0002 0720     		movs	r0, #7
+ 1337 0004 FFF7FEFF 		bl	user_eeprom_ptr_to_uint16_field_member
+ 1338 0008 0488     		ldrh	r4, [r0]
+ 1339 000a 240A     		lsrs	r4, r4, #8
+ 1340 000c 0720     		movs	r0, #7
+ 1341 000e FFF7FEFF 		bl	user_eeprom_ptr_to_uint16_field_member
+ 1342 0012 0388     		ldrh	r3, [r0]
+ 1343 0014 1B02     		lsls	r3, r3, #8
+ 1344 0016 9BB2     		uxth	r3, r3
+ 1345 0018 2343     		orrs	r3, r3, r4
+ 1346 001a 0CBF     		ite	eq
+ 1347 001c 0120     		moveq	r0, #1
+ 1348 001e 0020     		movne	r0, #0
+ 1349 0020 10BD     		pop	{r4, pc}
+ 1351              		.section	.text.user_eeprom_read_bl_can_bus,"ax",%progbits
+ 1352              		.align	1
+ 1353              		.global	user_eeprom_read_bl_can_bus
+ 1354              		.syntax unified
+ 1355              		.thumb
+ 1356              		.thumb_func
+ 1357              		.fpu fpv4-sp-d16
+ 1359              	user_eeprom_read_bl_can_bus:
+ 1360              		@ args = 0, pretend = 0, frame = 0
+ 1361              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1362 0000 10B5     		push	{r4, lr}
+ 1363 0002 0820     		movs	r0, #8
+ 1364 0004 FFF7FEFF 		bl	user_eeprom_ptr_to_uint16_field_member
+ 1365 0008 0488     		ldrh	r4, [r0]
+ 1366 000a 240A     		lsrs	r4, r4, #8
+ 1367 000c 0820     		movs	r0, #8
+ 1368 000e FFF7FEFF 		bl	user_eeprom_ptr_to_uint16_field_member
+ 1369 0012 0088     		ldrh	r0, [r0]
+ 1370 0014 44EA0020 		orr	r0, r4, r0, lsl #8
+ 1371 0018 80B2     		uxth	r0, r0
+ 1372 001a 10BD     		pop	{r4, pc}
+ 1374              		.section	.text.user_eeprom_ptr_to_char_field_member,"ax",%progbits
+ 1375              		.align	1
+ 1376              		.global	user_eeprom_ptr_to_char_field_member
+ 1377              		.syntax unified
+ 1378              		.thumb
+ 1379              		.thumb_func
+ 1380              		.fpu fpv4-sp-d16
+ 1382              	user_eeprom_ptr_to_char_field_member:
+ 1383              		@ args = 0, pretend = 0, frame = 0
+ 1384              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1385 0000 08B5     		push	{r3, lr}
+ 1386 0002 0728     		cmp	r0, #7
+ 1387 0004 00F23281 		bhi	.L326
+ 1388 0008 DFE810F0 		tbh	[pc, r0, lsl #1]
+ 1389              	.L286:
+ 1390 000c 0800     		.2byte	(.L293-.L286)/2
+ 1391 000e 2D00     		.2byte	(.L292-.L286)/2
+ 1392 0010 5200     		.2byte	(.L291-.L286)/2
+ 1393 0012 7700     		.2byte	(.L290-.L286)/2
+ 1394 0014 9C00     		.2byte	(.L289-.L286)/2
+ 1395 0016 C100     		.2byte	(.L288-.L286)/2
+ 1396 0018 E600     		.2byte	(.L287-.L286)/2
+ 1397 001a 0B01     		.2byte	(.L285-.L286)/2
+ 1398              		.p2align 1
+ 1399              	.L293:
+ 1400 001c FFF7FEFF 		bl	ee_version_get
+ 1401 0020 18B9     		cbnz	r0, .L294
+ 1402 0022 9348     		ldr	r0, .L352
+ 1403 0024 FFF7FEFF 		bl	ee_read
+ 1404              	.L283:
+ 1405 0028 08BD     		pop	{r3, pc}
+ 1406              	.L294:
+ 1407 002a FFF7FEFF 		bl	ee_version_get
+ 1408 002e 0D28     		cmp	r0, #13
+ 1409 0030 0DD0     		beq	.L328
+ 1410 0032 FFF7FEFF 		bl	ee_version_get
+ 1411 0036 0128     		cmp	r0, #1
+ 1412 0038 0DD0     		beq	.L329
+ 1413 003a FFF7FEFF 		bl	ee_version_get
+ 1414 003e 0E28     		cmp	r0, #14
+ 1415 0040 0DD0     		beq	.L330
+ 1416 0042 40F21921 		movw	r1, #537
+ 1417 0046 1720     		movs	r0, #23
+ 1418 0048 FFF7FEFF 		bl	failure3
+ 1419 004c ECE7     		b	.L283
+ 1420              	.L328:
+ 1421 004e 8848     		ldr	r0, .L352
+ 1422 0050 FFF7FEFF 		bl	ee_read
+ 1423 0054 E8E7     		b	.L283
+ 1424              	.L329:
+ 1425 0056 2720     		movs	r0, #39
+ 1426 0058 FFF7FEFF 		bl	ee_read
+ 1427 005c E4E7     		b	.L283
+ 1428              	.L330:
+ 1429 005e 2720     		movs	r0, #39
+ 1430 0060 FFF7FEFF 		bl	ee_read
+ 1431 0064 E0E7     		b	.L283
+ 1432              	.L292:
+ 1433 0066 FFF7FEFF 		bl	ee_version_get
+ 1434 006a 18B9     		cbnz	r0, .L298
+ 1435 006c 8148     		ldr	r0, .L352+4
+ 1436 006e FFF7FEFF 		bl	ee_read
+ 1437 0072 D9E7     		b	.L283
+ 1438              	.L298:
+ 1439 0074 FFF7FEFF 		bl	ee_version_get
+ 1440 0078 0D28     		cmp	r0, #13
+ 1441 007a 0DD0     		beq	.L331
+ 1442 007c FFF7FEFF 		bl	ee_version_get
+ 1443 0080 0128     		cmp	r0, #1
+ 1444 0082 0DD0     		beq	.L332
+ 1445 0084 FFF7FEFF 		bl	ee_version_get
+ 1446 0088 0E28     		cmp	r0, #14
+ 1447 008a 0DD0     		beq	.L333
+ 1448 008c 4FF40771 		mov	r1, #540
+ 1449 0090 1720     		movs	r0, #23
+ 1450 0092 FFF7FEFF 		bl	failure3
+ 1451 0096 C7E7     		b	.L283
+ 1452              	.L331:
+ 1453 0098 7648     		ldr	r0, .L352+4
+ 1454 009a FFF7FEFF 		bl	ee_read
+ 1455 009e C3E7     		b	.L283
+ 1456              	.L332:
+ 1457 00a0 3520     		movs	r0, #53
+ 1458 00a2 FFF7FEFF 		bl	ee_read
+ 1459 00a6 BFE7     		b	.L283
+ 1460              	.L333:
+ 1461 00a8 3520     		movs	r0, #53
+ 1462 00aa FFF7FEFF 		bl	ee_read
+ 1463 00ae BBE7     		b	.L283
+ 1464              	.L291:
+ 1465 00b0 FFF7FEFF 		bl	ee_version_get
+ 1466 00b4 18B9     		cbnz	r0, .L302
+ 1467 00b6 7048     		ldr	r0, .L352+8
+ 1468 00b8 FFF7FEFF 		bl	ee_read
+ 1469 00bc B4E7     		b	.L283
+ 1470              	.L302:
+ 1471 00be FFF7FEFF 		bl	ee_version_get
+ 1472 00c2 0D28     		cmp	r0, #13
+ 1473 00c4 0DD0     		beq	.L334
+ 1474 00c6 FFF7FEFF 		bl	ee_version_get
+ 1475 00ca 0128     		cmp	r0, #1
+ 1476 00cc 0DD0     		beq	.L335
+ 1477 00ce FFF7FEFF 		bl	ee_version_get
+ 1478 00d2 0E28     		cmp	r0, #14
+ 1479 00d4 0DD0     		beq	.L336
+ 1480 00d6 40F21F21 		movw	r1, #543
+ 1481 00da 1720     		movs	r0, #23
+ 1482 00dc FFF7FEFF 		bl	failure3
+ 1483 00e0 A2E7     		b	.L283
+ 1484              	.L334:
+ 1485 00e2 6548     		ldr	r0, .L352+8
+ 1486 00e4 FFF7FEFF 		bl	ee_read
+ 1487 00e8 9EE7     		b	.L283
+ 1488              	.L335:
+ 1489 00ea 5320     		movs	r0, #83
+ 1490 00ec FFF7FEFF 		bl	ee_read
+ 1491 00f0 9AE7     		b	.L283
+ 1492              	.L336:
+ 1493 00f2 5320     		movs	r0, #83
+ 1494 00f4 FFF7FEFF 		bl	ee_read
+ 1495 00f8 96E7     		b	.L283
+ 1496              	.L290:
+ 1497 00fa FFF7FEFF 		bl	ee_version_get
+ 1498 00fe 18B9     		cbnz	r0, .L306
+ 1499 0100 5E48     		ldr	r0, .L352+12
+ 1500 0102 FFF7FEFF 		bl	ee_read
+ 1501 0106 8FE7     		b	.L283
+ 1502              	.L306:
+ 1503 0108 FFF7FEFF 		bl	ee_version_get
+ 1504 010c 0D28     		cmp	r0, #13
+ 1505 010e 0DD0     		beq	.L337
+ 1506 0110 FFF7FEFF 		bl	ee_version_get
+ 1507 0114 0128     		cmp	r0, #1
+ 1508 0116 0DD0     		beq	.L338
+ 1509 0118 FFF7FEFF 		bl	ee_version_get
+ 1510 011c 0E28     		cmp	r0, #14
+ 1511 011e 0DD0     		beq	.L339
+ 1512 0120 40F22221 		movw	r1, #546
+ 1513 0124 1720     		movs	r0, #23
+ 1514 0126 FFF7FEFF 		bl	failure3
+ 1515 012a 7DE7     		b	.L283
+ 1516              	.L337:
+ 1517 012c 5348     		ldr	r0, .L352+12
+ 1518 012e FFF7FEFF 		bl	ee_read
+ 1519 0132 79E7     		b	.L283
+ 1520              	.L338:
+ 1521 0134 7F20     		movs	r0, #127
+ 1522 0136 FFF7FEFF 		bl	ee_read
+ 1523 013a 75E7     		b	.L283
+ 1524              	.L339:
+ 1525 013c 7F20     		movs	r0, #127
+ 1526 013e FFF7FEFF 		bl	ee_read
+ 1527 0142 71E7     		b	.L283
+ 1528              	.L289:
+ 1529 0144 FFF7FEFF 		bl	ee_version_get
+ 1530 0148 18B9     		cbnz	r0, .L310
+ 1531 014a 4D48     		ldr	r0, .L352+16
+ 1532 014c FFF7FEFF 		bl	ee_read
+ 1533 0150 6AE7     		b	.L283
+ 1534              	.L310:
+ 1535 0152 FFF7FEFF 		bl	ee_version_get
+ 1536 0156 0D28     		cmp	r0, #13
+ 1537 0158 0DD0     		beq	.L340
+ 1538 015a FFF7FEFF 		bl	ee_version_get
+ 1539 015e 0128     		cmp	r0, #1
+ 1540 0160 0DD0     		beq	.L341
+ 1541 0162 FFF7FEFF 		bl	ee_version_get
+ 1542 0166 0E28     		cmp	r0, #14
+ 1543 0168 0DD0     		beq	.L342
+ 1544 016a 40F22521 		movw	r1, #549
+ 1545 016e 1720     		movs	r0, #23
+ 1546 0170 FFF7FEFF 		bl	failure3
+ 1547 0174 58E7     		b	.L283
+ 1548              	.L340:
+ 1549 0176 4248     		ldr	r0, .L352+16
+ 1550 0178 FFF7FEFF 		bl	ee_read
+ 1551 017c 54E7     		b	.L283
+ 1552              	.L341:
+ 1553 017e 8B20     		movs	r0, #139
+ 1554 0180 FFF7FEFF 		bl	ee_read
+ 1555 0184 50E7     		b	.L283
+ 1556              	.L342:
+ 1557 0186 8B20     		movs	r0, #139
+ 1558 0188 FFF7FEFF 		bl	ee_read
+ 1559 018c 4CE7     		b	.L283
+ 1560              	.L288:
+ 1561 018e FFF7FEFF 		bl	ee_version_get
+ 1562 0192 18B9     		cbnz	r0, .L314
+ 1563 0194 3B48     		ldr	r0, .L352+20
+ 1564 0196 FFF7FEFF 		bl	ee_read
+ 1565 019a 45E7     		b	.L283
+ 1566              	.L314:
+ 1567 019c FFF7FEFF 		bl	ee_version_get
+ 1568 01a0 0D28     		cmp	r0, #13
+ 1569 01a2 0DD0     		beq	.L343
+ 1570 01a4 FFF7FEFF 		bl	ee_version_get
+ 1571 01a8 0128     		cmp	r0, #1
+ 1572 01aa 0DD0     		beq	.L344
+ 1573 01ac FFF7FEFF 		bl	ee_version_get
+ 1574 01b0 0E28     		cmp	r0, #14
+ 1575 01b2 0DD0     		beq	.L345
+ 1576 01b4 4FF40A71 		mov	r1, #552
+ 1577 01b8 1720     		movs	r0, #23
+ 1578 01ba FFF7FEFF 		bl	failure3
+ 1579 01be 33E7     		b	.L283
+ 1580              	.L343:
+ 1581 01c0 3048     		ldr	r0, .L352+20
+ 1582 01c2 FFF7FEFF 		bl	ee_read
+ 1583 01c6 2FE7     		b	.L283
+ 1584              	.L344:
+ 1585 01c8 7B20     		movs	r0, #123
+ 1586 01ca FFF7FEFF 		bl	ee_read
+ 1587 01ce 2BE7     		b	.L283
+ 1588              	.L345:
+ 1589 01d0 7B20     		movs	r0, #123
+ 1590 01d2 FFF7FEFF 		bl	ee_read
+ 1591 01d6 27E7     		b	.L283
+ 1592              	.L287:
+ 1593 01d8 FFF7FEFF 		bl	ee_version_get
+ 1594 01dc 18B9     		cbnz	r0, .L318
+ 1595 01de 2A48     		ldr	r0, .L352+24
+ 1596 01e0 FFF7FEFF 		bl	ee_read
+ 1597 01e4 20E7     		b	.L283
+ 1598              	.L318:
+ 1599 01e6 FFF7FEFF 		bl	ee_version_get
+ 1600 01ea 0D28     		cmp	r0, #13
+ 1601 01ec 0DD0     		beq	.L346
+ 1602 01ee FFF7FEFF 		bl	ee_version_get
+ 1603 01f2 0128     		cmp	r0, #1
+ 1604 01f4 0DD0     		beq	.L347
+ 1605 01f6 FFF7FEFF 		bl	ee_version_get
+ 1606 01fa 0E28     		cmp	r0, #14
+ 1607 01fc 0DD0     		beq	.L348
+ 1608 01fe 40F22B21 		movw	r1, #555
+ 1609 0202 1720     		movs	r0, #23
+ 1610 0204 FFF7FEFF 		bl	failure3
+ 1611 0208 0EE7     		b	.L283
+ 1612              	.L346:
+ 1613 020a 2048     		ldr	r0, .L352+28
+ 1614 020c FFF7FEFF 		bl	ee_read
+ 1615 0210 0AE7     		b	.L283
+ 1616              	.L347:
+ 1617 0212 F420     		movs	r0, #244
+ 1618 0214 FFF7FEFF 		bl	ee_read
+ 1619 0218 06E7     		b	.L283
+ 1620              	.L348:
+ 1621 021a F420     		movs	r0, #244
+ 1622 021c FFF7FEFF 		bl	ee_read
+ 1623 0220 02E7     		b	.L283
+ 1624              	.L285:
+ 1625 0222 FFF7FEFF 		bl	ee_version_get
+ 1626 0226 18B9     		cbnz	r0, .L322
+ 1627 0228 1948     		ldr	r0, .L352+32
+ 1628 022a FFF7FEFF 		bl	ee_read
+ 1629 022e FBE6     		b	.L283
+ 1630              	.L322:
+ 1631 0230 FFF7FEFF 		bl	ee_version_get
+ 1632 0234 0D28     		cmp	r0, #13
+ 1633 0236 0DD0     		beq	.L349
+ 1634 0238 FFF7FEFF 		bl	ee_version_get
+ 1635 023c 0128     		cmp	r0, #1
+ 1636 023e 0DD0     		beq	.L350
+ 1637 0240 FFF7FEFF 		bl	ee_version_get
+ 1638 0244 0E28     		cmp	r0, #14
+ 1639 0246 0DD0     		beq	.L351
+ 1640 0248 40F22E21 		movw	r1, #558
+ 1641 024c 1720     		movs	r0, #23
+ 1642 024e FFF7FEFF 		bl	failure3
+ 1643 0252 E9E6     		b	.L283
+ 1644              	.L349:
+ 1645 0254 0F48     		ldr	r0, .L352+36
+ 1646 0256 FFF7FEFF 		bl	ee_read
+ 1647 025a E5E6     		b	.L283
+ 1648              	.L350:
+ 1649 025c E020     		movs	r0, #224
+ 1650 025e FFF7FEFF 		bl	ee_read
+ 1651 0262 E1E6     		b	.L283
+ 1652              	.L351:
+ 1653 0264 E020     		movs	r0, #224
+ 1654 0266 FFF7FEFF 		bl	ee_read
+ 1655 026a DDE6     		b	.L283
+ 1656              	.L326:
+ 1657 026c 0020     		movs	r0, #0
+ 1658 026e DBE6     		b	.L283
+ 1659              	.L353:
+ 1660              		.align	2
+ 1661              	.L352:
+ 1662 0270 0C000800 		.word	524300
+ 1663 0274 20001400 		.word	1310752
+ 1664 0278 34002000 		.word	2097204
+ 1665 027c 48003400 		.word	3407944
+ 1666 0280 5C003C00 		.word	3932252
+ 1667 0284 6A004400 		.word	4456554
+ 1668 0288 D0007F00 		.word	8323280
+ 1669 028c D2007F00 		.word	8323282
+ 1670 0290 BC006B00 		.word	7012540
+ 1671 0294 BE006B00 		.word	7012542
+ 1673              		.section	.text.user_eeprom_length_of_field_member,"ax",%progbits
+ 1674              		.align	1
+ 1675              		.global	user_eeprom_length_of_field_member
+ 1676              		.syntax unified
+ 1677              		.thumb
+ 1678              		.thumb_func
+ 1679              		.fpu fpv4-sp-d16
+ 1681              	user_eeprom_length_of_field_member:
+ 1682              		@ args = 0, pretend = 0, frame = 0
+ 1683              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1684 0000 08B5     		push	{r3, lr}
+ 1685 0002 0728     		cmp	r0, #7
+ 1686 0004 00F2D180 		bhi	.L365
+ 1687 0008 DFE800F0 		tbb	[pc, r0]
+ 1688              	.L357:
+ 1689 000c 04       		.byte	(.L364-.L357)/2
+ 1690 000d 1F       		.byte	(.L363-.L357)/2
+ 1691 000e 3A       		.byte	(.L362-.L357)/2
+ 1692 000f 55       		.byte	(.L361-.L357)/2
+ 1693 0010 6F       		.byte	(.L360-.L357)/2
+ 1694 0011 87       		.byte	(.L359-.L357)/2
+ 1695 0012 9F       		.byte	(.L358-.L357)/2
+ 1696 0013 B7       		.byte	(.L356-.L357)/2
+ 1697              		.p2align 1
+ 1698              	.L364:
+ 1699 0014 FFF7FEFF 		bl	ee_version_get
+ 1700 0018 08B9     		cbnz	r0, .L399
+ 1701 001a 1420     		movs	r0, #20
+ 1702              	.L355:
+ 1703 001c 08BD     		pop	{r3, pc}
+ 1704              	.L399:
+ 1705 001e FFF7FEFF 		bl	ee_version_get
+ 1706 0022 0D28     		cmp	r0, #13
+ 1707 0024 00F0C380 		beq	.L367
+ 1708 0028 FFF7FEFF 		bl	ee_version_get
+ 1709 002c 0128     		cmp	r0, #1
+ 1710 002e 00F0C080 		beq	.L368
+ 1711 0032 FFF7FEFF 		bl	ee_version_get
+ 1712 0036 0E28     		cmp	r0, #14
+ 1713 0038 00F0BD80 		beq	.L369
+ 1714 003c 40F24321 		movw	r1, #579
+ 1715 0040 1720     		movs	r0, #23
+ 1716 0042 FFF7FEFF 		bl	failure3
+ 1717 0046 C0B2     		uxtb	r0, r0
+ 1718 0048 E8E7     		b	.L355
+ 1719              	.L363:
+ 1720 004a FFF7FEFF 		bl	ee_version_get
+ 1721 004e 08B9     		cbnz	r0, .L400
+ 1722 0050 1420     		movs	r0, #20
+ 1723 0052 E3E7     		b	.L355
+ 1724              	.L400:
+ 1725 0054 FFF7FEFF 		bl	ee_version_get
+ 1726 0058 0D28     		cmp	r0, #13
+ 1727 005a 00F0AE80 		beq	.L371
+ 1728 005e FFF7FEFF 		bl	ee_version_get
+ 1729 0062 0128     		cmp	r0, #1
+ 1730 0064 00F0AB80 		beq	.L372
+ 1731 0068 FFF7FEFF 		bl	ee_version_get
+ 1732 006c 0E28     		cmp	r0, #14
+ 1733 006e 00F0A880 		beq	.L373
+ 1734 0072 40F24621 		movw	r1, #582
+ 1735 0076 1720     		movs	r0, #23
+ 1736 0078 FFF7FEFF 		bl	failure3
+ 1737 007c C0B2     		uxtb	r0, r0
+ 1738 007e CDE7     		b	.L355
+ 1739              	.L362:
+ 1740 0080 FFF7FEFF 		bl	ee_version_get
+ 1741 0084 08B9     		cbnz	r0, .L401
+ 1742 0086 1420     		movs	r0, #20
+ 1743 0088 C8E7     		b	.L355
+ 1744              	.L401:
+ 1745 008a FFF7FEFF 		bl	ee_version_get
+ 1746 008e 0D28     		cmp	r0, #13
+ 1747 0090 00F09980 		beq	.L375
+ 1748 0094 FFF7FEFF 		bl	ee_version_get
+ 1749 0098 0128     		cmp	r0, #1
+ 1750 009a 00F09680 		beq	.L376
+ 1751 009e FFF7FEFF 		bl	ee_version_get
+ 1752 00a2 0E28     		cmp	r0, #14
+ 1753 00a4 00F09380 		beq	.L377
+ 1754 00a8 40F24921 		movw	r1, #585
+ 1755 00ac 1720     		movs	r0, #23
+ 1756 00ae FFF7FEFF 		bl	failure3
+ 1757 00b2 C0B2     		uxtb	r0, r0
+ 1758 00b4 B2E7     		b	.L355
+ 1759              	.L361:
+ 1760 00b6 FFF7FEFF 		bl	ee_version_get
+ 1761 00ba 08B9     		cbnz	r0, .L402
+ 1762 00bc 1420     		movs	r0, #20
+ 1763 00be ADE7     		b	.L355
+ 1764              	.L402:
+ 1765 00c0 FFF7FEFF 		bl	ee_version_get
+ 1766 00c4 0D28     		cmp	r0, #13
+ 1767 00c6 00F08480 		beq	.L379
+ 1768 00ca FFF7FEFF 		bl	ee_version_get
+ 1769 00ce 0128     		cmp	r0, #1
+ 1770 00d0 00F08180 		beq	.L380
+ 1771 00d4 FFF7FEFF 		bl	ee_version_get
+ 1772 00d8 0E28     		cmp	r0, #14
+ 1773 00da 7ED0     		beq	.L381
+ 1774 00dc 4FF41371 		mov	r1, #588
+ 1775 00e0 1720     		movs	r0, #23
+ 1776 00e2 FFF7FEFF 		bl	failure3
+ 1777 00e6 C0B2     		uxtb	r0, r0
+ 1778 00e8 98E7     		b	.L355
+ 1779              	.L360:
+ 1780 00ea FFF7FEFF 		bl	ee_version_get
+ 1781 00ee 08B9     		cbnz	r0, .L403
+ 1782 00f0 0C20     		movs	r0, #12
+ 1783 00f2 93E7     		b	.L355
+ 1784              	.L403:
+ 1785 00f4 FFF7FEFF 		bl	ee_version_get
+ 1786 00f8 0D28     		cmp	r0, #13
+ 1787 00fa 70D0     		beq	.L383
+ 1788 00fc FFF7FEFF 		bl	ee_version_get
+ 1789 0100 0128     		cmp	r0, #1
+ 1790 0102 6ED0     		beq	.L384
+ 1791 0104 FFF7FEFF 		bl	ee_version_get
+ 1792 0108 0E28     		cmp	r0, #14
+ 1793 010a 6CD0     		beq	.L385
+ 1794 010c 40F24F21 		movw	r1, #591
+ 1795 0110 1720     		movs	r0, #23
+ 1796 0112 FFF7FEFF 		bl	failure3
+ 1797 0116 C0B2     		uxtb	r0, r0
+ 1798 0118 80E7     		b	.L355
+ 1799              	.L359:
+ 1800 011a FFF7FEFF 		bl	ee_version_get
+ 1801 011e 08B9     		cbnz	r0, .L404
+ 1802 0120 0220     		movs	r0, #2
+ 1803 0122 7BE7     		b	.L355
+ 1804              	.L404:
+ 1805 0124 FFF7FEFF 		bl	ee_version_get
+ 1806 0128 0D28     		cmp	r0, #13
+ 1807 012a 5ED0     		beq	.L387
+ 1808 012c FFF7FEFF 		bl	ee_version_get
+ 1809 0130 0128     		cmp	r0, #1
+ 1810 0132 5CD0     		beq	.L388
+ 1811 0134 FFF7FEFF 		bl	ee_version_get
+ 1812 0138 0E28     		cmp	r0, #14
+ 1813 013a 5AD0     		beq	.L389
+ 1814 013c 40F25221 		movw	r1, #594
+ 1815 0140 1720     		movs	r0, #23
+ 1816 0142 FFF7FEFF 		bl	failure3
+ 1817 0146 C0B2     		uxtb	r0, r0
+ 1818 0148 68E7     		b	.L355
+ 1819              	.L358:
+ 1820 014a FFF7FEFF 		bl	ee_version_get
+ 1821 014e 08B9     		cbnz	r0, .L405
+ 1822 0150 1E20     		movs	r0, #30
+ 1823 0152 63E7     		b	.L355
+ 1824              	.L405:
+ 1825 0154 FFF7FEFF 		bl	ee_version_get
+ 1826 0158 0D28     		cmp	r0, #13
+ 1827 015a 4CD0     		beq	.L391
+ 1828 015c FFF7FEFF 		bl	ee_version_get
+ 1829 0160 0128     		cmp	r0, #1
+ 1830 0162 4AD0     		beq	.L392
+ 1831 0164 FFF7FEFF 		bl	ee_version_get
+ 1832 0168 0E28     		cmp	r0, #14
+ 1833 016a 48D0     		beq	.L393
+ 1834 016c 40F25521 		movw	r1, #597
+ 1835 0170 1720     		movs	r0, #23
+ 1836 0172 FFF7FEFF 		bl	failure3
+ 1837 0176 C0B2     		uxtb	r0, r0
+ 1838 0178 50E7     		b	.L355
+ 1839              	.L356:
+ 1840 017a FFF7FEFF 		bl	ee_version_get
+ 1841 017e 08B9     		cbnz	r0, .L406
+ 1842 0180 1420     		movs	r0, #20
+ 1843 0182 4BE7     		b	.L355
+ 1844              	.L406:
+ 1845 0184 FFF7FEFF 		bl	ee_version_get
+ 1846 0188 0D28     		cmp	r0, #13
+ 1847 018a 3AD0     		beq	.L395
+ 1848 018c FFF7FEFF 		bl	ee_version_get
+ 1849 0190 0128     		cmp	r0, #1
+ 1850 0192 38D0     		beq	.L396
+ 1851 0194 FFF7FEFF 		bl	ee_version_get
+ 1852 0198 0E28     		cmp	r0, #14
+ 1853 019a 36D0     		beq	.L397
+ 1854 019c 4FF41671 		mov	r1, #600
+ 1855 01a0 1720     		movs	r0, #23
+ 1856 01a2 FFF7FEFF 		bl	failure3
+ 1857 01a6 C0B2     		uxtb	r0, r0
+ 1858 01a8 38E7     		b	.L355
+ 1859              	.L365:
+ 1860 01aa 0020     		movs	r0, #0
+ 1861 01ac 36E7     		b	.L355
+ 1862              	.L367:
+ 1863 01ae 1420     		movs	r0, #20
+ 1864 01b0 34E7     		b	.L355
+ 1865              	.L368:
+ 1866 01b2 0E20     		movs	r0, #14
+ 1867 01b4 32E7     		b	.L355
+ 1868              	.L369:
+ 1869 01b6 0E20     		movs	r0, #14
+ 1870 01b8 30E7     		b	.L355
+ 1871              	.L371:
+ 1872 01ba 1420     		movs	r0, #20
+ 1873 01bc 2EE7     		b	.L355
+ 1874              	.L372:
+ 1875 01be 1E20     		movs	r0, #30
+ 1876 01c0 2CE7     		b	.L355
+ 1877              	.L373:
+ 1878 01c2 1E20     		movs	r0, #30
+ 1879 01c4 2AE7     		b	.L355
+ 1880              	.L375:
+ 1881 01c6 1420     		movs	r0, #20
+ 1882 01c8 28E7     		b	.L355
+ 1883              	.L376:
+ 1884 01ca 2820     		movs	r0, #40
+ 1885 01cc 26E7     		b	.L355
+ 1886              	.L377:
+ 1887 01ce 2820     		movs	r0, #40
+ 1888 01d0 24E7     		b	.L355
+ 1889              	.L379:
+ 1890 01d2 1420     		movs	r0, #20
+ 1891 01d4 22E7     		b	.L355
+ 1892              	.L380:
+ 1893 01d6 0C20     		movs	r0, #12
+ 1894 01d8 20E7     		b	.L355
+ 1895              	.L381:
+ 1896 01da 0C20     		movs	r0, #12
+ 1897 01dc 1EE7     		b	.L355
+ 1898              	.L383:
+ 1899 01de 0C20     		movs	r0, #12
+ 1900 01e0 1CE7     		b	.L355
+ 1901              	.L384:
+ 1902 01e2 0A20     		movs	r0, #10
+ 1903 01e4 1AE7     		b	.L355
+ 1904              	.L385:
+ 1905 01e6 0A20     		movs	r0, #10
+ 1906 01e8 18E7     		b	.L355
+ 1907              	.L387:
+ 1908 01ea 0220     		movs	r0, #2
+ 1909 01ec 16E7     		b	.L355
+ 1910              	.L388:
+ 1911 01ee 0220     		movs	r0, #2
+ 1912 01f0 14E7     		b	.L355
+ 1913              	.L389:
+ 1914 01f2 0220     		movs	r0, #2
+ 1915 01f4 12E7     		b	.L355
+ 1916              	.L391:
+ 1917 01f6 1E20     		movs	r0, #30
+ 1918 01f8 10E7     		b	.L355
+ 1919              	.L392:
+ 1920 01fa 1E20     		movs	r0, #30
+ 1921 01fc 0EE7     		b	.L355
+ 1922              	.L393:
+ 1923 01fe 1E20     		movs	r0, #30
+ 1924 0200 0CE7     		b	.L355
+ 1925              	.L395:
+ 1926 0202 1420     		movs	r0, #20
+ 1927 0204 0AE7     		b	.L355
+ 1928              	.L396:
+ 1929 0206 1420     		movs	r0, #20
+ 1930 0208 08E7     		b	.L355
+ 1931              	.L397:
+ 1932 020a 1420     		movs	r0, #20
+ 1933 020c 06E7     		b	.L355
+ 1935              		.section	.text.user_eeprom_read_module_ascii_field,"ax",%progbits
+ 1936              		.align	1
+ 1937              		.global	user_eeprom_read_module_ascii_field
+ 1938              		.syntax unified
+ 1939              		.thumb
+ 1940              		.thumb_func
+ 1941              		.fpu fpv4-sp-d16
+ 1943              	user_eeprom_read_module_ascii_field:
+ 1944              		@ args = 0, pretend = 0, frame = 0
+ 1945              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1946 0000 2DE9F84F 		push	{r3, r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 1947 0004 00AF     		add	r7, sp, #0
+ 1948 0006 8246     		mov	r10, r0
+ 1949 0008 0D46     		mov	r5, r1
+ 1950 000a 9146     		mov	r9, r2
+ 1951 000c 9B46     		mov	fp, r3
+ 1952 000e FFF7FEFF 		bl	user_eeprom_length_of_field_member
+ 1953 0012 0446     		mov	r4, r0
+ 1954 0014 00F10108 		add	r8, r0, #1
+ 1955 0018 00F10803 		add	r3, r0, #8
+ 1956 001c 23F00703 		bic	r3, r3, #7
+ 1957 0020 ADEB030D 		sub	sp, sp, r3
+ 1958 0024 4A46     		mov	r2, r9
+ 1959 0026 0021     		movs	r1, #0
+ 1960 0028 2846     		mov	r0, r5
+ 1961 002a FFF7FEFF 		bl	memset
+ 1962 002e 4C45     		cmp	r4, r9
+ 1963 0030 03D3     		bcc	.L417
+ 1964 0032 0320     		movs	r0, #3
+ 1965              	.L408:
+ 1966 0034 BD46     		mov	sp, r7
+ 1967              		@ sp needed
+ 1968 0036 BDE8F88F 		pop	{r3, r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 1969              	.L417:
+ 1970 003a 6E46     		mov	r6, sp
+ 1971 003c 5046     		mov	r0, r10
+ 1972 003e FFF7FEFF 		bl	user_eeprom_ptr_to_char_field_member
+ 1973 0042 0146     		mov	r1, r0
+ 1974 0044 68B3     		cbz	r0, .L413
+ 1975 0046 2246     		mov	r2, r4
+ 1976 0048 3046     		mov	r0, r6
+ 1977 004a FFF7FEFF 		bl	memcpy
+ 1978 004e BBF1000F 		cmp	fp, #0
+ 1979 0052 1BD0     		beq	.L409
+ 1980 0054 D4B1     		cbz	r4, .L409
+ 1981 0056 711E     		subs	r1, r6, #1
+ 1982 0058 0022     		movs	r2, #0
+ 1983 005a 1346     		mov	r3, r2
+ 1984 005c 9446     		mov	ip, r2
+ 1985 005e 07E0     		b	.L411
+ 1986              	.L419:
+ 1987 0060 0132     		adds	r2, r2, #1
+ 1988 0062 D2B2     		uxtb	r2, r2
+ 1989 0064 022A     		cmp	r2, #2
+ 1990 0066 09D0     		beq	.L418
+ 1991              	.L410:
+ 1992 0068 0133     		adds	r3, r3, #1
+ 1993 006a DBB2     		uxtb	r3, r3
+ 1994 006c 9C42     		cmp	r4, r3
+ 1995 006e 0DD0     		beq	.L409
+ 1996              	.L411:
+ 1997 0070 11F8010F 		ldrb	r0, [r1, #1]!	@ zero_extendqisi2
+ 1998 0074 2028     		cmp	r0, #32
+ 1999 0076 F3D0     		beq	.L419
+ 2000 0078 6246     		mov	r2, ip
+ 2001 007a F5E7     		b	.L410
+ 2002              	.L418:
+ 2003 007c 013B     		subs	r3, r3, #1
+ 2004 007e D8B2     		uxtb	r0, r3
+ 2005 0080 221A     		subs	r2, r4, r0
+ 2006 0082 0132     		adds	r2, r2, #1
+ 2007 0084 0021     		movs	r1, #0
+ 2008 0086 3044     		add	r0, r0, r6
+ 2009 0088 FFF7FEFF 		bl	memset
+ 2010              	.L409:
+ 2011 008c 4FF00009 		mov	r9, #0
+ 2012 0090 06F80490 		strb	r9, [r6, r4]
+ 2013 0094 4246     		mov	r2, r8
+ 2014 0096 3146     		mov	r1, r6
+ 2015 0098 2846     		mov	r0, r5
+ 2016 009a FFF7FEFF 		bl	memcpy
+ 2017 009e 4846     		mov	r0, r9
+ 2018 00a0 C8E7     		b	.L408
+ 2019              	.L413:
+ 2020 00a2 0820     		movs	r0, #8
+ 2021 00a4 C6E7     		b	.L408
+ 2023              		.section	.text.user_eeprom_read_module_part_nr,"ax",%progbits
+ 2024              		.align	1
+ 2025              		.global	user_eeprom_read_module_part_nr
+ 2026              		.syntax unified
+ 2027              		.thumb
+ 2028              		.thumb_func
+ 2029              		.fpu fpv4-sp-d16
+ 2031              	user_eeprom_read_module_part_nr:
+ 2032              		@ args = 0, pretend = 0, frame = 0
+ 2033              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2034 0000 08B5     		push	{r3, lr}
+ 2035 0002 1346     		mov	r3, r2
+ 2036 0004 0A46     		mov	r2, r1
+ 2037 0006 0146     		mov	r1, r0
+ 2038 0008 0020     		movs	r0, #0
+ 2039 000a FFF7FEFF 		bl	user_eeprom_read_module_ascii_field
+ 2040 000e 08BD     		pop	{r3, pc}
+ 2042              		.section	.text.user_eeprom_read_module_drawing_nr,"ax",%progbits
+ 2043              		.align	1
+ 2044              		.global	user_eeprom_read_module_drawing_nr
+ 2045              		.syntax unified
+ 2046              		.thumb
+ 2047              		.thumb_func
+ 2048              		.fpu fpv4-sp-d16
+ 2050              	user_eeprom_read_module_drawing_nr:
+ 2051              		@ args = 0, pretend = 0, frame = 0
+ 2052              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2053 0000 08B5     		push	{r3, lr}
+ 2054 0002 1346     		mov	r3, r2
+ 2055 0004 0A46     		mov	r2, r1
+ 2056 0006 0146     		mov	r1, r0
+ 2057 0008 0120     		movs	r0, #1
+ 2058 000a FFF7FEFF 		bl	user_eeprom_read_module_ascii_field
+ 2059 000e 08BD     		pop	{r3, pc}
+ 2061              		.section	.text.user_eeprom_read_module_name,"ax",%progbits
+ 2062              		.align	1
+ 2063              		.global	user_eeprom_read_module_name
+ 2064              		.syntax unified
+ 2065              		.thumb
+ 2066              		.thumb_func
+ 2067              		.fpu fpv4-sp-d16
+ 2069              	user_eeprom_read_module_name:
+ 2070              		@ args = 0, pretend = 0, frame = 0
+ 2071              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2072 0000 08B5     		push	{r3, lr}
+ 2073 0002 1346     		mov	r3, r2
+ 2074 0004 0A46     		mov	r2, r1
+ 2075 0006 0146     		mov	r1, r0
+ 2076 0008 0220     		movs	r0, #2
+ 2077 000a FFF7FEFF 		bl	user_eeprom_read_module_ascii_field
+ 2078 000e 08BD     		pop	{r3, pc}
+ 2080              		.section	.text.user_eeprom_read_module_order_nr,"ax",%progbits
+ 2081              		.align	1
+ 2082              		.global	user_eeprom_read_module_order_nr
+ 2083              		.syntax unified
+ 2084              		.thumb
+ 2085              		.thumb_func
+ 2086              		.fpu fpv4-sp-d16
+ 2088              	user_eeprom_read_module_order_nr:
+ 2089              		@ args = 0, pretend = 0, frame = 0
+ 2090              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2091 0000 08B5     		push	{r3, lr}
+ 2092 0002 1346     		mov	r3, r2
+ 2093 0004 0A46     		mov	r2, r1
+ 2094 0006 0146     		mov	r1, r0
+ 2095 0008 0320     		movs	r0, #3
+ 2096 000a FFF7FEFF 		bl	user_eeprom_read_module_ascii_field
+ 2097 000e 08BD     		pop	{r3, pc}
+ 2099              		.section	.text.user_eeprom_read_module_test_date,"ax",%progbits
+ 2100              		.align	1
+ 2101              		.global	user_eeprom_read_module_test_date
+ 2102              		.syntax unified
+ 2103              		.thumb
+ 2104              		.thumb_func
+ 2105              		.fpu fpv4-sp-d16
+ 2107              	user_eeprom_read_module_test_date:
+ 2108              		@ args = 0, pretend = 0, frame = 0
+ 2109              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2110 0000 08B5     		push	{r3, lr}
+ 2111 0002 1346     		mov	r3, r2
+ 2112 0004 0A46     		mov	r2, r1
+ 2113 0006 0146     		mov	r1, r0
+ 2114 0008 0420     		movs	r0, #4
+ 2115 000a FFF7FEFF 		bl	user_eeprom_read_module_ascii_field
+ 2116 000e 08BD     		pop	{r3, pc}
+ 2118              		.section	.text.user_eeprom_read_module_hw_version,"ax",%progbits
+ 2119              		.align	1
+ 2120              		.global	user_eeprom_read_module_hw_version
+ 2121              		.syntax unified
+ 2122              		.thumb
+ 2123              		.thumb_func
+ 2124              		.fpu fpv4-sp-d16
+ 2126              	user_eeprom_read_module_hw_version:
+ 2127              		@ args = 0, pretend = 0, frame = 0
+ 2128              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2129 0000 08B5     		push	{r3, lr}
+ 2130 0002 1346     		mov	r3, r2
+ 2131 0004 0A46     		mov	r2, r1
+ 2132 0006 0146     		mov	r1, r0
+ 2133 0008 0520     		movs	r0, #5
+ 2134 000a FFF7FEFF 		bl	user_eeprom_read_module_ascii_field
+ 2135 000e 08BD     		pop	{r3, pc}
+ 2137              		.section	.text.user_eeprom_read_app_name,"ax",%progbits
+ 2138              		.align	1
+ 2139              		.global	user_eeprom_read_app_name
+ 2140              		.syntax unified
+ 2141              		.thumb
+ 2142              		.thumb_func
+ 2143              		.fpu fpv4-sp-d16
+ 2145              	user_eeprom_read_app_name:
+ 2146              		@ args = 0, pretend = 0, frame = 0
+ 2147              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2148 0000 08B5     		push	{r3, lr}
+ 2149 0002 1346     		mov	r3, r2
+ 2150 0004 0A46     		mov	r2, r1
+ 2151 0006 0146     		mov	r1, r0
+ 2152 0008 0620     		movs	r0, #6
+ 2153 000a FFF7FEFF 		bl	user_eeprom_read_module_ascii_field
+ 2154 000e 08BD     		pop	{r3, pc}
+ 2156              		.section	.text.user_eeprom_read_app_version,"ax",%progbits
+ 2157              		.align	1
+ 2158              		.global	user_eeprom_read_app_version
+ 2159              		.syntax unified
+ 2160              		.thumb
+ 2161              		.thumb_func
+ 2162              		.fpu fpv4-sp-d16
+ 2164              	user_eeprom_read_app_version:
+ 2165              		@ args = 0, pretend = 0, frame = 0
+ 2166              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2167 0000 08B5     		push	{r3, lr}
+ 2168 0002 1346     		mov	r3, r2
+ 2169 0004 0A46     		mov	r2, r1
+ 2170 0006 0146     		mov	r1, r0
+ 2171 0008 0720     		movs	r0, #7
+ 2172 000a FFF7FEFF 		bl	user_eeprom_read_module_ascii_field
+ 2173 000e 08BD     		pop	{r3, pc}
+ 2175              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2019-q3-update) 8.3.1 20190703 (release) [gc

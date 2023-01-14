@@ -1,0 +1,79 @@
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"irq_cfg.c"
+  14              		.text
+  15              		.global	mgl_irq_prio
+  16              		.section	.rodata.mgl_irq_prio,"a"
+  17              		.align	2
+  20              	mgl_irq_prio:
+  21 0000 00       		.byte	0
+  22 0001 0F       		.byte	15
+  23 0002 04       		.byte	4
+  24 0003 27       		.byte	39
+  25 0004 28       		.byte	40
+  26 0005 04       		.byte	4
+  27 0006 34       		.byte	52
+  28 0007 34       		.byte	52
+  29 0008 04       		.byte	4
+  30 0009 44       		.byte	68
+  31 000a 44       		.byte	68
+  32 000b 04       		.byte	4
+  33 000c 3A       		.byte	58
+  34 000d 3A       		.byte	58
+  35 000e 03       		.byte	3
+  36 000f 3B       		.byte	59
+  37 0010 3B       		.byte	59
+  38 0011 02       		.byte	2
+  39 0012 23       		.byte	35
+  40 0013 23       		.byte	35
+  41 0014 08       		.byte	8
+  42 0015 1F       		.byte	31
+  43 0016 21       		.byte	33
+  44 0017 02       		.byte	2
+  45 0018 3C       		.byte	60
+  46 0019 3F       		.byte	63
+  47 001a 08       		.byte	8
+  48 001b 4E       		.byte	78
+  49 001c 52       		.byte	82
+  50 001d 07       		.byte	7
+  51 001e 55       		.byte	85
+  52 001f 58       		.byte	88
+  53 0020 07       		.byte	7
+  54 0021 5C       		.byte	92
+  55 0022 5F       		.byte	95
+  56 0023 07       		.byte	7
+  57 0024 19       		.byte	25
+  58 0025 19       		.byte	25
+  59 0026 05       		.byte	5
+  60 0027 18       		.byte	24
+  61 0028 18       		.byte	24
+  62 0029 05       		.byte	5
+  63 002a 1A       		.byte	26
+  64 002b 1C       		.byte	28
+  65 002c 06       		.byte	6
+  66 002d 63       		.byte	99
+  67 002e 68       		.byte	104
+  68 002f 01       		.byte	1
+  69 0030 69       		.byte	105
+  70 0031 6E       		.byte	110
+  71 0032 01       		.byte	1
+  72 0033 6F       		.byte	111
+  73 0034 74       		.byte	116
+  74 0035 01       		.byte	1
+  75 0036 75       		.byte	117
+  76 0037 7A       		.byte	122
+  77 0038 01       		.byte	1
+  78 0039 FF       		.byte	-1
+  79 003a FF       		.byte	-1
+  80 003b FF       		.byte	-1
+  81              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2019-q3-update) 8.3.1 20190703 (release) [gc

@@ -1,0 +1,221 @@
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"sfl_db.c"
+  14              		.text
+  15              		.section	.text.private_sfl_db_invert_bitorder_in_byte,"ax",%progbits
+  16              		.align	1
+  17              		.global	private_sfl_db_invert_bitorder_in_byte
+  18              		.arch armv7e-m
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu fpv4-sp-d16
+  24              	private_sfl_db_invert_bitorder_in_byte:
+  25              		@ args = 0, pretend = 0, frame = 0
+  26              		@ frame_needed = 0, uses_anonymous_args = 0
+  27              		@ link register save eliminated.
+  28 0000 0301     		lsls	r3, r0, #4
+  29 0002 43EA1010 		orr	r0, r3, r0, lsr #4
+  30 0006 C0B2     		uxtb	r0, r0
+  31 0008 8310     		asrs	r3, r0, #2
+  32 000a 03F03302 		and	r2, r3, #51
+  33 000e 8300     		lsls	r3, r0, #2
+  34 0010 03F0CC03 		and	r3, r3, #204
+  35 0014 1343     		orrs	r3, r3, r2
+  36 0016 5810     		asrs	r0, r3, #1
+  37 0018 00F05500 		and	r0, r0, #85
+  38 001c 5B00     		lsls	r3, r3, #1
+  39 001e 03F0AA03 		and	r3, r3, #170
+  40 0022 1843     		orrs	r0, r0, r3
+  41 0024 7047     		bx	lr
+  43              		.section	.text.sfl_db_change_intel_to_motorola_32_bit,"ax",%progbits
+  44              		.align	1
+  45              		.global	sfl_db_change_intel_to_motorola_32_bit
+  46              		.syntax unified
+  47              		.thumb
+  48              		.thumb_func
+  49              		.fpu fpv4-sp-d16
+  51              	sfl_db_change_intel_to_motorola_32_bit:
+  52              		@ args = 0, pretend = 0, frame = 0
+  53              		@ frame_needed = 0, uses_anonymous_args = 0
+  54              		@ link register save eliminated.
+  55 0000 030E     		lsrs	r3, r0, #24
+  56 0002 03EB0063 		add	r3, r3, r0, lsl #24
+  57 0006 0202     		lsls	r2, r0, #8
+  58 0008 02F47F02 		and	r2, r2, #16711680
+  59 000c 1344     		add	r3, r3, r2
+  60 000e 000A     		lsrs	r0, r0, #8
+  61 0010 00F47F40 		and	r0, r0, #65280
+  62 0014 1844     		add	r0, r0, r3
+  63 0016 7047     		bx	lr
+  65              		.section	.text.sfl_db_put_signal_value_to_data_block,"ax",%progbits
+  66              		.align	1
+  67              		.global	sfl_db_put_signal_value_to_data_block
+  68              		.syntax unified
+  69              		.thumb
+  70              		.thumb_func
+  71              		.fpu fpv4-sp-d16
+  73              	sfl_db_put_signal_value_to_data_block:
+  74              		@ args = 4, pretend = 0, frame = 8
+  75              		@ frame_needed = 0, uses_anonymous_args = 0
+  76 0000 B2F5007F 		cmp	r2, #512
+  77 0004 5CD2     		bcs	.L10
+  78 0006 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+  79 000a 83B0     		sub	sp, sp, #12
+  80 000c D418     		adds	r4, r2, r3
+  81 000e B4F5007F 		cmp	r4, #512
+  82 0012 41DC     		bgt	.L3
+  83 0014 5C1E     		subs	r4, r3, #1
+  84 0016 A4B2     		uxth	r4, r4
+  85 0018 1F2C     		cmp	r4, #31
+  86 001a 3DD8     		bhi	.L3
+  87 001c 02F0070E 		and	lr, r2, #7
+  88 0020 03EB0E04 		add	r4, r3, lr
+  89 0024 202C     		cmp	r4, #32
+  90 0026 37DC     		bgt	.L3
+  91 0028 4FF0000C 		mov	ip, #0
+  92 002c 6446     		mov	r4, ip
+  93              	.L5:
+  94 002e 6400     		lsls	r4, r4, #1
+  95 0030 44F00104 		orr	r4, r4, #1
+  96 0034 0CF1010C 		add	ip, ip, #1
+  97 0038 1FFA8CF5 		uxth	r5, ip
+  98 003c AB42     		cmp	r3, r5
+  99 003e F6D8     		bhi	.L5
+ 100 0040 0F46     		mov	r7, r1
+ 101 0042 D508     		lsrs	r5, r2, #3
+ 102 0044 05F1010B 		add	fp, r5, #1
+ 103 0048 05F1020A 		add	r10, r5, #2
+ 104 004c 05F10309 		add	r9, r5, #3
+ 105 0050 11F80B20 		ldrb	r2, [r1, fp]	@ zero_extendqisi2
+ 106 0054 11F80A80 		ldrb	r8, [r1, r10]	@ zero_extendqisi2
+ 107 0058 4FEA0848 		lsl	r8, r8, #16
+ 108 005c 08EB0228 		add	r8, r8, r2, lsl #8
+ 109 0060 4A5D     		ldrb	r2, [r1, r5]	@ zero_extendqisi2
+ 110 0062 9044     		add	r8, r8, r2
+ 111 0064 11F80960 		ldrb	r6, [r1, r9]	@ zero_extendqisi2
+ 112 0068 08EB0668 		add	r8, r8, r6, lsl #24
+ 113 006c 2040     		ands	r0, r0, r4
+ 114 006e 9DF83020 		ldrb	r2, [sp, #48]	@ zero_extendqisi2
+ 115 0072 012A     		cmp	r2, #1
+ 116 0074 13D0     		beq	.L13
+ 117 0076 00FA0EF6 		lsl	r6, r0, lr
+ 118 007a 04FA0EF0 		lsl	r0, r4, lr
+ 119              	.L7:
+ 120 007e 28EA0000 		bic	r0, r8, r0
+ 121 0082 0643     		orrs	r6, r6, r0
+ 122 0084 7E55     		strb	r6, [r7, r5]
+ 123 0086 330A     		lsrs	r3, r6, #8
+ 124 0088 07F80B30 		strb	r3, [r7, fp]
+ 125 008c 330C     		lsrs	r3, r6, #16
+ 126 008e 07F80A30 		strb	r3, [r7, r10]
+ 127 0092 360E     		lsrs	r6, r6, #24
+ 128 0094 07F80960 		strb	r6, [r7, r9]
+ 129              	.L3:
+ 130 0098 03B0     		add	sp, sp, #12
+ 131              		@ sp needed
+ 132 009a BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 133              	.L13:
+ 134 009e C3F12003 		rsb	r3, r3, #32
+ 135 00a2 A3EB0E0E 		sub	lr, r3, lr
+ 136 00a6 1FFA8EF3 		uxth	r3, lr
+ 137 00aa 0193     		str	r3, [sp, #4]
+ 138 00ac 9840     		lsls	r0, r0, r3
+ 139 00ae FFF7FEFF 		bl	sfl_db_change_intel_to_motorola_32_bit
+ 140 00b2 0646     		mov	r6, r0
+ 141 00b4 019B     		ldr	r3, [sp, #4]
+ 142 00b6 04FA03F0 		lsl	r0, r4, r3
+ 143 00ba FFF7FEFF 		bl	sfl_db_change_intel_to_motorola_32_bit
+ 144 00be DEE7     		b	.L7
+ 145              	.L10:
+ 146 00c0 7047     		bx	lr
+ 148              		.section	.text.sfl_db_get_signal_value_from_data_block,"ax",%progbits
+ 149              		.align	1
+ 150              		.global	sfl_db_get_signal_value_from_data_block
+ 151              		.syntax unified
+ 152              		.thumb
+ 153              		.thumb_func
+ 154              		.fpu fpv4-sp-d16
+ 156              	sfl_db_get_signal_value_from_data_block:
+ 157              		@ args = 0, pretend = 0, frame = 0
+ 158              		@ frame_needed = 0, uses_anonymous_args = 0
+ 159              		@ link register save eliminated.
+ 160 0000 B1F5007F 		cmp	r1, #512
+ 161 0004 3CD2     		bcs	.L19
+ 162 0006 70B4     		push	{r4, r5, r6}
+ 163 0008 8C18     		adds	r4, r1, r2
+ 164 000a B4F5007F 		cmp	r4, #512
+ 165 000e 39DC     		bgt	.L20
+ 166 0010 541E     		subs	r4, r2, #1
+ 167 0012 A4B2     		uxth	r4, r4
+ 168 0014 1F2C     		cmp	r4, #31
+ 169 0016 38D8     		bhi	.L21
+ 170 0018 01F00704 		and	r4, r1, #7
+ 171 001c 1519     		adds	r5, r2, r4
+ 172 001e 202D     		cmp	r5, #32
+ 173 0020 35DC     		bgt	.L22
+ 174 0022 CD08     		lsrs	r5, r1, #3
+ 175 0024 012B     		cmp	r3, #1
+ 176 0026 17D0     		beq	.L28
+ 177 0028 4619     		adds	r6, r0, r5
+ 178 002a 7178     		ldrb	r1, [r6, #1]	@ zero_extendqisi2
+ 179 002c B378     		ldrb	r3, [r6, #2]	@ zero_extendqisi2
+ 180 002e 1B04     		lsls	r3, r3, #16
+ 181 0030 03EB0123 		add	r3, r3, r1, lsl #8
+ 182 0034 405D     		ldrb	r0, [r0, r5]	@ zero_extendqisi2
+ 183 0036 0344     		add	r3, r3, r0
+ 184 0038 F078     		ldrb	r0, [r6, #3]	@ zero_extendqisi2
+ 185 003a 03EB0060 		add	r0, r3, r0, lsl #24
+ 186 003e 20FA04F1 		lsr	r1, r0, r4
+ 187              	.L17:
+ 188 0042 0023     		movs	r3, #0
+ 189 0044 1846     		mov	r0, r3
+ 190              	.L18:
+ 191 0046 4000     		lsls	r0, r0, #1
+ 192 0048 40F00100 		orr	r0, r0, #1
+ 193 004c 0133     		adds	r3, r3, #1
+ 194 004e 9CB2     		uxth	r4, r3
+ 195 0050 9442     		cmp	r4, r2
+ 196 0052 F8D3     		bcc	.L18
+ 197 0054 0840     		ands	r0, r0, r1
+ 198 0056 16E0     		b	.L14
+ 199              	.L28:
+ 200 0058 4419     		adds	r4, r0, r5
+ 201 005a E378     		ldrb	r3, [r4, #3]	@ zero_extendqisi2
+ 202 005c 405D     		ldrb	r0, [r0, r5]	@ zero_extendqisi2
+ 203 005e 03EB0060 		add	r0, r3, r0, lsl #24
+ 204 0062 A378     		ldrb	r3, [r4, #2]	@ zero_extendqisi2
+ 205 0064 00EB0320 		add	r0, r0, r3, lsl #8
+ 206 0068 6378     		ldrb	r3, [r4, #1]	@ zero_extendqisi2
+ 207 006a 00EB0340 		add	r0, r0, r3, lsl #16
+ 208 006e C2F12003 		rsb	r3, r2, #32
+ 209 0072 01F00701 		and	r1, r1, #7
+ 210 0076 591A     		subs	r1, r3, r1
+ 211 0078 C9B2     		uxtb	r1, r1
+ 212 007a 20FA01F1 		lsr	r1, r0, r1
+ 213 007e E0E7     		b	.L17
+ 214              	.L19:
+ 215 0080 0020     		movs	r0, #0
+ 216 0082 7047     		bx	lr
+ 217              	.L20:
+ 218 0084 0020     		movs	r0, #0
+ 219              	.L14:
+ 220 0086 70BC     		pop	{r4, r5, r6}
+ 221 0088 7047     		bx	lr
+ 222              	.L21:
+ 223 008a 0020     		movs	r0, #0
+ 224 008c FBE7     		b	.L14
+ 225              	.L22:
+ 226 008e 0020     		movs	r0, #0
+ 227 0090 F9E7     		b	.L14
+ 229              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2019-q3-update) 8.3.1 20190703 (release) [gc

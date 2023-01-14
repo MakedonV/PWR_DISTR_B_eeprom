@@ -1,0 +1,237 @@
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"user_api_io.c"
+  14              		.text
+  15              		.section	.text.user_do_set,"ax",%progbits
+  16              		.align	1
+  17              		.global	user_do_set
+  18              		.arch armv7e-m
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu fpv4-sp-d16
+  24              	user_do_set:
+  25              		@ args = 0, pretend = 0, frame = 0
+  26              		@ frame_needed = 0, uses_anonymous_args = 0
+  27 0000 38B5     		push	{r3, r4, r5, lr}
+  28 0002 00EB4002 		add	r2, r0, r0, lsl #1
+  29 0006 184B     		ldr	r3, .L13
+  30 0008 03EBC203 		add	r3, r3, r2, lsl #3
+  31 000c DB7A     		ldrb	r3, [r3, #11]	@ zero_extendqisi2
+  32 000e 012B     		cmp	r3, #1
+  33 0010 0AD0     		beq	.L11
+  34              	.L2:
+  35 0012 A0F17A03 		sub	r3, r0, #122
+  36 0016 9BB2     		uxth	r3, r3
+  37 0018 2F2B     		cmp	r3, #47
+  38 001a 0AD8     		bhi	.L4
+  39 001c 134B     		ldr	r3, .L13+4
+  40 001e 03EB4000 		add	r0, r3, r0, lsl #1
+  41 0022 00F8F31C 		strb	r1, [r0, #-243]
+  42              	.L1:
+  43 0026 38BD     		pop	{r3, r4, r5, pc}
+  44              	.L11:
+  45 0028 7928     		cmp	r0, #121
+  46 002a F2D8     		bhi	.L2
+  47 002c FFF7FEFF 		bl	hal_io_do_set
+  48 0030 F9E7     		b	.L1
+  49              	.L4:
+  50 0032 0F4A     		ldr	r2, .L13+8
+  51 0034 0023     		movs	r3, #0
+  52 0036 03E0     		b	.L7
+  53              	.L5:
+  54 0038 0133     		adds	r3, r3, #1
+  55 003a 2032     		adds	r2, r2, #32
+  56 003c 162B     		cmp	r3, #22
+  57 003e 0BD0     		beq	.L12
+  58              	.L7:
+  59 0040 1D46     		mov	r5, r3
+  60 0042 147A     		ldrb	r4, [r2, #8]	@ zero_extendqisi2
+  61 0044 8442     		cmp	r4, r0
+  62 0046 F7D1     		bne	.L5
+  63 0048 094B     		ldr	r3, .L13+8
+  64 004a 03EB4513 		add	r3, r3, r5, lsl #5
+  65 004e 187F     		ldrb	r0, [r3, #28]	@ zero_extendqisi2
+  66              	.L6:
+  67 0050 21B9     		cbnz	r1, .L8
+  68 0052 FFF7FEFF 		bl	user_pwm_output_force
+  69 0056 E6E7     		b	.L1
+  70              	.L12:
+  71 0058 1620     		movs	r0, #22
+  72 005a F9E7     		b	.L6
+  73              	.L8:
+  74 005c 4FF47A71 		mov	r1, #1000
+  75 0060 FFF7FEFF 		bl	user_pwm_output_force
+  76 0064 DFE7     		b	.L1
+  77              	.L14:
+  78 0066 00BF     		.align	2
+  79              	.L13:
+  80 0068 00000000 		.word	g_pin_mux_InitConfigArr
+  81 006c 00000000 		.word	virtual_pin
+  82 0070 00000000 		.word	struct_ftm_init_config_tbl
+  84              		.section	.text.user_do_readback,"ax",%progbits
+  85              		.align	1
+  86              		.global	user_do_readback
+  87              		.syntax unified
+  88              		.thumb
+  89              		.thumb_func
+  90              		.fpu fpv4-sp-d16
+  92              	user_do_readback:
+  93              		@ args = 0, pretend = 0, frame = 8
+  94              		@ frame_needed = 0, uses_anonymous_args = 0
+  95 0000 10B5     		push	{r4, lr}
+  96 0002 82B0     		sub	sp, sp, #8
+  97 0004 0023     		movs	r3, #0
+  98 0006 8DF80730 		strb	r3, [sp, #7]
+  99 000a 00EB4002 		add	r2, r0, r0, lsl #1
+ 100 000e 184B     		ldr	r3, .L28
+ 101 0010 03EBC203 		add	r3, r3, r2, lsl #3
+ 102 0014 DB7A     		ldrb	r3, [r3, #11]	@ zero_extendqisi2
+ 103 0016 012B     		cmp	r3, #1
+ 104 0018 04D0     		beq	.L25
+ 105 001a 7928     		cmp	r0, #121
+ 106 001c 04D8     		bhi	.L17
+ 107 001e 154A     		ldr	r2, .L28+4
+ 108 0020 0023     		movs	r3, #0
+ 109 0022 15E0     		b	.L22
+ 110              	.L25:
+ 111 0024 7928     		cmp	r0, #121
+ 112 0026 0AD9     		bls	.L26
+ 113              	.L17:
+ 114 0028 134B     		ldr	r3, .L28+8
+ 115 002a 03EB4000 		add	r0, r3, r0, lsl #1
+ 116 002e 10F8F33C 		ldrb	r3, [r0, #-243]	@ zero_extendqisi2
+ 117 0032 8DF80730 		strb	r3, [sp, #7]
+ 118              	.L18:
+ 119 0036 9DF80700 		ldrb	r0, [sp, #7]	@ zero_extendqisi2
+ 120 003a 02B0     		add	sp, sp, #8
+ 121              		@ sp needed
+ 122 003c 10BD     		pop	{r4, pc}
+ 123              	.L26:
+ 124 003e 0DF10701 		add	r1, sp, #7
+ 125 0042 FFF7FEFF 		bl	hal_io_do_readback
+ 126 0046 F6E7     		b	.L18
+ 127              	.L20:
+ 128 0048 0133     		adds	r3, r3, #1
+ 129 004a 2032     		adds	r2, r2, #32
+ 130 004c 162B     		cmp	r3, #22
+ 131 004e 0CD0     		beq	.L27
+ 132              	.L22:
+ 133 0050 1C46     		mov	r4, r3
+ 134 0052 117A     		ldrb	r1, [r2, #8]	@ zero_extendqisi2
+ 135 0054 8142     		cmp	r1, r0
+ 136 0056 F7D1     		bne	.L20
+ 137 0058 064B     		ldr	r3, .L28+4
+ 138 005a 03EB4413 		add	r3, r3, r4, lsl #5
+ 139 005e 187F     		ldrb	r0, [r3, #28]	@ zero_extendqisi2
+ 140              	.L21:
+ 141 0060 0DF10701 		add	r1, sp, #7
+ 142 0064 FFF7FEFF 		bl	hal_pwm_readback_do
+ 143 0068 E5E7     		b	.L18
+ 144              	.L27:
+ 145 006a 1620     		movs	r0, #22
+ 146 006c F8E7     		b	.L21
+ 147              	.L29:
+ 148 006e 00BF     		.align	2
+ 149              	.L28:
+ 150 0070 00000000 		.word	g_pin_mux_InitConfigArr
+ 151 0074 00000000 		.word	struct_ftm_init_config_tbl
+ 152 0078 00000000 		.word	virtual_pin
+ 154              		.section	.text.user_di_find_adc_pin,"ax",%progbits
+ 155              		.align	1
+ 156              		.global	user_di_find_adc_pin
+ 157              		.syntax unified
+ 158              		.thumb
+ 159              		.thumb_func
+ 160              		.fpu fpv4-sp-d16
+ 162              	user_di_find_adc_pin:
+ 163              		@ args = 0, pretend = 0, frame = 0
+ 164              		@ frame_needed = 0, uses_anonymous_args = 0
+ 165              		@ link register save eliminated.
+ 166 0000 10B4     		push	{r4}
+ 167 0002 0A4B     		ldr	r3, .L38
+ 168 0004 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
+ 169 0006 8342     		cmp	r3, r0
+ 170 0008 0BD0     		beq	.L35
+ 171 000a 084A     		ldr	r2, .L38
+ 172 000c 0123     		movs	r3, #1
+ 173              	.L34:
+ 174 000e 9CB2     		uxth	r4, r3
+ 175 0010 917A     		ldrb	r1, [r2, #10]	@ zero_extendqisi2
+ 176 0012 8142     		cmp	r1, r0
+ 177 0014 06D0     		beq	.L31
+ 178 0016 0133     		adds	r3, r3, #1
+ 179 0018 0632     		adds	r2, r2, #6
+ 180 001a 472B     		cmp	r3, #71
+ 181 001c F7D1     		bne	.L34
+ 182 001e 4720     		movs	r0, #71
+ 183 0020 01E0     		b	.L33
+ 184              	.L35:
+ 185 0022 0024     		movs	r4, #0
+ 186              	.L31:
+ 187 0024 E0B2     		uxtb	r0, r4
+ 188              	.L33:
+ 189 0026 5DF8044B 		ldr	r4, [sp], #4
+ 190 002a 7047     		bx	lr
+ 191              	.L39:
+ 192              		.align	2
+ 193              	.L38:
+ 194 002c 00000000 		.word	adc_init_config_tbl
+ 196              		.section	.text.user_di_get,"ax",%progbits
+ 197              		.align	1
+ 198              		.global	user_di_get
+ 199              		.syntax unified
+ 200              		.thumb
+ 201              		.thumb_func
+ 202              		.fpu fpv4-sp-d16
+ 204              	user_di_get:
+ 205              		@ args = 0, pretend = 0, frame = 8
+ 206              		@ frame_needed = 0, uses_anonymous_args = 0
+ 207 0000 00B5     		push	{lr}
+ 208 0002 83B0     		sub	sp, sp, #12
+ 209 0004 0023     		movs	r3, #0
+ 210 0006 8DF80730 		strb	r3, [sp, #7]
+ 211 000a 7928     		cmp	r0, #121
+ 212 000c 0BD8     		bhi	.L41
+ 213 000e 00EB4002 		add	r2, r0, r0, lsl #1
+ 214 0012 0F4B     		ldr	r3, .L47
+ 215 0014 03EBC203 		add	r3, r3, r2, lsl #3
+ 216 0018 DB7A     		ldrb	r3, [r3, #11]	@ zero_extendqisi2
+ 217 001a 012B     		cmp	r3, #1
+ 218 001c 08D0     		beq	.L45
+ 219 001e FFF7FEFF 		bl	user_di_find_adc_pin
+ 220 0022 4628     		cmp	r0, #70
+ 221 0024 09D9     		bls	.L46
+ 222              	.L41:
+ 223 0026 9DF80700 		ldrb	r0, [sp, #7]	@ zero_extendqisi2
+ 224 002a 03B0     		add	sp, sp, #12
+ 225              		@ sp needed
+ 226 002c 5DF804FB 		ldr	pc, [sp], #4
+ 227              	.L45:
+ 228 0030 0DF10701 		add	r1, sp, #7
+ 229 0034 FFF7FEFF 		bl	hal_io_di_get
+ 230 0038 F5E7     		b	.L41
+ 231              	.L46:
+ 232 003a FFF7FEFF 		bl	user_ai_get_mv
+ 233 003e 41F26F73 		movw	r3, #5999
+ 234 0042 9842     		cmp	r0, r3
+ 235 0044 8CBF     		ite	hi
+ 236 0046 0123     		movhi	r3, #1
+ 237 0048 0023     		movls	r3, #0
+ 238 004a 8DF80730 		strb	r3, [sp, #7]
+ 239 004e EAE7     		b	.L41
+ 240              	.L48:
+ 241              		.align	2
+ 242              	.L47:
+ 243 0050 00000000 		.word	g_pin_mux_InitConfigArr
+ 245              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2019-q3-update) 8.3.1 20190703 (release) [gc

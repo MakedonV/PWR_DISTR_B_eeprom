@@ -1,0 +1,25 @@
+FormatVersion = 5.0 // Do not edit this line!
+Title="PWR_DISTR"
+
+
+{SEND}
+
+[CanTelegramm_0]
+ID=100h
+DLC=8
+CycleTime=500
+Var=_RPM_Average unsigned 0,32 /p:0 /d:0
+Var=_ENG_HRS_EEPROM unsigned 32,32 /p:0 /d:0
+
+[CanTelegramm_1]
+ID=101h
+DLC=8
+CycleTime=500
+Var=_ENG_HRS_1sec unsigned 0,32 /p:0 /d:0
+
+[CanTelegramm_2]
+ID=102h
+DLC=8
+CycleTime=100
+Var=_ENGINE_RPM unsigned 0,32 /p:0 /d:0
+Var=_RPM_Total unsigned 32,32 /p:0 /d:0
